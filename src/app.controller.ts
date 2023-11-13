@@ -1,4 +1,4 @@
-import { Controller, Get } from '@nestjs/common';
+import { Controller, Get, Param } from '@nestjs/common';
 import { AppService } from './app.service';
 
 @Controller()
@@ -17,5 +17,17 @@ export class AppController {
   @Get('task')
   hello() {
     return 'without /';
+  }
+  @Get('/products/:productId')
+  getProduct(@Param('productId') productId: string) {
+    return `product ${productId}`;
+  }
+
+  @Get('/categories/:categoryId/products/:productId')
+  getCategory(
+    @Param('productId') productId: string,
+    @Param('categoryId') categoryId: string,
+  ) {
+    return `product ${productId} and ${categoryId}`;
   }
 }
