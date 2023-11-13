@@ -19,27 +19,4 @@ export class AppController {
   hello() {
     return 'without /';
   }
-  @Get('/products/filter')
-  getProductFilter() {
-    return `Iam filter`;
-  }
-  @Get('/products/:productId')
-  getProduct(@Param('productId') productId: string) {
-    return `product ${productId}`;
-  }
-
-  @Get('/products')
-  findAllProducts(@Query() params: PaginationParams, @Query('brand') brand: string,) {
-    const { limit = 10, offset = 1 } = params;
-    return `products ${limit} and ${offset} => ${brand}`;
-  }
-
-
-  @Get('/categories/:categoryId/products/:productId')
-  getCategory(
-    @Param('productId') productId: string,
-    @Param('categoryId') categoryId: string,
-  ) {
-    return `product ${productId} and ${categoryId}`;
-  }
 }
