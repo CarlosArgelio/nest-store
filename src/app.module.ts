@@ -11,6 +11,7 @@ import { ProductsService } from './services/products/products.service';
 import { BrandsService } from './services/brands/brands.service';
 import { CategoriesService } from './services/categories/categories.service';
 import { CustomersService } from './services/customers/customers.service';
+import { OrdersService } from './services/orders/orders.service';
 
 @Module({
   imports: [],
@@ -29,6 +30,7 @@ import { CustomersService } from './services/customers/customers.service';
     BrandsService,
     CategoriesService,
     CustomersService,
+    OrdersService,
   ],
 })
 export class AppModule {}
