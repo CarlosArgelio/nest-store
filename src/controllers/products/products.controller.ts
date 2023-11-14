@@ -10,8 +10,9 @@ import {
   Put,
   Query,
   // Res,
-  ParseIntPipe,
+  // ParseIntPipe,
 } from '@nestjs/common';
+import { ParseIntPipe } from 'src/common/parse-int/parse-int.pipe';
 // import { Response } from 'express';
 import { ProductsService } from 'src/services/products/products.service';
 import PaginationParams from 'src/utils/paginate';
