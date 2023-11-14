@@ -1,5 +1,6 @@
-import { Controller, Get } from '@nestjs/common';
+import { Controller, Get, Param, Query } from '@nestjs/common';
 import { AppService } from './app.service';
+import PaginationParams from './utils/paginate';
 
 @Controller()
 export class AppController {
@@ -7,6 +8,15 @@ export class AppController {
 
   @Get()
   getHello(): string {
-    return this.appService.getHello();
+    return 'Hola Mundo';
+  }
+  @Get('/new')
+  newEndpoint() {
+    return 'yo soy nuevo';
+  }
+
+  @Get('task')
+  hello() {
+    return 'without /';
   }
 }
