@@ -10,6 +10,7 @@ import {
   Put,
   Query,
   // Res,
+  ParseIntPipe,
 } from '@nestjs/common';
 // import { Response } from 'express';
 import { ProductsService } from 'src/services/products/products.service';
@@ -33,12 +34,12 @@ export class ProductsController {
   }
   @Get('/:productId')
   @HttpCode(HttpStatus.ACCEPTED)
-  getProduct(@Param('productId') productId: string) {
+  getProduct(@Param('productId', ParseIntPipe) productId: number) {
     // Not recommendable
     // response.status(200).json({
     //   product: `product ${productId}`,
     // });
-    return this.productsService.findOne(+productId);
+    return this.productsService.findOne(productId);
   }
 
   @Post('')
