@@ -16,9 +16,9 @@ import {
 import {
   CreateProductDto,
   UpdateProductDto,
-} from 'src/dtos/products/products.dtos';
+} from 'src/products/dtos/products.dtos';
 // import { Response } from 'express';
-import { ProductsService } from 'src/services/products/products.service';
+import { ProductsService } from 'src/products/services/products.service';
 import PaginationParams from 'src/utils/paginate';
 
 @Controller('products')
