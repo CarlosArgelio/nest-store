@@ -50,8 +50,8 @@ export class ProductsController {
     return this.productsService.create(payload);
   }
 
-  @Put(':productId')
-  putProducts(@Param() productId: string, @Body() payload: any) {
+  @Put('/:productId')
+  putProducts(@Param('productId') productId: string, @Body() payload: any) {
     // return {
     //   productId,
     //   payload,
@@ -59,9 +59,8 @@ export class ProductsController {
     return this.productsService.update(+productId, payload);
   }
 
-  @Delete(':productId')
-  deleteProducts(@Param() productId: string) {
-    // return { productId };
+  @Delete('/:productId')
+  deleteProducts(@Param('productId') productId: string) {
     return this.productsService.delete(+productId);
   }
 }
