@@ -10,9 +10,13 @@ import {
   Put,
   Query,
   // Res,
-  // ParseIntPipe,
+  ParseIntPipe,
 } from '@nestjs/common';
-import { ParseIntPipe } from 'src/common/parse-int/parse-int.pipe';
+// import { ParseIntPipe } from './../../common/parse-int/parse-int.pipe';
+import {
+  CreateProductDto,
+  UpdateProductDto,
+} from 'src/dtos/products/products.dtos';
 // import { Response } from 'express';
 import { ProductsService } from 'src/services/products/products.service';
 import PaginationParams from 'src/utils/paginate';
@@ -44,7 +48,7 @@ export class ProductsController {
   }
 
   @Post('')
-  postProducts(@Body() payload: any) {
+  postProducts(@Body() payload: CreateProductDto) {
     // return {
     //   message: 'post products',
     //   payload,
@@ -53,7 +57,10 @@ export class ProductsController {
   }
 
   @Put('/:productId')
-  putProducts(@Param('productId') productId: string, @Body() payload: any) {
+  putProducts(
+    @Param('productId') productId: string,
+    @Body() payload: UpdateProductDto,
+  ) {
     // return {
     //   productId,
     //   payload,
