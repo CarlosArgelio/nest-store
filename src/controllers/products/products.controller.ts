@@ -3,20 +3,19 @@ import {
   Controller,
   Delete,
   Get,
+  HttpCode,
+  HttpStatus,
   Param,
   Post,
   Put,
   Query,
+  Res
 } from '@nestjs/common';
+import { Response } from 'express';
 import PaginationParams from 'src/utils/paginate';
 
 @Controller('products')
 export class ProductsController {
-  @Get('/:productId')
-  getProduct(@Param('productId') productId: number) {
-    return { product: `product ${productId}` };
-  }
-
   @Get('')
   findAllProducts(
     @Query() params: PaginationParams,
@@ -26,6 +25,14 @@ export class ProductsController {
     return {
       message: `products ${limit} and ${offset} => ${brand}`,
     };
+  }
+  @Get('/:productId')
+  @HttpCode(HttpStatus.ACCEPTED)
+  getProduct(@Res() response: Response, @Param('productId') productId: number) {
+    // Not recommendable
+    response.status(200).json({
+      product: `product ${productId}`,
+    });
   }
 
   @Post('')
