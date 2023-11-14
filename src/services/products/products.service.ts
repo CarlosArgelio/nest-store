@@ -19,12 +19,13 @@ export class ProductsService {
     return this.products;
   }
 
-  findsOne(id: number) {
-    return this.products.find((item) => item.id == id);
+  findOne(id: number) {
+    const response = this.products.find((item) => item.id === id);
+    return response;
   }
 
   create(payload: Product) {
-    this.counterIds = this.counterIds++;
+    this.counterIds = this.counterIds + 1;
     const newProduct = {
       id: this.counterIds,
       ...payload,
@@ -34,7 +35,7 @@ export class ProductsService {
   }
 
   update(id: number, payload: Product) {
-    const product = this.findsOne(id);
+    const product = this.findOne(id);
     const index = this.products.indexOf(product);
     this.products[index] = {
       ...product,
@@ -44,7 +45,7 @@ export class ProductsService {
   }
 
   delete(id: number) {
-    const index = this.products.indexOf(this.findsOne(id));
+    const index = this.products.indexOf(this.findOne(id));
     this.products.splice(index, 1);
     return true;
   }
