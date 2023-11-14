@@ -32,4 +32,20 @@ export class ProductsService {
     this.products.push(newProduct);
     return newProduct;
   }
+
+  update(id: number, payload: Product) {
+    const product = this.findsOne(id);
+    const index = this.products.indexOf(product);
+    this.products[index] = {
+      ...product,
+      ...payload,
+    };
+    return this.products[index];
+  }
+
+  delete(id: number) {
+    const index = this.products.indexOf(this.findsOne(id));
+    this.products.splice(index, 1);
+    return true;
+  }
 }
