@@ -13,8 +13,8 @@ import PaginationParams from 'src/utils/paginate';
 @Controller('products')
 export class ProductsController {
   @Get('/:productId')
-  getProduct(@Param('productId') productId: string) {
-    return `product ${productId}`;
+  getProduct(@Param('productId') productId: number) {
+    return { product: `product ${productId}` };
   }
 
   @Get('')
@@ -37,12 +37,15 @@ export class ProductsController {
   }
 
   @Put(':productId')
-  putProducts(@Param() productId: string) {
-    return productId;
+  putProducts(@Param() productId: number, @Body() payload: any) {
+    return {
+      productId,
+      payload,
+    };
   }
 
   @Delete(':productId')
-  deleteProducts(@Param() productId: string) {
-    return productId;
+  deleteProducts(@Param() productId: number) {
+    return { productId };
   }
 }
