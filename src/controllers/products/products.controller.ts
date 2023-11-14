@@ -9,7 +9,7 @@ import {
   Post,
   Put,
   Query,
-  Res
+  Res,
 } from '@nestjs/common';
 import { Response } from 'express';
 import PaginationParams from 'src/utils/paginate';
