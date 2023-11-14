@@ -1,4 +1,5 @@
 import {
+  Body,
   Controller,
   Delete,
   Get,
@@ -22,11 +23,18 @@ export class ProductsController {
     @Query('brand') brand: string,
   ) {
     const { limit = 10, offset = 1 } = params;
-    return `products ${limit} and ${offset} => ${brand}`;
+    return {
+      message: `products ${limit} and ${offset} => ${brand}`,
+    };
   }
 
   @Post('')
-  postProducts() {}
+  postProducts(@Body() payload: any) {
+    return {
+      message: 'post products',
+      payload,
+    };
+  }
 
   @Put(':productId')
   putProducts(@Param() productId: string) {
