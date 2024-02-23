@@ -1,10 +1,15 @@
 import { Body, Controller, Post } from '@nestjs/common';
-import { Order } from './orders.model';
+import { AddItemToOrder, CreateOrder } from './orders.dtos';
 
 @Controller('orders')
 export class OrdersController {
   @Post()
-  createOrder(@Body() payload: Order) {
+  createOrder(@Body() payload: CreateOrder) {
+    return payload;
+  }
+
+  @Post()
+  createItem(@Body() payload: AddItemToOrder) {
     return payload;
   }
 }
