@@ -8,7 +8,7 @@ export class OrdersController {
     return payload;
   }
 
-  @Post()
+  @Post('/add-item')
   createItem(@Body() payload: AddItemToOrder) {
     return payload;
   }
