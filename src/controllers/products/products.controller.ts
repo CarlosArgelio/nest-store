@@ -1,5 +1,33 @@
-import { Body, Controller, Get, Param, Post, Query } from '@nestjs/common';
-import { CreateProduct } from './products.dtos';
+import {
+  Body,
+  Controller,
+  Delete,
+  Get,
+  Param,
+  Post,
+  Put,
+  Query,
+} from '@nestjs/common';
+import {
+  CreateProduct,
+  Products,
+  ProductID,
+  UpdateProduct,
+} from './products.dtos';
+import { ResponseModel } from 'src/base.model';
+
+const responseFake = [
+  {
+    productId: '1',
+    categoryId: '1',
+    title: 'Product 1',
+    price: 100,
+    description: 'bla bla bla',
+    images: ['https://image.png'],
+    createdAt: new Date(),
+    updatedAt: new Date(),
+  },
+];
 
 @Controller('products')
 export class ProductsController {
@@ -8,34 +36,70 @@ export class ProductsController {
     @Query('limit') limit = 100,
     @Query('offset') offset = 0,
     @Query('brand') brand: string,
-  ) {
+  ): ResponseModel<Products[]> {
+    console.log(limit);
+    console.log(offset);
+    console.log(brand);
+
     return {
       statusCode: 200,
-      message: `Products limit ${limit} and offset ${offset} and brand => ${brand}`,
+      data: responseFake,
     };
   }
 
   @Get('/filter')
-  getFilter() {
+  getFilter(): ResponseModel<Products[]> {
     return {
       statusCode: 200,
-      message: `I am a filter`,
+      data: responseFake,
     };
   }
 
   @Get('/:productId')
-  getOne(@Param('productId') productId: any) {
+  getOne(@Param('productId') productId: ProductID): ResponseModel<Products> {
+    console.log(productId);
     return {
       statusCode: 200,
-      message: `Product with id ${productId}`,
+      data: responseFake[0],
     };
   }
 
   @Post()
-  create(@Body() payload: CreateProduct) {
+  create(@Body() payload: CreateProduct): ResponseModel<Products> {
+    const id = '1';
+    const response = {
+      ...payload,
+      productId: id,
+    };
+
     return {
-      message: 'Product created',
-      payload,
+      statusCode: 201,
+      data: response,
+    };
+  }
+
+  @Put('/:productId')
+  update(
+    @Param('productId') productId: ProductID,
+    @Body() payload: UpdateProduct,
+  ): ResponseModel<Products> {
+    const id = productId.productId;
+    const response = {
+      ...payload,
+      productId: id,
+    };
+    return {
+      statusCode: 200,
+      data: response,
+    };
+  }
+
+  @Delete('/:productId')
+  delete(@Param('productId') productId: ProductID): ResponseModel<any> {
+    console.log(productId);
+    return {
+      statusCode: 204,
+      data: 'deleted',
     };
   }
 }
