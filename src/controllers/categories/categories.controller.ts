@@ -2,7 +2,7 @@ import { Controller, Get, Param } from '@nestjs/common';
 
 @Controller('categories')
 export class CategoriesController {
-  @Get('/categories/:categoryId/:productId')
+  @Get('/:categoryId/:productId')
   getCategory(
     @Param('categoryId') categoryId: any,
     @Param('productId') productId: any,
