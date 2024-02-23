@@ -3,3 +3,8 @@ export interface BaseModel {
   updatedAt: Date;
   deletedAt?: Date;
 }
+
+export interface ResponseModel<T> {
+  statusCode: number;
+  data: T;
+}
