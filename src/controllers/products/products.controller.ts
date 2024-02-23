@@ -1,5 +1,5 @@
 import { Body, Controller, Get, Param, Post, Query } from '@nestjs/common';
-import { Product } from './products.model';
+import { CreateProduct } from './products.dtos';
 
 @Controller('products')
 export class ProductsController {
@@ -32,7 +32,7 @@ export class ProductsController {
   }
 
   @Post()
-  create(@Body() payload: Product) {
+  create(@Body() payload: CreateProduct) {
     return {
       message: 'Product created',
       payload,
