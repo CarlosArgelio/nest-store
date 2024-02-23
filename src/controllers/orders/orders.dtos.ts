@@ -4,3 +4,4 @@ export interface CreateOrder
   extends Omit<Order, 'productId' | 'orderId' | 'amount'> {}
 
 export interface AddItemToOrder extends Omit<Order, 'customerId'> {}
+export interface IOrder extends Order {}
