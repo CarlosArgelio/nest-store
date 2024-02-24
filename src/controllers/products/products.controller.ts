@@ -20,19 +20,6 @@ import { ResponseModel } from 'src/base.model';
 
 import { ProductsService } from './../../services/products/products.service';
 
-const responseFake = [
-  {
-    productId: '1',
-    categoryId: '1',
-    title: 'Product 1',
-    price: 100,
-    description: 'bla bla bla',
-    images: ['https://image.png'],
-    createdAt: new Date(),
-    updatedAt: new Date(),
-  },
-];
-
 @Controller('products')
 export class ProductsController {
   constructor(private productsService: ProductsService) {}
@@ -47,19 +34,10 @@ export class ProductsController {
     console.log(limit);
     console.log(offset);
     console.log(brand);
-
+    const products = this.productsService.findAll();
     return {
       statusCode: HttpStatus.OK,
-      data: this.productsService.findAll(),
-    };
-  }
-
-  @Get('/filter')
-  @HttpCode(HttpStatus.OK)
-  findFilter(): ResponseModel<Products[]> {
-    return {
-      statusCode: HttpStatus.OK,
-      data: responseFake,
+      data: products,
     };
   }
 
@@ -68,28 +46,21 @@ export class ProductsController {
   findOne(
     @Param('productId') productId: ProductID['productId'],
   ): ResponseModel<Products> {
-    const response = {
-      ...responseFake[0],
-      productId: productId,
-    };
+    const product = this.productsService.findOne(productId);
     return {
       statusCode: HttpStatus.OK,
-      data: response,
+      data: product,
     };
   }
 
   @Post()
   @HttpCode(HttpStatus.CREATED)
   create(@Body() payload: CreateProduct): ResponseModel<Products> {
-    const id = '1';
-    const response = {
-      ...payload,
-      productId: id,
-    };
+    const newProduct = this.productsService.create(payload);
 
     return {
       statusCode: HttpStatus.CREATED,
-      data: response,
+      data: newProduct,
     };
   }
 
@@ -97,16 +68,12 @@ export class ProductsController {
   @HttpCode(HttpStatus.OK)
   update(
     @Param('productId') productId: ProductID['productId'],
-    @Body() payload: UpdateProduct,
+    @Body() changes: UpdateProduct,
   ): ResponseModel<Products> {
-    const id = productId;
-    const response = {
-      ...payload,
-      productId: id,
-    };
+    const product = this.productsService.update(productId, changes);
     return {
       statusCode: HttpStatus.OK,
-      data: response,
+      data: product,
     };
   }
 
@@ -115,7 +82,7 @@ export class ProductsController {
   delete(
     @Param('productId') productId: ProductID['productId'],
   ): ResponseModel<any> {
-    console.log(productId);
+    this.productsService.delete(productId);
     return {
       statusCode: HttpStatus.NO_CONTENT,
       data: 'deleted',

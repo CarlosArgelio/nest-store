@@ -1,45 +1,78 @@
 import { Injectable } from '@nestjs/common';
+import {
+  CreateProduct,
+  Products,
+  UpdateProduct,
+} from '../../entities/products/products.dtos';
+import { v4 as uuidv4 } from 'uuid';
 
-import { Product } from '../../entities/products/product.entity';
+import { faker } from '@faker-js/faker';
 
 @Injectable()
 export class ProductsService {
-  private products: Product[] = [
-    {
-      id: '1',
-      name: 'Product 1',
-      description: 'Description 1',
-      price: 100,
-      stock: 10,
-      image: ['image.png'],
-    },
-  ];
+  private products: Products[] = [];
+
+  constructor() {
+    for (let i = 0; i < 5; i++) {
+      this.products.push({
+        productId: faker.datatype.uuid(),
+        title: faker.commerce.productName(),
+        description: faker.commerce.productDescription(),
+        price: +faker.commerce.price(),
+        stock: faker.datatype.number(),
+        images: [faker.image.imageUrl()],
+        createdAt: new Date(),
+        updatedAt: new Date(),
+        categoryId: faker.datatype.uuid(),
+      });
+    }
+  }
 
   findAll() {
     return this.products;
   }
 
-  findOne(id: Product['id']) {
-    return this.products.find((product) => product.id === id);
-  }
-
-  create(product: Product) {
-    this.products.push(product);
+  findOne(id: Products['productId']) {
+    const product = this.products.find((product) => {
+      return product.productId === id;
+    });
+    // if (product === undefined) {
+    // }
     return product;
   }
 
-  update(id: Product['id'], product: Product) {
-    const index = this.products.findIndex((p) => p.id === id);
-    this.products[index] = product;
-    return product;
+  create(product: CreateProduct) {
+    const productId = uuidv4();
+    const newProduct = {
+      ...product,
+      productId,
+      createdAt: new Date(),
+      updatedAt: new Date(),
+    };
+
+    this.products.push(newProduct);
+    return newProduct;
   }
 
-  delete(id: Product['id']) {
+  update(id: Products['productId'], product: UpdateProduct) {
+    const index = this.products.findIndex((p) => p.productId === id);
+    if (index === -1) {
+    }
+
+    const updatedProduct = {
+      ...this.products[index],
+      ...product,
+    };
+    this.products[index] = updatedProduct;
+    return updatedProduct;
+  }
+
+  delete(id: Products['productId']) {
     const product = this.findOne(id);
     if (product === undefined) {
       return null;
     }
-    const index = this.products.findIndex((p) => p.id === id);
+    const index = this.products.findIndex((p) => p.productId === id);
     delete this.products[index];
     return id;
   }

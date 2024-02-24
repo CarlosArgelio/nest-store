@@ -7,5 +7,6 @@ export interface Product extends BaseModel {
   price: number;
   description: string;
   images: string[];
+  stock: number;
   categoryId: Category['categoryId'];
 }
