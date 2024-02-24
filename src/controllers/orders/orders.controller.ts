@@ -1,34 +1,16 @@
 import { Body, Controller, Get, Param, Post } from '@nestjs/common';
-import {
-  AddItemToOrder,
-  CreateOrder,
-  IOrder,
-  OrderID,
-} from '../../entities/ordes/orders.dtos';
+import { CreateOrder, IOrder, OrderID } from '../../entities/ordes/orders.dtos';
 import { ResponseModel } from 'src/base.model';
-
-const responeFake: IOrder[] = [
-  {
-    orderId: '1',
-    productId: '1',
-    customerId: '1',
-    amount: 12,
-    createdAt: new Date(),
-    updatedAt: new Date(),
-  },
-];
+import { OrdersService } from 'src/services/orders/orders.service';
 
 @Controller('orders')
 export class OrdersController {
+  constructor(private ordersServices: OrdersService) {}
   @Get('/:orderId')
   findOne(
     @Param('orderId') orderId: OrderID['orderId'],
   ): ResponseModel<IOrder> {
-    const response = {
-      ...responeFake[0],
-      orderId: orderId,
-    };
-
+    const response = this.ordersServices.findOne(orderId);
     return {
       statusCode: 200,
       data: response,
@@ -37,27 +19,11 @@ export class OrdersController {
 
   @Post()
   createOrder(@Body() payload: CreateOrder): ResponseModel<IOrder> {
-    const response = {
-      ...payload,
-      ...responeFake[0],
-    };
+    const newOrder = this.ordersServices.create(payload);
 
     return {
       statusCode: 200,
-      data: response,
-    };
-  }
-
-  @Post('/add-item')
-  createItem(@Body() payload: AddItemToOrder): ResponseModel<IOrder> {
-    const response = {
-      ...payload,
-      ...responeFake[0],
-    };
-
-    return {
-      statusCode: 200,
-      data: response,
+      data: newOrder,
     };
   }
 }
