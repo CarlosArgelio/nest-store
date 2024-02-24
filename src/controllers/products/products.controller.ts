@@ -6,6 +6,7 @@ import {
   HttpCode,
   HttpStatus,
   Param,
+  ParseUUIDPipe,
   Post,
   Put,
   Query,
@@ -44,7 +45,7 @@ export class ProductsController {
   @Get('/:productId')
   @HttpCode(HttpStatus.OK)
   findOne(
-    @Param('productId') productId: ProductID['productId'],
+    @Param('productId', ParseUUIDPipe) productId: ProductID['productId'],
   ): ResponseModel<Products> {
     const product = this.productsService.findOne(productId);
     return {
