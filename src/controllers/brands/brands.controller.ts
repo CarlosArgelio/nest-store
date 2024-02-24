@@ -66,11 +66,9 @@ export class BrandsController {
   }
 
   @Delete(':brandId')
-  delete(@Param('brandId') brandId: BrandID['brandId']): ResponseModel<any> {
+  delete(
+    @Param('brandId') brandId: BrandID['brandId'],
+  ): ResponseModel<any> | void {
     console.log('🚀 ~ BrandsController ~ delete ~ id:', brandId);
-    return {
-      statusCode: 204,
-      data: 'remove',
-    };
   }
 }

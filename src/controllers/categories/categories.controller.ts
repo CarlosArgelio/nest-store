@@ -82,11 +82,7 @@ export class CategoriesController {
   @Delete('/:categoryId')
   delete(
     @Param('categoryId') categoryId: CategoryID['categoryId'],
-  ): ResponseModel<any> {
+  ): ResponseModel<any> | void {
     console.log(categoryId);
-    return {
-      statusCode: 204,
-      data: 'remove',
-    };
   }
 }

@@ -69,11 +69,7 @@ export class CostumersController {
   @Delete(':customerId')
   delete(
     @Param('customerId') customerId: CustomerID['customerId'],
-  ): ResponseModel<any> {
+  ): ResponseModel<any> | void {
     console.log(customerId);
-    return {
-      statusCode: 204,
-      data: 'remove',
-    };
   }
 }
