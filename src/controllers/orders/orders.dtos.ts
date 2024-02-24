@@ -5,3 +5,4 @@ export interface CreateOrder
 
 export interface AddItemToOrder extends Omit<Order, 'customerId'> {}
 export interface IOrder extends Order {}
+export interface OrderID extends Pick<Order, 'orderId'> {}

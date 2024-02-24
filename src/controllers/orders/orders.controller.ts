@@ -1,5 +1,5 @@
 import { Body, Controller, Get, Param, Post } from '@nestjs/common';
-import { AddItemToOrder, CreateOrder, IOrder } from './orders.dtos';
+import { AddItemToOrder, CreateOrder, IOrder, OrderID } from './orders.dtos';
 import { ResponseModel } from 'src/base.model';
 
 const responeFake: IOrder[] = [
@@ -16,7 +16,9 @@ const responeFake: IOrder[] = [
 @Controller('orders')
 export class OrdersController {
   @Get('/:orderId')
-  findOne(@Param('orderId') orderId: any): ResponseModel<IOrder> {
+  findOne(
+    @Param('orderId') orderId: OrderID['orderId'],
+  ): ResponseModel<IOrder> {
     const response = {
       ...responeFake[0],
       orderId: orderId,

@@ -39,10 +39,10 @@ export class UsersController {
   }
 
   @Get('/:userId')
-  findOne(@Param() userId: UserID): ResponseModel<IUsers> {
+  findOne(@Param() userId: UserID['userId']): ResponseModel<IUsers> {
     const response = {
       ...responseFake[0],
-      userId: userId.userId,
+      userId: userId,
     };
 
     return {
@@ -62,12 +62,12 @@ export class UsersController {
 
   @Put('/:userId')
   update(
-    @Param() userId: UserID,
+    @Param() userId: UserID['userId'],
     @Body() changes: UpdateUser,
   ): ResponseModel<UserResponse> {
     const response = {
       ...responseFake[0],
-      userId: userId.userId,
+      userId: userId,
       ...changes,
     };
     delete response.password;
@@ -78,8 +78,8 @@ export class UsersController {
   }
 
   @Delete('/:userId')
-  delete(@Param() userId: UserID): ResponseModel<any> {
-    console.log(userId.userId);
+  delete(@Param() userId: UserID['userId']): ResponseModel<any> {
+    console.log(userId);
     return {
       statusCode: 204,
       data: 'remove',

@@ -3,6 +3,8 @@ import {
   Controller,
   Delete,
   Get,
+  HttpCode,
+  HttpStatus,
   Param,
   Post,
   Put,
@@ -56,11 +58,17 @@ export class ProductsController {
   }
 
   @Get('/:productId')
-  findOne(@Param('productId') productId: ProductID): ResponseModel<Products> {
-    console.log(productId);
+  @HttpCode(HttpStatus.OK)
+  findOne(
+    @Param('productId') productId: ProductID['productId'],
+  ): ResponseModel<Products> {
+    const response = {
+      ...responseFake[0],
+      productId: productId,
+    };
     return {
       statusCode: 200,
-      data: responseFake[0],
+      data: response,
     };
   }
 
@@ -80,10 +88,10 @@ export class ProductsController {
 
   @Put('/:productId')
   update(
-    @Param('productId') productId: ProductID,
+    @Param('productId') productId: ProductID['productId'],
     @Body() payload: UpdateProduct,
   ): ResponseModel<Products> {
-    const id = productId.productId;
+    const id = productId;
     const response = {
       ...payload,
       productId: id,
@@ -95,7 +103,9 @@ export class ProductsController {
   }
 
   @Delete('/:productId')
-  delete(@Param('productId') productId: ProductID): ResponseModel<any> {
+  delete(
+    @Param('productId') productId: ProductID['productId'],
+  ): ResponseModel<any> {
     console.log(productId);
     return {
       statusCode: 204,

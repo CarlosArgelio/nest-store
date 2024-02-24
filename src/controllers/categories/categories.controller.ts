@@ -7,7 +7,7 @@ import {
   Post,
   Put,
 } from '@nestjs/common';
-import { CreateCategory, ICategory } from './categories.dtos';
+import { CategoryID, CreateCategory, ICategory } from './categories.dtos';
 import { ResponseModel } from 'src/base.model';
 
 const responseFake: ICategory[] = [
@@ -31,7 +31,9 @@ export class CategoriesController {
   }
 
   @Get('/:categoryId')
-  findOne(@Param('categoryId') categoryId: any): ResponseModel<ICategory> {
+  findOne(
+    @Param('categoryId') categoryId: CategoryID['categoryId'],
+  ): ResponseModel<ICategory> {
     const response = {
       ...responseFake[0],
       categoryId,
@@ -58,7 +60,7 @@ export class CategoriesController {
 
   @Put('/:categoryId')
   update(
-    @Param('categoryId') categoryId: any,
+    @Param('categoryId') categoryId: CategoryID['categoryId'],
     @Body() payload: any,
   ): ResponseModel<ICategory> {
     const response = {
@@ -74,7 +76,9 @@ export class CategoriesController {
   }
 
   @Delete('/:categoryId')
-  delete(@Param('categoryId') categoryId: any): ResponseModel<any> {
+  delete(
+    @Param('categoryId') categoryId: CategoryID['categoryId'],
+  ): ResponseModel<any> {
     console.log(categoryId);
     return {
       statusCode: 204,

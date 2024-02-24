@@ -7,7 +7,7 @@ import {
   Post,
   Put,
 } from '@nestjs/common';
-import { CreateCustomer, ICustomer } from './customers.dtos';
+import { CreateCustomer, CustomerID, ICustomer } from './customers.dtos';
 import { ResponseModel } from 'src/base.model';
 
 const responseFake: ICustomer[] = [
@@ -47,7 +47,7 @@ export class CostumersController {
 
   @Put(':customerId')
   update(
-    @Param('customerId') customerId: number,
+    @Param('customerId') customerId: CustomerID['customerId'],
     @Body() payload: any,
   ): ResponseModel<ICustomer> {
     const response = {
@@ -62,8 +62,10 @@ export class CostumersController {
     };
   }
 
-  @Delete(':customerIdd')
-  delete(@Param('customerId') customerId: number): ResponseModel<any> {
+  @Delete(':customerId')
+  delete(
+    @Param('customerId') customerId: CustomerID['customerId'],
+  ): ResponseModel<any> {
     console.log(customerId);
     return {
       statusCode: 204,

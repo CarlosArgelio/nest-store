@@ -8,7 +8,7 @@ import {
   Put,
 } from '@nestjs/common';
 import { ResponseModel } from 'src/base.model';
-import { IBrand } from './brands.dtos';
+import { BrandID, IBrand } from './brands.dtos';
 
 const responseFake: IBrand[] = [
   {
@@ -30,10 +30,12 @@ export class BrandsController {
   }
 
   @Get(':brandId')
-  findOne(@Param('brandId') id: string): ResponseModel<IBrand> {
+  findOne(
+    @Param('brandId') brandId: BrandID['brandId'],
+  ): ResponseModel<IBrand> {
     const response = {
       ...responseFake[0],
-      brandId: id,
+      brandId,
     };
     return {
       statusCode: 200,
@@ -48,12 +50,12 @@ export class BrandsController {
 
   @Put(':brandId')
   update(
-    @Param('brandId') id: string,
+    @Param('brandId') brandId: BrandID['brandId'],
     @Body() changes: any,
   ): ResponseModel<IBrand> {
     const response = {
       ...responseFake[0],
-      brandId: id,
+      brandId,
       ...changes,
     };
 
@@ -64,8 +66,8 @@ export class BrandsController {
   }
 
   @Delete(':brandId')
-  delete(@Param('brandId') id: string): ResponseModel<any> {
-    console.log('🚀 ~ BrandsController ~ delete ~ id:', id);
+  delete(@Param('brandId') brandId: BrandID['brandId']): ResponseModel<any> {
+    console.log('🚀 ~ BrandsController ~ delete ~ id:', brandId);
     return {
       statusCode: 204,
       data: 'remove',
