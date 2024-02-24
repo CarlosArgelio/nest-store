@@ -74,7 +74,7 @@ export class CategoriesController {
   }
 
   @Delete('/:categoryId')
-  delete(@Param('categoryId') categoryId: any): ResponseModel<ICategory> {
+  delete(@Param('categoryId') categoryId: any): ResponseModel<any> {
     console.log(categoryId);
     return {
       statusCode: 204,
