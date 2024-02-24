@@ -20,6 +20,7 @@ import {
 import { ResponseModel } from 'src/base.model';
 
 import { ProductsService } from './../../services/products/products.service';
+import { CreateProductDto } from 'src/dtos/products/products.dtos';
 
 @Controller('products')
 export class ProductsController {
@@ -56,7 +57,7 @@ export class ProductsController {
 
   @Post()
   @HttpCode(HttpStatus.CREATED)
-  create(@Body() payload: CreateProduct): ResponseModel<Products> {
+  create(@Body() payload: CreateProductDto): ResponseModel<Products> {
     const newProduct = this.productsService.create(payload);
 
     return {

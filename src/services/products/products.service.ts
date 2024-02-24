@@ -7,6 +7,7 @@ import {
 import { v4 as uuidv4 } from 'uuid';
 
 import { faker } from '@faker-js/faker';
+import { CreateProductDto } from 'src/dtos/products/products.dtos';
 
 @Injectable()
 export class ProductsService {
@@ -42,7 +43,7 @@ export class ProductsService {
     return product;
   }
 
-  create(product: CreateProduct) {
+  create(product: CreateProductDto) {
     const productId = uuidv4();
     const newProduct = {
       ...product,
