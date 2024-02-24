@@ -18,6 +18,8 @@ import {
 } from './products.dtos';
 import { ResponseModel } from 'src/base.model';
 
+import { ProductsService } from './../../services/products/products.service';
+
 const responseFake = [
   {
     productId: '1',
@@ -33,6 +35,8 @@ const responseFake = [
 
 @Controller('products')
 export class ProductsController {
+  constructor(private productsService: ProductsService) {}
+
   @Get()
   @HttpCode(HttpStatus.OK)
   findAll(
@@ -46,7 +50,7 @@ export class ProductsController {
 
     return {
       statusCode: HttpStatus.OK,
-      data: responseFake,
+      data: this.productsService.findAll(),
     };
   }
 

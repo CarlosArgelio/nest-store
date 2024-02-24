@@ -1,9 +1,9 @@
 import { Injectable } from '@nestjs/common';
 
-import { Product } from './../../entities/products/product.entity';
+import { Product } from '../../entities/products/product.entity';
 
 @Injectable()
-export class ServicesService {
+export class ProductsService {
   private products: Product[] = [
     {
       id: '1',
@@ -35,6 +35,10 @@ export class ServicesService {
   }
 
   delete(id: Product['id']) {
+    const product = this.findOne(id);
+    if (product === undefined) {
+      return null;
+    }
     const index = this.products.findIndex((p) => p.id === id);
     delete this.products[index];
     return id;
