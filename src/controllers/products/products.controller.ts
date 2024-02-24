@@ -34,6 +34,7 @@ const responseFake = [
 @Controller('products')
 export class ProductsController {
   @Get()
+  @HttpCode(HttpStatus.OK)
   findAll(
     @Query('limit') limit = 100,
     @Query('offset') offset = 0,
@@ -44,15 +45,16 @@ export class ProductsController {
     console.log(brand);
 
     return {
-      statusCode: 200,
+      statusCode: HttpStatus.OK,
       data: responseFake,
     };
   }
 
   @Get('/filter')
+  @HttpCode(HttpStatus.OK)
   findFilter(): ResponseModel<Products[]> {
     return {
-      statusCode: 200,
+      statusCode: HttpStatus.OK,
       data: responseFake,
     };
   }
@@ -67,12 +69,13 @@ export class ProductsController {
       productId: productId,
     };
     return {
-      statusCode: 200,
+      statusCode: HttpStatus.OK,
       data: response,
     };
   }
 
   @Post()
+  @HttpCode(HttpStatus.CREATED)
   create(@Body() payload: CreateProduct): ResponseModel<Products> {
     const id = '1';
     const response = {
@@ -81,12 +84,13 @@ export class ProductsController {
     };
 
     return {
-      statusCode: 201,
+      statusCode: HttpStatus.CREATED,
       data: response,
     };
   }
 
   @Put('/:productId')
+  @HttpCode(HttpStatus.OK)
   update(
     @Param('productId') productId: ProductID['productId'],
     @Body() payload: UpdateProduct,
@@ -97,18 +101,19 @@ export class ProductsController {
       productId: id,
     };
     return {
-      statusCode: 200,
+      statusCode: HttpStatus.OK,
       data: response,
     };
   }
 
   @Delete('/:productId')
+  @HttpCode(HttpStatus.NO_CONTENT)
   delete(
     @Param('productId') productId: ProductID['productId'],
   ): ResponseModel<any> {
     console.log(productId);
     return {
-      statusCode: 204,
+      statusCode: HttpStatus.NO_CONTENT,
       data: 'deleted',
     };
   }

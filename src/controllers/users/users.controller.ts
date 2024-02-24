@@ -3,6 +3,8 @@ import {
   Controller,
   Delete,
   Get,
+  HttpCode,
+  HttpStatus,
   Param,
   Post,
   Put,
@@ -31,14 +33,16 @@ const responseFake = [
 @Controller('users')
 export class UsersController {
   @Get()
+  @HttpCode(HttpStatus.OK)
   findAll(): ResponseModel<IUsers[]> {
     return {
-      statusCode: 200,
+      statusCode: HttpStatus.OK,
       data: responseFake,
     };
   }
 
   @Get('/:userId')
+  @HttpCode(HttpStatus.OK)
   findOne(@Param() userId: UserID['userId']): ResponseModel<IUsers> {
     const response = {
       ...responseFake[0],
@@ -46,21 +50,23 @@ export class UsersController {
     };
 
     return {
-      statusCode: 200,
+      statusCode: HttpStatus.OK,
       data: response,
     };
   }
 
   @Post('/sign-up')
+  @HttpCode(HttpStatus.CREATED)
   create(@Body() body: CreateUser): ResponseModel<UserResponse> {
     delete body.password;
     return {
-      statusCode: 200,
+      statusCode: HttpStatus.CREATED,
       data: body,
     };
   }
 
   @Put('/:userId')
+  @HttpCode(HttpStatus.OK)
   update(
     @Param() userId: UserID['userId'],
     @Body() changes: UpdateUser,
@@ -72,16 +78,17 @@ export class UsersController {
     };
     delete response.password;
     return {
-      statusCode: 200,
+      statusCode: HttpStatus.OK,
       data: response,
     };
   }
 
   @Delete('/:userId')
+  @HttpCode(HttpStatus.NO_CONTENT)
   delete(@Param() userId: UserID['userId']): ResponseModel<any> {
     console.log(userId);
     return {
-      statusCode: 204,
+      statusCode: HttpStatus.NO_CONTENT,
       data: 'remove',
     };
   }
