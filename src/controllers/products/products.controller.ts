@@ -15,7 +15,7 @@ import {
   Products,
   ProductID,
   UpdateProduct,
-} from './products.dtos';
+} from '../../entities/products/products.dtos';
 import { ResponseModel } from 'src/base.model';
 
 import { ProductsService } from './../../services/products/products.service';

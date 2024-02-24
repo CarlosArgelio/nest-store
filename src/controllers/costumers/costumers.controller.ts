@@ -7,7 +7,11 @@ import {
   Post,
   Put,
 } from '@nestjs/common';
-import { CreateCustomer, CustomerID, ICustomer } from './customers.dtos';
+import {
+  CreateCustomer,
+  CustomerID,
+  ICustomer,
+} from '../../entities/costumers/customers.dtos';
 import { ResponseModel } from 'src/base.model';
 
 const responseFake: ICustomer[] = [

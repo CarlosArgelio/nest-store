@@ -1,5 +1,10 @@
 import { Body, Controller, Get, Param, Post } from '@nestjs/common';
-import { AddItemToOrder, CreateOrder, IOrder, OrderID } from './orders.dtos';
+import {
+  AddItemToOrder,
+  CreateOrder,
+  IOrder,
+  OrderID,
+} from '../../entities/ordes/orders.dtos';
 import { ResponseModel } from 'src/base.model';
 
 const responeFake: IOrder[] = [

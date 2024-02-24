@@ -7,7 +7,11 @@ import {
   Post,
   Put,
 } from '@nestjs/common';
-import { CategoryID, CreateCategory, ICategory } from './categories.dtos';
+import {
+  CategoryID,
+  CreateCategory,
+  ICategory,
+} from '../../entities/categories/categories.dtos';
 import { ResponseModel } from 'src/base.model';
 
 const responseFake: ICategory[] = [

@@ -15,9 +15,9 @@ import {
   IUsers,
   UpdateUser,
   UserID,
-} from './users.dtos';
+} from '../../entities/users/users.dtos';
 import { ResponseModel } from 'src/base.model';
-import { ROLE } from './users.model';
+import { ROLE } from '../../entities/users/users.model';
 
 const responseFake = [
   {

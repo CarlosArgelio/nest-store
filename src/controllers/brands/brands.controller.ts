@@ -8,7 +8,7 @@ import {
   Put,
 } from '@nestjs/common';
 import { ResponseModel } from 'src/base.model';
-import { BrandID, IBrand } from './brands.dtos';
+import { BrandID, IBrand } from '../../entities/brands/brands.dtos';
 
 const responseFake: IBrand[] = [
   {
