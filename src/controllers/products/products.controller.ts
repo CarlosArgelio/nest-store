@@ -81,11 +81,7 @@ export class ProductsController {
   @HttpCode(HttpStatus.NO_CONTENT)
   delete(
     @Param('productId') productId: ProductID['productId'],
-  ): ResponseModel<any> {
+  ): ResponseModel<any> | void {
     this.productsService.delete(productId);
-    return {
-      statusCode: HttpStatus.NO_CONTENT,
-      data: 'deleted',
-    };
   }
 }

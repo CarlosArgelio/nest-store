@@ -24,8 +24,15 @@ export class UsersService {
   create(user: CreateUser): IUsers {
     const userId = uuidv4();
     const newUser = { ...user, userId };
-    this.users.push(newUser);
+    this.add(newUser);
+
+    delete newUser.password;
     return newUser;
+  }
+
+  add(user: IUsers) {
+    this.users.push(user);
+    return user;
   }
 
   findAll(): IUsers[] {
@@ -48,6 +55,9 @@ export class UsersService {
       ...this.users[index],
       ...changes,
     };
+    const response = this.users[index];
+    delete response.password;
+    return this.users[index];
   }
 
   delete(id: IUsers['userId']) {
