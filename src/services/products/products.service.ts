@@ -1,18 +1,16 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
-import {
-  CreateProduct,
-  Products,
-  UpdateProduct,
-} from '../../entities/products/products.dtos';
 import { v4 as uuidv4 } from 'uuid';
 
 import { faker } from '@faker-js/faker';
-import { CreateProductDto } from 'src/dtos/products/products.dtos';
+import {
+  CreateProductDto,
+  ProductDto,
+  UpdateProductDto,
+} from 'src/dtos/products.dtos';
 
 @Injectable()
 export class ProductsService {
-  private products: Products[] = [];
-
+  private products: ProductDto[] = [];
   constructor() {
     for (let i = 0; i < 5; i++) {
       this.products.push({
@@ -29,53 +27,55 @@ export class ProductsService {
     }
   }
 
-  findAll() {
-    return this.products;
+  findAll(): ProductDto[] {
+    const products = this.products;
+    if (products.length === 0) {
+      throw new NotFoundException('Products not found');
+    }
+    return products;
   }
 
-  findOne(id: Products['productId']) {
-    const product = this.products.find((product) => {
-      return product.productId === id;
-    });
+  findOne(id: ProductDto['productId']): ProductDto {
+    const product = this.products.find((product) => product.productId === id);
     if (!product) {
-      throw new NotFoundException(`Product ${id} not found`);
+      throw new NotFoundException(`Product with id ${id} not found`);
     }
     return product;
   }
 
-  create(product: CreateProductDto) {
+  create(product: CreateProductDto): ProductDto {
     const productId = uuidv4();
     const newProduct = {
       ...product,
       productId,
       createdAt: new Date(),
-      updatedAt: new Date(),
     };
-
-    this.products.push(newProduct);
+    this.addProduct(newProduct);
     return newProduct;
   }
 
-  update(id: Products['productId'], product: UpdateProduct) {
-    const index = this.products.findIndex((p) => p.productId === id);
-    if (index === -1) {
-    }
+  addProduct(product: ProductDto): void {
+    this.products.push(product);
+  }
 
+  update(id: ProductDto['productId'], changes: UpdateProductDto): ProductDto {
+    // validate exist product
+    this.findOne(id);
+
+    const index = this.products.findIndex((p) => p.productId === id);
     const updatedProduct = {
       ...this.products[index],
-      ...product,
+      ...changes,
     };
     this.products[index] = updatedProduct;
     return updatedProduct;
   }
 
-  delete(id: Products['productId']) {
-    const product = this.findOne(id);
-    if (product === undefined) {
-      return null;
-    }
+  delete(id: ProductDto['productId']): void {
+    // validate exits product
+    this.findOne(id);
+
     const index = this.products.findIndex((p) => p.productId === id);
     delete this.products[index];
-    return id;
   }
 }

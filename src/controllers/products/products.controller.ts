@@ -11,16 +11,14 @@ import {
   Put,
   Query,
 } from '@nestjs/common';
-import {
-  CreateProduct,
-  Products,
-  ProductID,
-  UpdateProduct,
-} from '../../entities/products/products.dtos';
 import { ResponseModel } from 'src/base.model';
 
 import { ProductsService } from './../../services/products/products.service';
-import { CreateProductDto } from 'src/dtos/products/products.dtos';
+import {
+  CreateProductDto,
+  ProductDto,
+  UpdateProductDto,
+} from 'src/dtos/products.dtos';
 
 @Controller('products')
 export class ProductsController {
@@ -32,7 +30,7 @@ export class ProductsController {
     @Query('limit') limit = 100,
     @Query('offset') offset = 0,
     @Query('brand') brand: string,
-  ): ResponseModel<Products[]> {
+  ): ResponseModel<ProductDto[]> {
     console.log(limit);
     console.log(offset);
     console.log(brand);
@@ -46,8 +44,8 @@ export class ProductsController {
   @Get('/:productId')
   @HttpCode(HttpStatus.OK)
   findOne(
-    @Param('productId', ParseUUIDPipe) productId: ProductID['productId'],
-  ): ResponseModel<Products> {
+    @Param('productId', ParseUUIDPipe) productId: ProductDto['productId'],
+  ): ResponseModel<ProductDto> {
     const product = this.productsService.findOne(productId);
     return {
       statusCode: HttpStatus.OK,
@@ -57,7 +55,7 @@ export class ProductsController {
 
   @Post()
   @HttpCode(HttpStatus.CREATED)
-  create(@Body() payload: CreateProductDto): ResponseModel<Products> {
+  create(@Body() payload: CreateProductDto): ResponseModel<ProductDto> {
     const newProduct = this.productsService.create(payload);
 
     return {
@@ -69,9 +67,9 @@ export class ProductsController {
   @Put('/:productId')
   @HttpCode(HttpStatus.OK)
   update(
-    @Param('productId') productId: ProductID['productId'],
-    @Body() changes: UpdateProduct,
-  ): ResponseModel<Products> {
+    @Param('productId', ParseUUIDPipe) productId: ProductDto['productId'],
+    @Body() changes: UpdateProductDto,
+  ): ResponseModel<ProductDto> {
     const product = this.productsService.update(productId, changes);
     return {
       statusCode: HttpStatus.OK,
@@ -82,8 +80,8 @@ export class ProductsController {
   @Delete('/:productId')
   @HttpCode(HttpStatus.NO_CONTENT)
   delete(
-    @Param('productId') productId: ProductID['productId'],
-  ): ResponseModel<any> | void {
+    @Param('productId', ParseUUIDPipe) productId: ProductDto['productId'],
+  ): void {
     this.productsService.delete(productId);
   }
 }
