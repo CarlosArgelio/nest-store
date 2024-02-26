@@ -6,6 +6,7 @@ import {
   HttpCode,
   HttpStatus,
   Param,
+  ParseUUIDPipe,
   Post,
   Put,
 } from '@nestjs/common';
@@ -29,7 +30,7 @@ export class CategoriesController {
   @Get('/:categoryId')
   @HttpCode(HttpStatus.OK)
   findOne(
-    @Param('categoryId') categoryId: CategoryDto['categoryId'],
+    @Param('categoryId', ParseUUIDPipe) categoryId: CategoryDto['categoryId'],
   ): ResponseModel<CategoryDto> {
     const category = this.CategoriesServices.finByAttribute<
       CategoryDto['categoryId']
@@ -54,7 +55,7 @@ export class CategoriesController {
   @Put('/:categoryId')
   @HttpCode(HttpStatus.OK)
   update(
-    @Param('categoryId') categoryId: CategoryDto['categoryId'],
+    @Param('categoryId', ParseUUIDPipe) categoryId: CategoryDto['categoryId'],
     @Body() changes: any,
   ): ResponseModel<CategoryDto> {
     const updatedCategory = this.CategoriesServices.update(categoryId, changes);
@@ -66,7 +67,9 @@ export class CategoriesController {
 
   @Delete('/:categoryId')
   @HttpCode(HttpStatus.NO_CONTENT)
-  delete(@Param('categoryId') categoryId: CategoryDto['categoryId']): void {
+  delete(
+    @Param('categoryId', ParseUUIDPipe) categoryId: CategoryDto['categoryId'],
+  ): void {
     this.CategoriesServices.delete(categoryId);
   }
 }

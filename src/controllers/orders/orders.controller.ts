@@ -5,6 +5,7 @@ import {
   HttpCode,
   HttpStatus,
   Param,
+  ParseUUIDPipe,
   Post,
 } from '@nestjs/common';
 import { ResponseModel } from 'src/base.model';
@@ -17,7 +18,7 @@ export class OrdersController {
   @Get('/:orderId')
   @HttpCode(HttpStatus.OK)
   findOne(
-    @Param('orderId') orderId: OrderDto['orderId'],
+    @Param('orderId', ParseUUIDPipe) orderId: OrderDto['orderId'],
   ): ResponseModel<OrderDto> {
     const response = this.ordersServices.findOne(orderId);
     return {

@@ -6,6 +6,7 @@ import {
   HttpCode,
   HttpStatus,
   Param,
+  ParseUUIDPipe,
   Post,
   Put,
 } from '@nestjs/common';
@@ -41,7 +42,7 @@ export class CostumersController {
   @Put(':customerId')
   @HttpCode(HttpStatus.OK)
   update(
-    @Param('customerId') customerId: CostumerDto['customerId'],
+    @Param('customerId', ParseUUIDPipe) customerId: CostumerDto['customerId'],
     @Body() changes: any,
   ): ResponseModel<CostumerDto> {
     const updateCostumer = this.costumerServices.update(customerId, changes);
@@ -54,7 +55,9 @@ export class CostumersController {
 
   @Delete(':customerId')
   @HttpCode(HttpStatus.NO_CONTENT)
-  delete(@Param('customerId') customerId: CostumerDto['customerId']): void {
+  delete(
+    @Param('customerId', ParseUUIDPipe) customerId: CostumerDto['customerId'],
+  ): void {
     this.costumerServices.delete(customerId);
   }
 }

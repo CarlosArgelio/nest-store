@@ -5,6 +5,7 @@ import {
   Get,
   HttpStatus,
   Param,
+  ParseUUIDPipe,
   Post,
   Put,
 } from '@nestjs/common';
@@ -27,7 +28,7 @@ export class BrandsController {
 
   @Get(':brandId')
   findOne(
-    @Param('brandId') brandId: BrandDto['brandId'],
+    @Param('brandId', ParseUUIDPipe) brandId: BrandDto['brandId'],
   ): ResponseModel<BrandDto> {
     const brand = this.brandsService.findByAttr(brandId, 'brandId');
     return {
@@ -47,7 +48,7 @@ export class BrandsController {
 
   @Put(':brandId')
   update(
-    @Param('brandId') brandId: BrandDto['brandId'],
+    @Param('brandId', ParseUUIDPipe) brandId: BrandDto['brandId'],
     @Body() changes: UpdateBrandDto,
   ): ResponseModel<BrandDto> {
     const updateBrand = this.brandsService.update(brandId, changes);
@@ -59,7 +60,7 @@ export class BrandsController {
   }
 
   @Delete(':brandId')
-  delete(@Param('brandId') brandId: BrandDto['brandId']): void {
+  delete(@Param('brandId', ParseUUIDPipe) brandId: BrandDto['brandId']): void {
     this.brandsService.delete(brandId);
   }
 }
