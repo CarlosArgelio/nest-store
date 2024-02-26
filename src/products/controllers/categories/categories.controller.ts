@@ -10,6 +10,7 @@ import {
   Post,
   Put,
 } from '@nestjs/common';
+import { ApiTags } from '@nestjs/swagger';
 import { ResponseModel } from 'src/base.model';
 import {
   CategoryDto,
@@ -17,6 +18,7 @@ import {
 } from 'src/products/schemas/categories.dto';
 import { CategoriesService } from 'src/products/services/categories/categories.service';
 
+@ApiTags('categories')
 @Controller('categories')
 export class CategoriesController {
   constructor(private CategoriesServices: CategoriesService) {}

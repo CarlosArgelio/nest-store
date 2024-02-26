@@ -1,4 +1,4 @@
-import { OmitType, PartialType } from '@nestjs/swagger';
+import { OmitType, PartialType, ApiProperty } from '@nestjs/swagger';
 import { IsEmail, IsEnum, IsNotEmpty, IsString } from 'class-validator';
 import { ROLE, User } from '../models/users.entity';
 
@@ -12,6 +12,10 @@ export class SignUpUserDto extends OmitType(User, [
 ]) {
   @IsNotEmpty()
   @IsEmail()
+  @ApiProperty({
+    description: 'User email',
+    example: 'test@test.com',
+  })
   readonly email: string;
 
   @IsString()

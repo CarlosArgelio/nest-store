@@ -10,6 +10,7 @@ import {
   Post,
   Put,
 } from '@nestjs/common';
+import { ApiTags } from '@nestjs/swagger';
 import { ResponseModel } from 'src/base.model';
 import {
   CostumerDto,
@@ -17,6 +18,7 @@ import {
 } from 'src/users/schemas/costumers.dto';
 import { CostumersService } from 'src/users/services/costumers/costumers.service';
 
+@ApiTags('costumers')
 @Controller('costumers')
 export class CostumersController {
   constructor(private costumerServices: CostumersService) {}

@@ -12,6 +12,7 @@ import {
   Query,
 } from '@nestjs/common';
 import { ResponseModel } from 'src/base.model';
+import { ApiTags, ApiOperation, ApiQuery } from '@nestjs/swagger';
 
 import { ProductsService } from '../../services/products.service';
 import {
@@ -20,11 +21,31 @@ import {
   UpdateProductDto,
 } from 'src/products/schemas/products.dto';
 
+@ApiTags('products')
 @Controller('products')
 export class ProductsController {
   constructor(private productsService: ProductsService) {}
 
   @Get()
+  @ApiOperation({
+    summary: 'Get all products',
+    description: 'Queryes Limit Offset and Brand',
+  })
+  @ApiQuery({
+    name: 'limit',
+    type: Number,
+    required: false,
+  })
+  @ApiQuery({
+    name: 'offset',
+    type: Number,
+    required: false,
+  })
+  @ApiQuery({
+    name: 'brand',
+    type: Number,
+    required: false,
+  })
   @HttpCode(HttpStatus.OK)
   findAll(
     @Query('limit') limit = 100,
