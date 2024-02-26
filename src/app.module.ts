@@ -9,11 +9,13 @@ import { firstValueFrom } from 'rxjs';
 import { DatabaseModule } from './database/database.module';
 
 import { enviroments } from './enviroments';
+import config from './config';
 
 @Module({
   imports: [
     ConfigModule.forRoot({
       envFilePath: enviroments[process.env.NODE_ENV]?.file || '.env',
+      load: [config],
       isGlobal: true,
     }),
     UsersModule,
