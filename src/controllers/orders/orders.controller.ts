@@ -1,28 +1,38 @@
-import { Body, Controller, Get, Param, Post } from '@nestjs/common';
-import { CreateOrder, IOrder, OrderID } from '../../entities/ordes/orders.dtos';
+import {
+  Body,
+  Controller,
+  Get,
+  HttpCode,
+  HttpStatus,
+  Param,
+  Post,
+} from '@nestjs/common';
 import { ResponseModel } from 'src/base.model';
+import { CreateOrderDto, OrderDto } from 'src/dtos/orders.dto';
 import { OrdersService } from 'src/services/orders/orders.service';
 
 @Controller('orders')
 export class OrdersController {
   constructor(private ordersServices: OrdersService) {}
   @Get('/:orderId')
+  @HttpCode(HttpStatus.OK)
   findOne(
-    @Param('orderId') orderId: OrderID['orderId'],
-  ): ResponseModel<IOrder> {
+    @Param('orderId') orderId: OrderDto['orderId'],
+  ): ResponseModel<OrderDto> {
     const response = this.ordersServices.findOne(orderId);
     return {
-      statusCode: 200,
+      statusCode: HttpStatus.OK,
       data: response,
     };
   }
 
   @Post()
-  createOrder(@Body() payload: CreateOrder): ResponseModel<IOrder> {
+  @HttpCode(HttpStatus.CREATED)
+  createOrder(@Body() payload: CreateOrderDto): ResponseModel<OrderDto> {
     const newOrder = this.ordersServices.create(payload);
 
     return {
-      statusCode: 200,
+      statusCode: HttpStatus.CREATED,
       data: newOrder,
     };
   }

@@ -1,11 +1,11 @@
 import { faker } from '@faker-js/faker';
 import { Injectable } from '@nestjs/common';
-import { CreateOrder, IOrder } from 'src/entities/ordes/orders.dtos';
+import { CreateOrderDto, OrderDto } from 'src/dtos/orders.dto';
 import { v4 as uuidv4 } from 'uuid';
 
 @Injectable()
 export class OrdersService {
-  private orders: IOrder[] = [];
+  private orders: OrderDto[] = [];
   constructor() {
     for (let i = 0; i < 5; i++) {
       this.orders.push({
@@ -27,42 +27,27 @@ export class OrdersService {
   //   return this.orders;
   // }
 
-  findOne(orderId: IOrder['orderId']): IOrder {
+  findOne(orderId: OrderDto['orderId']): OrderDto {
     const index = this.orders.findIndex((o) => o.orderId === orderId);
     const response = this.orders[index];
     return response;
   }
 
-  // findByUSer(customerId: IOrder['customerId']): IOrder {
-  //   const index = this.orders.findIndex((o) => o.customerId === customerId);
-  //   const response = this.orders[index];
-  //   return response;
-  // }
-
-  create(order: CreateOrder): IOrder {
+  create(order: CreateOrderDto): OrderDto {
     const orderId = uuidv4();
-    const newOrder: IOrder = {
+    const customerId = uuidv4();
+    const newOrder = {
       ...order,
       orderId,
+      customerId,
       createdAt: new Date(),
       updatedAt: new Date(),
     };
-    this.orders.push(newOrder);
+    this.add(newOrder);
     return newOrder;
   }
-  // update(orderId: IOrder['orderId'], changes: IOrder): IOrder {
-  //   const index = this.orders.findIndex((o) => o.orderId === orderId);
-  //   this.orders[index] = {
-  //     ...this.orders[index],
-  //     ...changes,
-  //   };
-  //   const response = this.orders[index];
-  //   return response;
-  // }
 
-  // delete(orderId: IOrder['orderId']): void {
-  //   const index = this.orders.findIndex((o) => o.orderId === orderId);
-  //   delete this.orders[index];
-  //   return;
-  // }
+  add(order: OrderDto): void {
+    this.orders.push(order);
+  }
 }
