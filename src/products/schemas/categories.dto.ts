@@ -1,6 +1,6 @@
-import { OmitType, PartialType } from '@nestjs/mapped-types';
+import { OmitType, PartialType } from '@nestjs/swagger';
 import { IsArray, IsNotEmpty, IsString } from 'class-validator';
-import { CategoryModel } from 'src/products/models/categories.model';
+import { CategoryModel } from 'src/products/models/categories.entity';
 
 export class CategoryDto extends CategoryModel {}
 export class CreateCategoryDto extends OmitType(CategoryModel, ['categoryId']) {

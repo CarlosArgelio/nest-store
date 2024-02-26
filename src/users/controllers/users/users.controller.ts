@@ -16,7 +16,7 @@ import {
   SignUpUserDto,
   UpdateUserDto,
   UserDto,
-} from 'src/users/schemas/users.dtos';
+} from 'src/users/schemas/users.dto';
 import { OrderDto } from 'src/users/schemas/orders.dto';
 
 @Controller('users')

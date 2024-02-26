@@ -1,6 +1,6 @@
 import { BaseClassModel } from 'src/base.model';
-import { ProductDto } from 'src/products/schemas/products.dtos';
-import { UserDto } from '../schemas/users.dtos';
+import { ProductDto } from 'src/products/schemas/products.dto';
+import { UserDto } from '../schemas/users.dto';
 
 export class OrderModel extends BaseClassModel {
   date: Date;

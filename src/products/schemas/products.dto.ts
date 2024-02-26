@@ -1,4 +1,4 @@
-import { PartialType, OmitType } from '@nestjs/mapped-types';
+import { PartialType, OmitType } from '@nestjs/swagger';
 import {
   IsArray,
   IsNotEmpty,
@@ -8,7 +8,7 @@ import {
   IsUUID,
   Min,
 } from 'class-validator';
-import { ProductModel } from 'src/products/models/products.model';
+import { ProductModel } from 'src/products/models/products.entity';
 // import { CreateProduct } from 'src/entities/products/products.dtos';
 
 export class ProductDto extends ProductModel {}

@@ -1,6 +1,6 @@
-import { OmitType, PartialType } from '@nestjs/mapped-types';
+import { OmitType, PartialType } from '@nestjs/swagger';
 import { IsEmail, IsEnum, IsNotEmpty, IsString } from 'class-validator';
-import { ROLE, User } from './../models/users.model';
+import { ROLE, User } from '../models/users.entity';
 
 export class UserDto extends User {}
 

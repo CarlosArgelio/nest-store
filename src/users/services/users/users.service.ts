@@ -5,8 +5,8 @@ import {
   SignUpUserDto,
   UpdateUserDto,
   UserDto,
-} from 'src/users/schemas/users.dtos';
-import { ROLE } from 'src/users/models/users.model';
+} from 'src/users/schemas/users.dto';
+import { ROLE } from 'src/users/models/users.entity';
 
 import { v4 as uuidv4 } from 'uuid';
 import { ProductsService } from 'src/products/services/products.service';
