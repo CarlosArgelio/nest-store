@@ -3,73 +3,58 @@ import {
   Controller,
   Delete,
   Get,
+  HttpCode,
+  HttpStatus,
   Param,
   Post,
   Put,
 } from '@nestjs/common';
-import {
-  CreateCustomer,
-  CustomerID,
-  ICustomer,
-} from '../../entities/costumers/customers.dtos';
 import { ResponseModel } from 'src/base.model';
-
-const responseFake: ICustomer[] = [
-  {
-    name: 'Juan',
-    lastName: 'Perez',
-    customerId: 'XXX',
-    phone: 'XXX',
-    createdAt: new Date(),
-    updatedAt: new Date(),
-  },
-];
+import { CostumerDto, CreateCostumerDto } from 'src/dtos/costumers.dto';
+import { CostumersService } from 'src/services/costumers/costumers.service';
 
 @Controller('costumers')
 export class CostumersController {
+  constructor(private costumerServices: CostumersService) {}
   @Get()
-  findAll(): ResponseModel<ICustomer[]> {
+  @HttpCode(HttpStatus.OK)
+  findAll(): ResponseModel<CostumerDto[]> {
+    const constumers = this.costumerServices.findAll();
+
     return {
-      statusCode: 200,
-      data: responseFake,
+      statusCode: HttpStatus.OK,
+      data: constumers,
     };
   }
 
   @Post()
-  create(@Body() payload: CreateCustomer): ResponseModel<ICustomer> {
-    const response: ICustomer = {
-      ...payload,
-      customerId: 'XXX',
-      createdAt: new Date(),
-    };
+  @HttpCode(HttpStatus.CREATED)
+  create(@Body() payload: CreateCostumerDto): ResponseModel<CostumerDto> {
+    const newCostumer = this.costumerServices.create(payload);
 
     return {
-      statusCode: 200,
-      data: response,
+      statusCode: HttpStatus.OK,
+      data: newCostumer,
     };
   }
 
   @Put(':customerId')
+  @HttpCode(HttpStatus.OK)
   update(
-    @Param('customerId') customerId: CustomerID['customerId'],
-    @Body() payload: any,
-  ): ResponseModel<ICustomer> {
-    const response = {
-      ...responseFake[0],
-      ...payload,
-      customerId,
-    };
+    @Param('customerId') customerId: CostumerDto['customerId'],
+    @Body() changes: any,
+  ): ResponseModel<CostumerDto> {
+    const updateCostumer = this.costumerServices.update(customerId, changes);
 
     return {
-      statusCode: 200,
-      data: response,
+      statusCode: HttpStatus.OK,
+      data: updateCostumer,
     };
   }
 
   @Delete(':customerId')
-  delete(
-    @Param('customerId') customerId: CustomerID['customerId'],
-  ): ResponseModel<any> | void {
-    console.log(customerId);
+  @HttpCode(HttpStatus.NO_CONTENT)
+  delete(@Param('customerId') customerId: CostumerDto['customerId']): void {
+    this.costumerServices.delete(customerId);
   }
 }
