@@ -3,72 +3,63 @@ import {
   Controller,
   Delete,
   Get,
+  HttpStatus,
   Param,
   Post,
   Put,
 } from '@nestjs/common';
 import { ResponseModel } from 'src/base.model';
-import { BrandID, IBrand } from '../../entities/brands/brands.dtos';
-
-const responseFake: IBrand[] = [
-  {
-    brandId: '1',
-    name: 'Samsung',
-    createdAt: new Date(),
-    updatedAt: new Date(),
-  },
-];
+import { BrandDto, CreateBrandDto, UpdateBrandDto } from 'src/dtos/brands.dto';
+import { BrandsService } from 'src/services/brands/brands.service';
 
 @Controller('brands')
 export class BrandsController {
+  constructor(private brandsService: BrandsService) {}
   @Get()
-  findAll(): ResponseModel<IBrand[]> {
+  findAll(): ResponseModel<BrandDto[]> {
+    const brands = this.brandsService.findAll();
+
     return {
       statusCode: 200,
-      data: responseFake,
+      data: brands,
     };
   }
 
   @Get(':brandId')
   findOne(
-    @Param('brandId') brandId: BrandID['brandId'],
-  ): ResponseModel<IBrand> {
-    const response = {
-      ...responseFake[0],
-      brandId,
-    };
+    @Param('brandId') brandId: BrandDto['brandId'],
+  ): ResponseModel<BrandDto> {
+    const brand = this.brandsService.findByAttr(brandId, 'brandId');
     return {
       statusCode: 200,
-      data: response,
+      data: brand,
     };
   }
 
   @Post()
-  create(@Body() payload: any) {
-    return payload;
+  create(@Body() payload: CreateBrandDto): ResponseModel<BrandDto> {
+    const newBrand = this.brandsService.create(payload);
+    return {
+      statusCode: HttpStatus.CREATED,
+      data: newBrand,
+    };
   }
 
   @Put(':brandId')
   update(
-    @Param('brandId') brandId: BrandID['brandId'],
-    @Body() changes: any,
-  ): ResponseModel<IBrand> {
-    const response = {
-      ...responseFake[0],
-      brandId,
-      ...changes,
-    };
+    @Param('brandId') brandId: BrandDto['brandId'],
+    @Body() changes: UpdateBrandDto,
+  ): ResponseModel<BrandDto> {
+    const updateBrand = this.brandsService.update(brandId, changes);
 
     return {
       statusCode: 200,
-      data: response,
+      data: updateBrand,
     };
   }
 
   @Delete(':brandId')
-  delete(
-    @Param('brandId') brandId: BrandID['brandId'],
-  ): ResponseModel<any> | void {
-    console.log('🚀 ~ BrandsController ~ delete ~ id:', brandId);
+  delete(@Param('brandId') brandId: BrandDto['brandId']): void {
+    this.brandsService.delete(brandId);
   }
 }
