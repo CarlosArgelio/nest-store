@@ -8,12 +8,15 @@ import {
 import { ROLE } from 'src/users/models/users.model';
 
 import { v4 as uuidv4 } from 'uuid';
+import { ProductsService } from 'src/products/services/products.service';
+import { OrderDto } from 'src/users/schemas/orders.dto';
 
 @Injectable()
 export class UsersService {
-  private users: UserDto[] = [];
+  private users: UserDto[] = null;
 
-  constructor() {
+  constructor(private productsServices: ProductsService) {
+    this.users = [];
     for (let i = 0; i < 5; i++) {
       this.users.push({
         userId: faker.datatype.uuid(),
@@ -89,5 +92,16 @@ export class UsersService {
 
     const index = this.users.findIndex((u) => u.userId === id);
     this.users.splice(index, 1);
+  }
+
+  getOrders(userId: UserDto['userId']): OrderDto {
+    const user = this.findByAttribute<UserDto['userId']>(userId, 'userId');
+    const products = this.productsServices.findAll();
+    const response = {
+      date: new Date(),
+      user,
+      products,
+    };
+    return response;
   }
 }

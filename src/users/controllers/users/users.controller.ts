@@ -17,6 +17,7 @@ import {
   UpdateUserDto,
   UserDto,
 } from 'src/users/schemas/users.dtos';
+import { OrderDto } from 'src/users/schemas/orders.dto';
 
 @Controller('users')
 export class UsersController {
@@ -75,5 +76,17 @@ export class UsersController {
   @HttpCode(HttpStatus.NO_CONTENT)
   delete(@Param('userId', ParseUUIDPipe) userId: UserDto['userId']): void {
     this.usersServices.delete(userId);
+  }
+
+  @Get('/:userId/orders')
+  @HttpCode(HttpStatus.OK)
+  getOrders(
+    @Param('userId', ParseUUIDPipe) userId: UserDto['userId'],
+  ): ResponseModel<OrderDto> {
+    const orders = this.usersServices.getOrders(userId);
+    return {
+      statusCode: HttpStatus.OK,
+      data: orders,
+    };
   }
 }
