@@ -3,6 +3,7 @@ import { Module, Global } from '@nestjs/common';
 export enum env {
   development = 'development',
   production = 'production',
+  staging = 'staging',
 }
 
 const API_KEY = '123456';
