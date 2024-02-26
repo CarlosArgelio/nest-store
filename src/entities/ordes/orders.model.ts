@@ -1,7 +1,7 @@
 import { BaseModel } from 'src/base.model';
-import { Products } from '../products/products.dtos';
+import { ProductDto } from 'src/dtos/products.dtos';
 
-export interface ProductItem extends Pick<Products, 'productId'> {
+export interface ProductItem extends Pick<ProductDto, 'productId'> {
   amount: number;
 }
 

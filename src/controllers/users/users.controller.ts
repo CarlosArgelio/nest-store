@@ -6,18 +6,13 @@ import {
   HttpCode,
   HttpStatus,
   Param,
+  ParseUUIDPipe,
   Post,
   Put,
 } from '@nestjs/common';
-import {
-  CreateUser,
-  UserResponse,
-  IUsers,
-  UpdateUser,
-  UserID,
-} from '../../entities/users/users.dtos';
 import { ResponseModel } from 'src/base.model';
 import { UsersService } from 'src/services/users/users.service';
+import { SignUpUserDto, UpdateUserDto, UserDto } from 'src/dtos/users.dtos';
 
 @Controller('users')
 export class UsersController {
@@ -25,7 +20,7 @@ export class UsersController {
 
   @Get()
   @HttpCode(HttpStatus.OK)
-  findAll(): ResponseModel<IUsers[]> {
+  findAll(): ResponseModel<UserDto[]> {
     const users = this.usersServices.findAll();
     return {
       statusCode: HttpStatus.OK,
@@ -35,8 +30,13 @@ export class UsersController {
 
   @Get('/:userId')
   @HttpCode(HttpStatus.OK)
-  findOne(@Param() userId: UserID['userId']): ResponseModel<IUsers> {
-    const user = this.usersServices.findOne(userId);
+  findOne(
+    @Param('userId', ParseUUIDPipe) userId: UserDto['userId'],
+  ): ResponseModel<UserDto> {
+    const user = this.usersServices.findByAttribute<UserDto['userId']>(
+      userId,
+      'userId',
+    );
     return {
       statusCode: HttpStatus.OK,
       data: user,
@@ -45,7 +45,7 @@ export class UsersController {
 
   @Post('/sign-up')
   @HttpCode(HttpStatus.CREATED)
-  create(@Body() body: CreateUser): ResponseModel<UserResponse> {
+  create(@Body() body: SignUpUserDto): ResponseModel<UserDto> {
     const newUser = this.usersServices.create(body);
     return {
       statusCode: HttpStatus.CREATED,
@@ -56,9 +56,9 @@ export class UsersController {
   @Put('/:userId')
   @HttpCode(HttpStatus.OK)
   update(
-    @Param() userId: UserID['userId'],
-    @Body() changes: UpdateUser,
-  ): ResponseModel<UserResponse> {
+    @Param('userId', ParseUUIDPipe) userId: UserDto['userId'],
+    @Body() changes: UpdateUserDto,
+  ): ResponseModel<UserDto> {
     const editUser = this.usersServices.update(userId, changes);
 
     return {
@@ -69,7 +69,7 @@ export class UsersController {
 
   @Delete('/:userId')
   @HttpCode(HttpStatus.NO_CONTENT)
-  delete(@Param() userId: UserID['userId']): ResponseModel<any> | void {
+  delete(@Param('userId', ParseUUIDPipe) userId: UserDto['userId']): void {
     this.usersServices.delete(userId);
   }
 }

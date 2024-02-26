@@ -76,6 +76,6 @@ export class ProductsService {
     this.findOne(id);
 
     const index = this.products.findIndex((p) => p.productId === id);
-    delete this.products[index];
+    this.products.splice(index, 1);
   }
 }

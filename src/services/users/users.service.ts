@@ -1,12 +1,13 @@
 import { faker } from '@faker-js/faker';
-import { Injectable } from '@nestjs/common';
-import { CreateUser, IUsers, UpdateUser } from 'src/entities/users/users.dtos';
-import { ROLE } from 'src/entities/users/users.model';
+import { Injectable, NotFoundException } from '@nestjs/common';
+import { SignUpUserDto, UpdateUserDto, UserDto } from 'src/dtos/users.dtos';
+import { ROLE } from 'src/models/users.model';
+
 import { v4 as uuidv4 } from 'uuid';
 
 @Injectable()
 export class UsersService {
-  private users: IUsers[] = [];
+  private users: UserDto[] = [];
 
   constructor() {
     for (let i = 0; i < 5; i++) {
@@ -21,35 +22,54 @@ export class UsersService {
     }
   }
 
-  create(user: CreateUser): IUsers {
+  findAll(): UserDto[] {
+    const users = this.users;
+    if (users.length === 0) {
+      throw new NotFoundException();
+    }
+    return users;
+  }
+
+  findByAttribute<T>(value: T, attr: T) {
+    const findUser = this.users.find((user) => user[`${attr}`] === value);
+
+    if (!findUser) {
+      throw new NotFoundException();
+    }
+    return findUser;
+  }
+
+  // findOne(id: IUsers['userId']): IUsers {
+  //   const index = this.users.findIndex((user) => user.userId === id);
+  //   return this.users[index];
+  // }
+
+  // findOneByEmail(email: IUsers['email']) {
+  //   const index = this.users.findIndex((user) => user.email === email);
+  //   return this.users[index];
+  // }
+
+  create(user: SignUpUserDto): UserDto {
     const userId = uuidv4();
-    const newUser = { ...user, userId };
+    const newUser = {
+      ...user,
+      userId,
+      createdAt: new Date(),
+    };
     this.add(newUser);
 
     delete newUser.password;
     return newUser;
   }
 
-  add(user: IUsers) {
+  add(user: UserDto): void {
     this.users.push(user);
-    return user;
   }
 
-  findAll(): IUsers[] {
-    return this.users;
-  }
+  update(id: UserDto['userId'], changes: UpdateUserDto) {
+    // validate attr userID
+    this.findByAttribute<UserDto['userId']>(id, 'userId');
 
-  findOne(id: IUsers['userId']): IUsers {
-    const index = this.users.findIndex((user) => user.userId === id);
-    return this.users[index];
-  }
-
-  findOneByEmail(email: IUsers['email']) {
-    const index = this.users.findIndex((user) => user.email === email);
-    return this.users[index];
-  }
-
-  update(id: IUsers['userId'], changes: UpdateUser) {
     const index = this.users.findIndex((user) => user.userId === id);
     this.users[index] = {
       ...this.users[index],
@@ -60,10 +80,10 @@ export class UsersService {
     return this.users[index];
   }
 
-  delete(id: IUsers['userId']) {
-    // const users = this.findOne(id);
+  delete(id: UserDto['userId']): void {
+    this.findByAttribute<UserDto['userId']>(id, 'userId');
+
     const index = this.users.findIndex((u) => u.userId === id);
-    delete this.users[index];
-    return id;
+    this.users.splice(index, 1);
   }
 }
