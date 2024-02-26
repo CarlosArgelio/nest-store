@@ -3,86 +3,70 @@ import {
   Controller,
   Delete,
   Get,
+  HttpCode,
+  HttpStatus,
   Param,
   Post,
   Put,
 } from '@nestjs/common';
-import {
-  CategoryID,
-  CreateCategory,
-  ICategory,
-} from '../../entities/categories/categories.dtos';
 import { ResponseModel } from 'src/base.model';
-
-const responseFake: ICategory[] = [
-  {
-    categoryId: '1',
-    name: 'Category 1',
-    image: ['image1', 'image2'],
-    createdAt: new Date(),
-    updatedAt: new Date(),
-  },
-];
+import { CategoryDto, CreateCategoryDto } from 'src/dtos/categories.dto';
+import { CategoriesService } from 'src/services/categories/categories.service';
 
 @Controller('categories')
 export class CategoriesController {
+  constructor(private CategoriesServices: CategoriesService) {}
   @Get()
-  findAll(): ResponseModel<ICategory[]> {
+  @HttpCode(HttpStatus.OK)
+  findAll(): ResponseModel<CategoryDto[]> {
+    const categories = this.CategoriesServices.findAll();
     return {
-      statusCode: 200,
-      data: responseFake,
+      statusCode: HttpStatus.OK,
+      data: categories,
     };
   }
 
   @Get('/:categoryId')
+  @HttpCode(HttpStatus.OK)
   findOne(
-    @Param('categoryId') categoryId: CategoryID['categoryId'],
-  ): ResponseModel<ICategory> {
-    const response = {
-      ...responseFake[0],
-      categoryId,
-    };
+    @Param('categoryId') categoryId: CategoryDto['categoryId'],
+  ): ResponseModel<CategoryDto> {
+    const category = this.CategoriesServices.finByAttribute<
+      CategoryDto['categoryId']
+    >(categoryId, 'categoryId');
 
     return {
-      statusCode: 200,
-      data: response,
+      statusCode: HttpStatus.OK,
+      data: category,
     };
   }
 
   @Post()
-  create(@Body() payload: CreateCategory): ResponseModel<ICategory> {
-    const response = {
-      ...responseFake[0],
-      ...payload,
-    };
-
+  @HttpCode(HttpStatus.CREATED)
+  create(@Body() payload: CreateCategoryDto): ResponseModel<CategoryDto> {
+    const newCategory = this.CategoriesServices.create(payload);
     return {
-      statusCode: 201,
-      data: response,
+      statusCode: HttpStatus.CREATED,
+      data: newCategory,
     };
   }
 
   @Put('/:categoryId')
+  @HttpCode(HttpStatus.OK)
   update(
-    @Param('categoryId') categoryId: CategoryID['categoryId'],
-    @Body() payload: any,
-  ): ResponseModel<ICategory> {
-    const response = {
-      ...responseFake[0],
-      ...payload,
-      categoryId,
-    };
-
+    @Param('categoryId') categoryId: CategoryDto['categoryId'],
+    @Body() changes: any,
+  ): ResponseModel<CategoryDto> {
+    const updatedCategory = this.CategoriesServices.update(categoryId, changes);
     return {
-      statusCode: 200,
-      data: response,
+      statusCode: HttpStatus.OK,
+      data: updatedCategory,
     };
   }
 
   @Delete('/:categoryId')
-  delete(
-    @Param('categoryId') categoryId: CategoryID['categoryId'],
-  ): ResponseModel<any> | void {
-    console.log(categoryId);
+  @HttpCode(HttpStatus.NO_CONTENT)
+  delete(@Param('categoryId') categoryId: CategoryDto['categoryId']): void {
+    this.CategoriesServices.delete(categoryId);
   }
 }
