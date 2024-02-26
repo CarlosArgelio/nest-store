@@ -1,5 +1,6 @@
 import { faker } from '@faker-js/faker';
 import { Injectable, NotFoundException } from '@nestjs/common';
+import { ConfigService } from '@nestjs/config';
 import {
   SignUpUserDto,
   UpdateUserDto,
@@ -15,7 +16,10 @@ import { OrderDto } from 'src/users/schemas/orders.dto';
 export class UsersService {
   private users: UserDto[] = null;
 
-  constructor(private productsServices: ProductsService) {
+  constructor(
+    private productsServices: ProductsService,
+    private configService: ConfigService,
+  ) {
     this.users = [];
     for (let i = 0; i < 5; i++) {
       this.users.push({
@@ -30,6 +34,9 @@ export class UsersService {
   }
 
   findAll(): UserDto[] {
+    const apiKey = this.configService.get('API_KEY');
+    console.log('🚀 ~ UsersService ~ findAll ~ apiKey:', apiKey);
+
     const users = this.users;
     if (users.length === 0) {
       throw new NotFoundException();
