@@ -1,5 +1,6 @@
 import { OmitType, PartialType } from '@nestjs/swagger';
 import { IsArray, IsNotEmpty, IsString } from 'class-validator';
+
 import { CategoryModel } from 'src/products/models/categories.entity';
 
 export class CategoryDto extends CategoryModel {}

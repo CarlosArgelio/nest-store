@@ -3,15 +3,16 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 
 //module
 import { ProductsModule } from 'src/products/products.module';
+
 //controllers
-import { UsersController } from './controllers/users/users.controller';
 import { CostumersController } from './controllers/costumers/costumers.controller';
+import { UsersController } from './controllers/users/users.controller';
 //services
-import { UsersService } from './services/users/users.service';
-import { CostumersService } from './services/costumers/costumers.service';
 //entities
 import { CostumerModel } from './models/costumers.entity';
 import { UserModel } from './models/users.entity';
+import { CostumersService } from './services/costumers/costumers.service';
+import { UsersService } from './services/users/users.service';
 
 @Module({
   imports: [

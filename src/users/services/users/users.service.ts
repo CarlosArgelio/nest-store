@@ -1,16 +1,16 @@
 import { faker } from '@faker-js/faker';
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
+import { v4 as uuidv4 } from 'uuid';
+
+import { ProductsService } from 'src/products/services/products/products.service';
+import { ROLE } from 'src/users/models/users.entity';
+import { OrderDto } from 'src/users/schemas/orders.dto';
 import {
   SignUpUserDto,
   UpdateUserDto,
   UserDto,
 } from 'src/users/schemas/users.dto';
-import { ROLE } from 'src/users/models/users.entity';
-
-import { v4 as uuidv4 } from 'uuid';
-import { ProductsService } from 'src/products/services/products/products.service';
-import { OrderDto } from 'src/users/schemas/orders.dto';
 
 @Injectable()
 export class UsersService {

@@ -1,9 +1,9 @@
-import { Module, Global } from '@nestjs/common';
-import { Client } from 'pg';
+import { Global, Module } from '@nestjs/common';
 import { ConfigType } from '@nestjs/config';
+import { TypeOrmModule } from '@nestjs/typeorm';
+import { Client } from 'pg';
 
 import config from './../config';
-import { TypeOrmModule } from '@nestjs/typeorm';
 
 export enum env {
   development = 'development',

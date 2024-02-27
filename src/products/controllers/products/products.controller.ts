@@ -11,15 +11,16 @@ import {
   Put,
   Query,
 } from '@nestjs/common';
-import { ResponseModel } from 'src/base.model';
-import { ApiTags, ApiOperation, ApiQuery, ApiParam } from '@nestjs/swagger';
+import { ApiOperation, ApiParam, ApiQuery, ApiTags } from '@nestjs/swagger';
 
-import { ProductsService } from '../../services/products/products.service';
+import { ResponseModel } from 'src/base.model';
 import {
   CreateProductDto,
   ProductDto,
   UpdateProductDto,
 } from 'src/products/schemas/products.dto';
+
+import { ProductsService } from '../../services/products/products.service';
 
 @ApiTags('products')
 @Controller('products')

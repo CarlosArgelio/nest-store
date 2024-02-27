@@ -1,11 +1,12 @@
 import { faker } from '@faker-js/faker';
 import { Injectable, NotFoundException } from '@nestjs/common';
+import { v4 as uuidv4 } from 'uuid';
+
 import {
   CostumerDto,
   CreateCostumerDto,
   UpdateCostumerDto,
 } from 'src/users/schemas/costumers.dto';
-import { v4 as uuidv4 } from 'uuid';
 
 @Injectable()
 export class CostumersService {

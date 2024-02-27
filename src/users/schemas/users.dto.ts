@@ -1,5 +1,6 @@
-import { OmitType, PartialType, ApiProperty } from '@nestjs/swagger';
+import { ApiProperty, OmitType, PartialType } from '@nestjs/swagger';
 import { IsEmail, IsEnum, IsNotEmpty, IsString } from 'class-validator';
+
 import { ROLE, UserModel } from '../models/users.entity';
 
 export class UserDto extends UserModel {}

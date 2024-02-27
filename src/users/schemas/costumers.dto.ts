@@ -1,7 +1,8 @@
 // import { UserDto } from 'src/users/schemas/users.dto';
-import { CostumerModel } from 'src/users/models/costumers.entity';
 import { ApiProperty, OmitType, PartialType } from '@nestjs/swagger';
 import { IsEmail, IsNotEmpty, IsString } from 'class-validator';
+
+import { CostumerModel } from 'src/users/models/costumers.entity';
 
 export class CostumerDto extends CostumerModel {
   @ApiProperty({

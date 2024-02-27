@@ -1,11 +1,12 @@
 import { faker } from '@faker-js/faker';
 import { Injectable, NotFoundException } from '@nestjs/common';
+import { v4 as uuidv4 } from 'uuid';
+
 import {
   CategoryDto,
   CreateCategoryDto,
   UpdateCategoryDto,
 } from 'src/products/schemas/categories.dto';
-import { v4 as uuidv4 } from 'uuid';
 
 @Injectable()
 export class CategoriesService {

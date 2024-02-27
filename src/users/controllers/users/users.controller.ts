@@ -11,14 +11,15 @@ import {
   Put,
 } from '@nestjs/common';
 import { ApiParam, ApiTags } from '@nestjs/swagger';
+
 import { ResponseModel } from 'src/base.model';
-import { UsersService } from 'src/users/services/users/users.service';
+import { OrderDto } from 'src/users/schemas/orders.dto';
 import {
   SignUpUserDto,
   UpdateUserDto,
   UserDto,
 } from 'src/users/schemas/users.dto';
-import { OrderDto } from 'src/users/schemas/orders.dto';
+import { UsersService } from 'src/users/services/users/users.service';
 
 @ApiTags('users')
 @Controller('users')
