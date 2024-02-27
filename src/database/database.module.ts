@@ -3,6 +3,7 @@ import { Client } from 'pg';
 import { ConfigType } from '@nestjs/config';
 
 import config from './../config';
+import { TypeOrmModule } from '@nestjs/typeorm';
 
 export enum env {
   development = 'development',
@@ -15,6 +16,22 @@ const API_KEY_PROD = 'PROD_XYZ';
 
 @Global()
 @Module({
+  imports: [
+    TypeOrmModule.forRootAsync({
+      inject: [config.KEY],
+      useFactory: (configService: ConfigType<typeof config>) => {
+        const { user, host, database, password, port } = configService.postgres;
+        return {
+          type: 'postgres',
+          host,
+          port,
+          username: user,
+          password,
+          database,
+        };
+      },
+    }),
+  ],
   providers: [
     {
       provide: 'API_KEY',
@@ -41,6 +58,6 @@ const API_KEY_PROD = 'PROD_XYZ';
       inject: [config.KEY],
     },
   ],
-  exports: ['API_KEY', 'PG'],
+  exports: ['API_KEY', 'PG', TypeOrmModule],
 })
 export class DatabaseModule {}
