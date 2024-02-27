@@ -78,41 +78,43 @@ export class ProductsController {
     };
   }
 
-  // @Post()
-  // @HttpCode(HttpStatus.CREATED)
-  // create(@Body() payload: CreateProductDto): ResponseModel<ProductDto> {
-  //   const newProduct = this.productsService.create(payload);
+  @Post()
+  @HttpCode(HttpStatus.CREATED)
+  async create(
+    @Body() payload: CreateProductDto,
+  ): Promise<ResponseModel<ProductDto>> {
+    const newProduct = await this.productsService.create(payload);
 
-  //   return {
-  //     statusCode: HttpStatus.CREATED,
-  //     data: newProduct,
-  //   };
-  // }
+    return {
+      statusCode: HttpStatus.CREATED,
+      data: newProduct,
+    };
+  }
 
-  // @Put('/:productId')
-  // @HttpCode(HttpStatus.OK)
-  // @ApiParam({
-  //   name: 'productId',
-  // })
-  // update(
-  //   @Param('productId', ParseUUIDPipe) productId: ProductDto['productId'],
-  //   @Body() changes: UpdateProductDto,
-  // ): ResponseModel<ProductDto> {
-  //   const product = this.productsService.update(productId, changes);
-  //   return {
-  //     statusCode: HttpStatus.OK,
-  //     data: product,
-  //   };
-  // }
+  @Put('/:productId')
+  @HttpCode(HttpStatus.OK)
+  @ApiParam({
+    name: 'productId',
+  })
+  async update(
+    @Param('productId', ParseUUIDPipe) productId: ProductDto['productId'],
+    @Body() changes: UpdateProductDto,
+  ): Promise<ResponseModel<ProductDto>> {
+    const product = await this.productsService.update(productId, changes);
+    return {
+      statusCode: HttpStatus.OK,
+      data: product,
+    };
+  }
 
-  // @Delete('/:productId')
-  // @HttpCode(HttpStatus.NO_CONTENT)
-  // @ApiParam({
-  //   name: 'productId',
-  // })
-  // delete(
-  //   @Param('productId', ParseUUIDPipe) productId: ProductDto['productId'],
-  // ): void {
-  //   this.productsService.delete(productId);
-  // }
+  @Delete('/:productId')
+  @HttpCode(HttpStatus.NO_CONTENT)
+  @ApiParam({
+    name: 'productId',
+  })
+  async delete(
+    @Param('productId', ParseUUIDPipe) productId: ProductDto['productId'],
+  ): Promise<void> {
+    await this.productsService.delete(productId);
+  }
 }

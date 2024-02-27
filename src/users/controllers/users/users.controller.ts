@@ -95,8 +95,10 @@ export class UsersController {
   @ApiParam({
     name: 'userId',
   })
-  getOrders(@Param('userId', ParseUUIDPipe) userId: UserDto['userId']) {
-    const orders = this.usersServices.getOrders(userId);
+  async getOrders(
+    @Param('userId', ParseUUIDPipe) userId: UserDto['userId'],
+  ): Promise<ResponseModel<OrderDto>> {
+    const orders = await this.usersServices.getOrders(userId);
     return {
       statusCode: HttpStatus.OK,
       data: orders,

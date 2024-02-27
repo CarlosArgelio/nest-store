@@ -3,7 +3,7 @@ import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
 import { BaseClassModel } from 'src/base.model';
 
 @Entity()
-export class ProductModel extends BaseClassModel {
+export class ProductModel implements BaseClassModel {
   @PrimaryGeneratedColumn('uuid')
   productId: string;
 
@@ -36,6 +36,19 @@ export class ProductModel extends BaseClassModel {
     type: 'int',
   })
   stock: number;
+
+  @Column({
+    type: 'timestamp',
+    nullable: false,
+    default: () => 'CURRENT_TIMESTAMP',
+  })
+  createdAt: Date;
+
+  @Column({
+    type: 'timestamp',
+    nullable: true,
+  })
+  updatedAt?: Date;
 
   // @Column({
   //   type: 'varchar',

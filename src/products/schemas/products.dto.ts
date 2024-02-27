@@ -1,11 +1,11 @@
 import { OmitType, PartialType } from '@nestjs/swagger';
 import {
-  IsArray,
   IsNotEmpty,
   IsNumber,
   IsPositive,
   IsString,
   IsUUID,
+  IsUrl,
   Min,
 } from 'class-validator';
 
@@ -18,7 +18,6 @@ export class CreateProductDto extends OmitType(ProductModel, [
   'productId',
   'createdAt',
   'updatedAt',
-  'deletedAt',
 ]) {
   @IsString()
   @IsNotEmpty()
@@ -34,8 +33,9 @@ export class CreateProductDto extends OmitType(ProductModel, [
   @IsNotEmpty()
   readonly description: string;
 
-  @IsArray()
-  readonly images: string[];
+  @IsNotEmpty()
+  @IsUrl()
+  readonly image: string;
 
   @IsNumber()
   @IsNotEmpty()

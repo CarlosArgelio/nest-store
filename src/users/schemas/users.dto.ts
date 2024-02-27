@@ -9,7 +9,6 @@ export class SignUpUserDto extends OmitType(UserModel, [
   'userId',
   'createdAt',
   'updatedAt',
-  'deletedAt',
 ]) {
   @IsNotEmpty()
   @IsEmail()
