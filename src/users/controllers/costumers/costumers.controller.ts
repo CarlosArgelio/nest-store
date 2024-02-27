@@ -15,6 +15,7 @@ import { ResponseModel } from 'src/base.model';
 import {
   CostumerDto,
   CreateCostumerDto,
+  UpdateCostumerDto,
 } from 'src/users/schemas/costumers.dto';
 import { CostumersService } from 'src/users/services/costumers/costumers.service';
 
@@ -48,7 +49,7 @@ export class CostumersController {
   @HttpCode(HttpStatus.OK)
   update(
     @Param('customerId', ParseUUIDPipe) customerId: CostumerDto['customerId'],
-    @Body() changes: any,
+    @Body() changes: UpdateCostumerDto,
   ): ResponseModel<CostumerDto> {
     const updateCostumer = this.costumerServices.update(customerId, changes);
 
