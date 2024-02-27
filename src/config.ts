@@ -8,5 +8,12 @@ export default registerAs('config', () => ({
     password: process.env.DATABASE_PASSWORD,
     user: process.env.DATABASE_USER,
   },
+  postgres: {
+    database: process.env.POSTGRES_DB,
+    port: parseInt(process.env.POSTGRES_PORT),
+    host: process.env.POSTGRES_HOST,
+    password: process.env.POSTGRES_PASSWORD,
+    user: process.env.POSTGRES_USER,
+  },
   apiKey: process.env.API_KEY,
 }));

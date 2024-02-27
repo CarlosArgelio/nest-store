@@ -1,19 +1,8 @@
 import { Module, Global } from '@nestjs/common';
 import { Client } from 'pg';
+import { ConfigType } from '@nestjs/config';
 
-const client = new Client({
-  user: 'admin',
-  host: 'localhost',
-  database: 'my_db',
-  password: '123456',
-  port: 5432,
-});
-
-client.connect();
-// client.query('SELECT NOW()', (err, res) => {
-//   console.error('🚀 ~ client.query ~ err:', err);
-//   console.log('🚀 ~ client.query ~ res rows:', res.rows);
-// });
+import config from './../config';
 
 export enum env {
   development = 'development',
@@ -34,7 +23,22 @@ const API_KEY_PROD = 'PROD_XYZ';
     },
     {
       provide: 'PG',
-      useValue: client,
+      useFactory: (configService: ConfigType<typeof config>) => {
+        const { database, host, user, password, port } = configService.postgres;
+        // port.toString();
+        const client = new Client({
+          user,
+          host,
+          database,
+          password,
+          port,
+        });
+
+        client.connect();
+
+        return client;
+      },
+      inject: [config.KEY],
     },
   ],
   exports: ['API_KEY', 'PG'],
