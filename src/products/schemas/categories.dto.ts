@@ -10,6 +10,6 @@ export class CreateCategoryDto extends OmitType(CategoryModel, ['categoryId']) {
 
   @IsArray()
   @IsNotEmpty()
-  readonly image: string[];
+  readonly image: string;
 }
 export class UpdateCategoryDto extends PartialType(CategoryDto) {}

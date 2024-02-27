@@ -17,7 +17,7 @@ export class CategoriesService {
       this.categories.push({
         name: faker.commerce.productName(),
         categoryId: faker.datatype.uuid(),
-        image: [faker.image.imageUrl()],
+        image: faker.image.imageUrl(),
         createdAt: faker.date.recent(),
       });
     }

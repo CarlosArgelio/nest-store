@@ -19,10 +19,10 @@ export class ProductsService {
         description: faker.commerce.productDescription(),
         price: +faker.commerce.price(),
         stock: faker.datatype.number(),
-        images: [faker.image.imageUrl()],
+        image: faker.image.imageUrl(),
         createdAt: new Date(),
         updatedAt: new Date(),
-        categoryId: faker.datatype.uuid(),
+        // categoryId: faker.datatype.uuid(),
       });
     }
   }
