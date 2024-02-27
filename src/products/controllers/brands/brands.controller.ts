@@ -9,7 +9,7 @@ import {
   Post,
   Put,
 } from '@nestjs/common';
-import { ApiTags } from '@nestjs/swagger';
+import { ApiParam, ApiTags } from '@nestjs/swagger';
 import { ResponseModel } from 'src/base.model';
 import {
   BrandDto,
@@ -33,6 +33,9 @@ export class BrandsController {
   }
 
   @Get(':brandId')
+  @ApiParam({
+    name: 'brandId',
+  })
   findOne(
     @Param('brandId', ParseUUIDPipe) brandId: BrandDto['brandId'],
   ): ResponseModel<BrandDto> {
@@ -53,6 +56,9 @@ export class BrandsController {
   }
 
   @Put(':brandId')
+  @ApiParam({
+    name: 'brandId',
+  })
   update(
     @Param('brandId', ParseUUIDPipe) brandId: BrandDto['brandId'],
     @Body() changes: UpdateBrandDto,
@@ -66,6 +72,9 @@ export class BrandsController {
   }
 
   @Delete(':brandId')
+  @ApiParam({
+    name: 'brandId',
+  })
   delete(@Param('brandId', ParseUUIDPipe) brandId: BrandDto['brandId']): void {
     this.brandsService.delete(brandId);
   }

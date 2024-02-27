@@ -10,7 +10,7 @@ import {
   Post,
   Put,
 } from '@nestjs/common';
-import { ApiTags } from '@nestjs/swagger';
+import { ApiParam, ApiTags } from '@nestjs/swagger';
 import { ResponseModel } from 'src/base.model';
 import { UsersService } from 'src/users/services/users/users.service';
 import {
@@ -37,6 +37,9 @@ export class UsersController {
 
   @Get('/:userId')
   @HttpCode(HttpStatus.OK)
+  @ApiParam({
+    name: 'userId',
+  })
   findOne(
     @Param('userId', ParseUUIDPipe) userId: UserDto['userId'],
   ): ResponseModel<UserDto> {
@@ -62,6 +65,9 @@ export class UsersController {
 
   @Put('/:userId')
   @HttpCode(HttpStatus.OK)
+  @ApiParam({
+    name: 'userId',
+  })
   update(
     @Param('userId', ParseUUIDPipe) userId: UserDto['userId'],
     @Body() changes: UpdateUserDto,
@@ -76,12 +82,18 @@ export class UsersController {
 
   @Delete('/:userId')
   @HttpCode(HttpStatus.NO_CONTENT)
+  @ApiParam({
+    name: 'userId',
+  })
   delete(@Param('userId', ParseUUIDPipe) userId: UserDto['userId']): void {
     this.usersServices.delete(userId);
   }
 
   @Get('/:userId/orders')
   @HttpCode(HttpStatus.OK)
+  @ApiParam({
+    name: 'userId',
+  })
   getOrders(
     @Param('userId', ParseUUIDPipe) userId: UserDto['userId'],
   ): ResponseModel<OrderDto> {

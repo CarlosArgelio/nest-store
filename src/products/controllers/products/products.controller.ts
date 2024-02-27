@@ -12,7 +12,7 @@ import {
   Query,
 } from '@nestjs/common';
 import { ResponseModel } from 'src/base.model';
-import { ApiTags, ApiOperation, ApiQuery } from '@nestjs/swagger';
+import { ApiTags, ApiOperation, ApiQuery, ApiParam } from '@nestjs/swagger';
 
 import { ProductsService } from '../../services/products.service';
 import {
@@ -64,6 +64,9 @@ export class ProductsController {
 
   @Get('/:productId')
   @HttpCode(HttpStatus.OK)
+  @ApiParam({
+    name: 'productId',
+  })
   findOne(
     @Param('productId', ParseUUIDPipe) productId: ProductDto['productId'],
   ): ResponseModel<ProductDto> {
@@ -87,6 +90,9 @@ export class ProductsController {
 
   @Put('/:productId')
   @HttpCode(HttpStatus.OK)
+  @ApiParam({
+    name: 'productId',
+  })
   update(
     @Param('productId', ParseUUIDPipe) productId: ProductDto['productId'],
     @Body() changes: UpdateProductDto,
@@ -100,6 +106,9 @@ export class ProductsController {
 
   @Delete('/:productId')
   @HttpCode(HttpStatus.NO_CONTENT)
+  @ApiParam({
+    name: 'productId',
+  })
   delete(
     @Param('productId', ParseUUIDPipe) productId: ProductDto['productId'],
   ): void {

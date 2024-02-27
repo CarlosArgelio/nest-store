@@ -10,7 +10,7 @@ import {
   Post,
   Put,
 } from '@nestjs/common';
-import { ApiTags } from '@nestjs/swagger';
+import { ApiParam, ApiTags } from '@nestjs/swagger';
 import { ResponseModel } from 'src/base.model';
 import {
   CategoryDto,
@@ -34,6 +34,9 @@ export class CategoriesController {
 
   @Get('/:categoryId')
   @HttpCode(HttpStatus.OK)
+  @ApiParam({
+    name: 'categoryId',
+  })
   findOne(
     @Param('categoryId', ParseUUIDPipe) categoryId: CategoryDto['categoryId'],
   ): ResponseModel<CategoryDto> {
@@ -59,6 +62,9 @@ export class CategoriesController {
 
   @Put('/:categoryId')
   @HttpCode(HttpStatus.OK)
+  @ApiParam({
+    name: 'categoryId',
+  })
   update(
     @Param('categoryId', ParseUUIDPipe) categoryId: CategoryDto['categoryId'],
     @Body() changes: any,
@@ -72,6 +78,9 @@ export class CategoriesController {
 
   @Delete('/:categoryId')
   @HttpCode(HttpStatus.NO_CONTENT)
+  @ApiParam({
+    name: 'categoryId',
+  })
   delete(
     @Param('categoryId', ParseUUIDPipe) categoryId: CategoryDto['categoryId'],
   ): void {

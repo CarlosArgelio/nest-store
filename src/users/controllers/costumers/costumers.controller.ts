@@ -10,7 +10,7 @@ import {
   Post,
   Put,
 } from '@nestjs/common';
-import { ApiTags } from '@nestjs/swagger';
+import { ApiParam, ApiTags } from '@nestjs/swagger';
 import { ResponseModel } from 'src/base.model';
 import {
   CostumerDto,
@@ -47,6 +47,9 @@ export class CostumersController {
 
   @Put(':customerId')
   @HttpCode(HttpStatus.OK)
+  @ApiParam({
+    name: 'customerId',
+  })
   update(
     @Param('customerId', ParseUUIDPipe) customerId: CostumerDto['customerId'],
     @Body() changes: UpdateCostumerDto,
@@ -61,6 +64,9 @@ export class CostumersController {
 
   @Delete(':customerId')
   @HttpCode(HttpStatus.NO_CONTENT)
+  @ApiParam({
+    name: 'customerId',
+  })
   delete(
     @Param('customerId', ParseUUIDPipe) customerId: CostumerDto['customerId'],
   ): void {
