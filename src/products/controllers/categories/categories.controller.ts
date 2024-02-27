@@ -10,12 +10,18 @@ import {
   Post,
   Put,
 } from '@nestjs/common';
-import { ApiParam, ApiTags } from '@nestjs/swagger';
+import {
+  ApiNoContentResponse,
+  ApiOkResponse,
+  ApiParam,
+  ApiTags,
+} from '@nestjs/swagger';
 
 import { ResponseModel } from 'src/base.model';
 import {
   CategoryDto,
   CreateCategoryDto,
+  UpdateCategoryDto,
 } from 'src/products/schemas/categories.dto';
 import { CategoriesService } from 'src/products/services/categories/categories.service';
 
@@ -25,8 +31,13 @@ export class CategoriesController {
   constructor(private CategoriesServices: CategoriesService) {}
   @Get()
   @HttpCode(HttpStatus.OK)
-  findAll(): ResponseModel<CategoryDto[]> {
-    const categories = this.CategoriesServices.findAll();
+  @ApiOkResponse({
+    description: 'List of categories',
+    isArray: true,
+    type: CategoryDto,
+  })
+  async findAll(): Promise<ResponseModel<CategoryDto[]>> {
+    const categories = await this.CategoriesServices.findAll();
     return {
       statusCode: HttpStatus.OK,
       data: categories,
@@ -38,10 +49,15 @@ export class CategoriesController {
   @ApiParam({
     name: 'categoryId',
   })
-  findOne(
+  @ApiOkResponse({
+    description: 'List of categories',
+    isArray: false,
+    type: CategoryDto,
+  })
+  async findOne(
     @Param('categoryId', ParseUUIDPipe) categoryId: CategoryDto['categoryId'],
-  ): ResponseModel<CategoryDto> {
-    const category = this.CategoriesServices.finByAttribute<
+  ): Promise<ResponseModel<CategoryDto>> {
+    const category = await this.CategoriesServices.finByAttribute<
       CategoryDto['categoryId']
     >(categoryId, 'categoryId');
 
@@ -53,8 +69,15 @@ export class CategoriesController {
 
   @Post()
   @HttpCode(HttpStatus.CREATED)
-  create(@Body() payload: CreateCategoryDto): ResponseModel<CategoryDto> {
-    const newCategory = this.CategoriesServices.create(payload);
+  @ApiOkResponse({
+    description: 'List of categories',
+    isArray: false,
+    type: CategoryDto,
+  })
+  async create(
+    @Body() payload: CreateCategoryDto,
+  ): Promise<ResponseModel<CategoryDto>> {
+    const newCategory = await this.CategoriesServices.create(payload);
     return {
       statusCode: HttpStatus.CREATED,
       data: newCategory,
@@ -66,11 +89,19 @@ export class CategoriesController {
   @ApiParam({
     name: 'categoryId',
   })
-  update(
+  @ApiOkResponse({
+    description: 'List of categories',
+    isArray: false,
+    type: CategoryDto,
+  })
+  async update(
     @Param('categoryId', ParseUUIDPipe) categoryId: CategoryDto['categoryId'],
-    @Body() changes: any,
-  ): ResponseModel<CategoryDto> {
-    const updatedCategory = this.CategoriesServices.update(categoryId, changes);
+    @Body() changes: UpdateCategoryDto,
+  ): Promise<ResponseModel<CategoryDto>> {
+    const updatedCategory = await this.CategoriesServices.update(
+      categoryId,
+      changes,
+    );
     return {
       statusCode: HttpStatus.OK,
       data: updatedCategory,
@@ -82,9 +113,12 @@ export class CategoriesController {
   @ApiParam({
     name: 'categoryId',
   })
-  delete(
+  @ApiNoContentResponse({
+    status: HttpStatus.NO_CONTENT,
+  })
+  async delete(
     @Param('categoryId', ParseUUIDPipe) categoryId: CategoryDto['categoryId'],
-  ): void {
-    this.CategoriesServices.delete(categoryId);
+  ) {
+    await this.CategoriesServices.delete(categoryId);
   }
 }
