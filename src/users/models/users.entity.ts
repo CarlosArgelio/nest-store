@@ -1,3 +1,5 @@
+import { PrimaryGeneratedColumn, Column, Entity } from 'typeorm';
+
 import { BaseClassModel } from 'src/base.model';
 
 export enum ROLE {
@@ -5,12 +7,26 @@ export enum ROLE {
   CUSTOMER = 'customer',
 }
 
-export class User implements BaseClassModel {
-  createdAt: Date;
-  updatedAt?: Date;
-  deletedAt?: Date;
+@Entity()
+export class UserModel extends BaseClassModel {
+  @PrimaryGeneratedColumn('uuid')
   userId: string;
+
+  @Column({
+    type: 'varchar',
+    length: 255,
+    unique: true,
+  })
   email: string;
+
+  @Column({
+    type: 'text',
+  })
   password: string;
+
+  @Column({
+    type: 'enum',
+    enum: ROLE,
+  })
   role: ROLE;
 }
