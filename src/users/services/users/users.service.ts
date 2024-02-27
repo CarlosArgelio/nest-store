@@ -9,7 +9,7 @@ import {
 import { ROLE } from 'src/users/models/users.entity';
 
 import { v4 as uuidv4 } from 'uuid';
-import { ProductsService } from 'src/products/services/products.service';
+import { ProductsService } from 'src/products/services/products/products.service';
 import { OrderDto } from 'src/users/schemas/orders.dto';
 
 @Injectable()

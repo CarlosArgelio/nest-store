@@ -14,7 +14,7 @@ import {
 import { ResponseModel } from 'src/base.model';
 import { ApiTags, ApiOperation, ApiQuery, ApiParam } from '@nestjs/swagger';
 
-import { ProductsService } from '../../services/products.service';
+import { ProductsService } from '../../services/products/products.service';
 import {
   CreateProductDto,
   ProductDto,
