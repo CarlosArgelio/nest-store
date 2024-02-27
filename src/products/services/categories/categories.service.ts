@@ -1,6 +1,6 @@
-import { faker } from '@faker-js/faker';
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { v4 as uuidv4 } from 'uuid';
+import {} from '@nestjs/common';
 
 import {
   CategoryDto,
@@ -20,7 +20,7 @@ export class CategoriesService {
 
   async findAll(): Promise<CategoryDto[]> {
     const categories = await this.categoryRepo.find();
-    if (!categories) {
+    if (categories.length === 0) {
       throw new NotFoundException('No categories found');
     }
     return categories;

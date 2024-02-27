@@ -12,12 +12,14 @@ import {
 } from '@nestjs/common';
 import {
   ApiNoContentResponse,
+  ApiNotFoundResponse,
   ApiOkResponse,
   ApiParam,
   ApiTags,
 } from '@nestjs/swagger';
 
 import { ResponseModel } from 'src/base.model';
+import { ErrorResponse } from 'src/common/responses/responses.entity';
 import {
   CategoryDto,
   CreateCategoryDto,
@@ -36,6 +38,10 @@ export class CategoriesController {
     isArray: true,
     type: CategoryDto,
   })
+  @ApiNotFoundResponse({
+    description: 'No categories found',
+    type: ErrorResponse,
+  })
   async findAll(): Promise<ResponseModel<CategoryDto[]>> {
     const categories = await this.CategoriesServices.findAll();
     return {
@@ -53,6 +59,10 @@ export class CategoriesController {
     description: 'List of categories',
     isArray: false,
     type: CategoryDto,
+  })
+  @ApiNotFoundResponse({
+    description: 'No categories found',
+    type: ErrorResponse,
   })
   async findOne(
     @Param('categoryId', ParseUUIDPipe) categoryId: CategoryDto['categoryId'],
@@ -94,6 +104,10 @@ export class CategoriesController {
     isArray: false,
     type: CategoryDto,
   })
+  @ApiNotFoundResponse({
+    description: 'No categories found',
+    type: ErrorResponse,
+  })
   async update(
     @Param('categoryId', ParseUUIDPipe) categoryId: CategoryDto['categoryId'],
     @Body() changes: UpdateCategoryDto,
@@ -115,6 +129,10 @@ export class CategoriesController {
   })
   @ApiNoContentResponse({
     status: HttpStatus.NO_CONTENT,
+  })
+  @ApiNotFoundResponse({
+    description: 'No categories found',
+    type: ErrorResponse,
   })
   async delete(
     @Param('categoryId', ParseUUIDPipe) categoryId: CategoryDto['categoryId'],
