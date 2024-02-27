@@ -11,5 +11,12 @@ services:
       - '${DATABASE_PORT}:${DATABASE_PORT}'
     volumes:
       - postgres_data:/var/lib/postgresql/data
+  pgadmin:
+    image: dpage/pgadmin4
+    environment:
+     - PGADMIN_DEFAULT_EMAIL=${PGADMIN_EMAIL}
+     - PGADMIN_DEFAULT_PASSWORD=${PGADMIN_PASSWORD}
+    ports:
+      - "${PGADMIN_PORT_INSTANCE}:${PGADMIN_PORT_IMAGE}"
 volumes:
   postgres_data: {}
