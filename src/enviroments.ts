@@ -16,10 +16,10 @@ export const enviroments: Record<Environment, EnvironmentConfig> = {
   },
   [Environment.Production]: {
     name: 'production',
-    file: '.prod.env',
+    file: '.env.production',
   },
   [Environment.Staging]: {
     name: 'staging',
-    file: '.stg.env',
+    file: '.env.staging',
   },
 };
