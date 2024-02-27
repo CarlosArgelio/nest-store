@@ -101,9 +101,9 @@ export class UsersService {
     this.users.splice(index, 1);
   }
 
-  getOrders(userId: UserDto['userId']): OrderDto {
+  async getOrders(userId: UserDto['userId']) {
     const user = this.findByAttribute<UserDto['userId']>(userId, 'userId');
-    const products = this.productsServices.findAll();
+    const products = await this.productsServices.findAll();
     const response = {
       date: new Date(),
       user,

@@ -48,15 +48,15 @@ export class ProductsController {
     required: false,
   })
   @HttpCode(HttpStatus.OK)
-  findAll(
+  async findAll(
     @Query('limit') limit = 100,
     @Query('offset') offset = 0,
     @Query('brand') brand: string,
-  ): ResponseModel<ProductDto[]> {
+  ): Promise<ResponseModel<ProductDto[]>> {
     console.log(limit);
     console.log(offset);
     console.log(brand);
-    const products = this.productsService.findAll();
+    const products = await this.productsService.findAll();
     return {
       statusCode: HttpStatus.OK,
       data: products,
@@ -68,51 +68,51 @@ export class ProductsController {
   @ApiParam({
     name: 'productId',
   })
-  findOne(
+  async findOne(
     @Param('productId', ParseUUIDPipe) productId: ProductDto['productId'],
-  ): ResponseModel<ProductDto> {
-    const product = this.productsService.findOne(productId);
+  ): Promise<ResponseModel<ProductDto>> {
+    const product = await this.productsService.findOne(productId);
     return {
       statusCode: HttpStatus.OK,
       data: product,
     };
   }
 
-  @Post()
-  @HttpCode(HttpStatus.CREATED)
-  create(@Body() payload: CreateProductDto): ResponseModel<ProductDto> {
-    const newProduct = this.productsService.create(payload);
+  // @Post()
+  // @HttpCode(HttpStatus.CREATED)
+  // create(@Body() payload: CreateProductDto): ResponseModel<ProductDto> {
+  //   const newProduct = this.productsService.create(payload);
 
-    return {
-      statusCode: HttpStatus.CREATED,
-      data: newProduct,
-    };
-  }
+  //   return {
+  //     statusCode: HttpStatus.CREATED,
+  //     data: newProduct,
+  //   };
+  // }
 
-  @Put('/:productId')
-  @HttpCode(HttpStatus.OK)
-  @ApiParam({
-    name: 'productId',
-  })
-  update(
-    @Param('productId', ParseUUIDPipe) productId: ProductDto['productId'],
-    @Body() changes: UpdateProductDto,
-  ): ResponseModel<ProductDto> {
-    const product = this.productsService.update(productId, changes);
-    return {
-      statusCode: HttpStatus.OK,
-      data: product,
-    };
-  }
+  // @Put('/:productId')
+  // @HttpCode(HttpStatus.OK)
+  // @ApiParam({
+  //   name: 'productId',
+  // })
+  // update(
+  //   @Param('productId', ParseUUIDPipe) productId: ProductDto['productId'],
+  //   @Body() changes: UpdateProductDto,
+  // ): ResponseModel<ProductDto> {
+  //   const product = this.productsService.update(productId, changes);
+  //   return {
+  //     statusCode: HttpStatus.OK,
+  //     data: product,
+  //   };
+  // }
 
-  @Delete('/:productId')
-  @HttpCode(HttpStatus.NO_CONTENT)
-  @ApiParam({
-    name: 'productId',
-  })
-  delete(
-    @Param('productId', ParseUUIDPipe) productId: ProductDto['productId'],
-  ): void {
-    this.productsService.delete(productId);
-  }
+  // @Delete('/:productId')
+  // @HttpCode(HttpStatus.NO_CONTENT)
+  // @ApiParam({
+  //   name: 'productId',
+  // })
+  // delete(
+  //   @Param('productId', ParseUUIDPipe) productId: ProductDto['productId'],
+  // ): void {
+  //   this.productsService.delete(productId);
+  // }
 }
