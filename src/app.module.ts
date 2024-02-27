@@ -9,7 +9,7 @@ import { UsersModule } from './users/users.module';
 import { ProductsModule } from './products/products.module';
 import { firstValueFrom } from 'rxjs';
 import { DatabaseModule } from './database/database.module';
-import { enviroments } from './enviroments';
+import { enviroments, Environment } from './enviroments';
 import config from './config';
 
 @Module({
@@ -19,12 +19,23 @@ import config from './config';
       load: [config],
       isGlobal: true,
       validationSchema: Joi.object({
+        NODE_ENV: Joi.string()
+          .equal(
+            Environment.Development,
+            Environment.Production,
+            Environment.Staging,
+          )
+          .required(),
         API_KEY: Joi.number(),
-        DATABASE_NAME: Joi.string(),
-        DATABASE_PORT: Joi.number(),
-        DATABASE_HOST: Joi.string(),
-        DATABASE_USER: Joi.string(),
-        DATABASE_PASSWORD: Joi.string(),
+        DATABASE_NAME: Joi.string().required(),
+        DATABASE_PORT: Joi.number().required(),
+        DATABASE_HOST: Joi.string().required(),
+        DATABASE_USER: Joi.string().required(),
+        DATABASE_PASSWORD: Joi.string().required(),
+        PGADMIN_EMAIL: Joi.string().email(),
+        PGADMIN_PASSWORD: Joi.string(),
+        PGADMIN_PORT_INSTANCE: Joi.number(),
+        PGADMIN_PORT_IMAGE: Joi.number(),
       }),
     }),
     UsersModule,
