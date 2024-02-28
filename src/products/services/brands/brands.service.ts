@@ -7,72 +7,65 @@ import {
   CreateBrandDto,
   UpdateBrandDto,
 } from 'src/products/schemas/brands.dto';
+import { InjectRepository } from '@nestjs/typeorm';
+import { BrandModel } from 'src/products/models/brands.entity';
+import { Repository } from 'typeorm';
 
 @Injectable()
 export class BrandsService {
-  private brands: BrandDto[] = null;
+  constructor(
+    @InjectRepository(BrandModel) private brandRepo: Repository<BrandModel>,
+  ) {}
 
-  constructor() {
-    this.brands = [];
-    for (let i = 0; i < 5; i++) {
-      this.brands.push({
-        brandId: faker.datatype.uuid(),
-        name: faker.company.name(),
-        createdAt: faker.date.recent(),
-      });
-    }
-  }
-
-  findAll(): BrandDto[] {
-    const brands = this.brands;
+  async findAll(): Promise<BrandDto[]> {
+    const brands = await this.brandRepo.find();
     if (brands.length === 0) {
       throw new NotFoundException('No brands found');
     }
     return brands;
   }
 
-  findByAttr<T>(value: T, attr: T): BrandDto {
-    const brand = this.brands.find((brand) => brand[`${attr}`] === value);
+  async findByAttr<T>(value: T, attr: T): Promise<BrandDto> {
+    let options = {};
+    options[`${attr}`] = value;
+
+    const brand = await this.brandRepo.findOne({ where: options });
     if (!brand) {
       throw new NotFoundException(`Brand with ${attr} ${value} not found`);
     }
     return brand;
   }
 
-  create(payload: CreateBrandDto): BrandDto {
+  async create(payload: CreateBrandDto): Promise<BrandDto> {
     const brandId = uuidv4();
-
     const newBrand = {
       ...payload,
       brandId,
-      createdAt: new Date(),
     };
 
-    this.addBrand(newBrand);
+    this.brandRepo.create(newBrand);
+    const saveBrand = this.brandRepo.save(newBrand);
 
-    return newBrand;
+    return saveBrand;
   }
 
-  addBrand(payload: BrandDto): void {
-    this.brands.push(payload);
+  async update(
+    brandId: BrandDto['brandId'],
+    changes: UpdateBrandDto,
+  ): Promise<BrandDto> {
+    const brand = await this.findByAttr<BrandDto['brandId']>(
+      brandId,
+      'brandId',
+    );
+
+    this.brandRepo.merge(brand, changes);
+    const updateBrand = this.brandRepo.save(brand);
+
+    return updateBrand;
   }
 
-  update(brandId: BrandDto['brandId'], payload: UpdateBrandDto): BrandDto {
+  async delete(brandId: BrandDto['brandId']): Promise<void> {
     this.findByAttr<BrandDto['brandId']>(brandId, 'brandId');
-
-    const index = this.brands.findIndex((brand) => brand.brandId === brandId);
-    this.brands[index] = {
-      ...this.brands[index],
-      ...payload,
-    };
-
-    return this.brands[index];
-  }
-
-  delete(brandId: BrandDto['brandId']): void {
-    this.findByAttr<BrandDto['brandId']>(brandId, 'brandId');
-    const index = this.brands.findIndex((brand) => brand.brandId === brandId);
-
-    this.brands.splice(index, 1);
+    this.brandRepo.delete(brandId);
   }
 }

@@ -3,6 +3,7 @@ import {
   Controller,
   Delete,
   Get,
+  HttpCode,
   HttpStatus,
   Param,
   ParseUUIDPipe,
@@ -24,59 +25,52 @@ import { BrandsService } from 'src/products/services/brands/brands.service';
 export class BrandsController {
   constructor(private brandsService: BrandsService) {}
   @Get()
-  findAll(): ResponseModel<BrandDto[]> {
-    const brands = this.brandsService.findAll();
-
-    return {
-      statusCode: 200,
-      data: brands,
-    };
+  @HttpCode(HttpStatus.OK)
+  async findAll(): Promise<ResponseModel<BrandDto[]>> {
+    const brands = await this.brandsService.findAll();
+    return { statusCode: HttpStatus.OK, data: brands };
   }
 
   @Get(':brandId')
+  @HttpCode(HttpStatus.OK)
   @ApiParam({
     name: 'brandId',
   })
-  findOne(
+  async findOne(
     @Param('brandId', ParseUUIDPipe) brandId: BrandDto['brandId'],
-  ): ResponseModel<BrandDto> {
-    const brand = this.brandsService.findByAttr(brandId, 'brandId');
-    return {
-      statusCode: 200,
-      data: brand,
-    };
+  ): Promise<ResponseModel<BrandDto>> {
+    const brand = await this.brandsService.findByAttr(brandId, 'brandId');
+    return { statusCode: HttpStatus.OK, data: brand };
   }
 
   @Post()
-  create(@Body() payload: CreateBrandDto): ResponseModel<BrandDto> {
-    const newBrand = this.brandsService.create(payload);
-    return {
-      statusCode: HttpStatus.CREATED,
-      data: newBrand,
-    };
+  @HttpCode(HttpStatus.CREATED)
+  async create(
+    @Body() payload: CreateBrandDto,
+  ): Promise<ResponseModel<BrandDto>> {
+    const newBrand = await this.brandsService.create(payload);
+    return { statusCode: HttpStatus.CREATED, data: newBrand };
   }
 
   @Put(':brandId')
+  @HttpCode(HttpStatus.OK)
   @ApiParam({
     name: 'brandId',
   })
-  update(
+  async update(
     @Param('brandId', ParseUUIDPipe) brandId: BrandDto['brandId'],
     @Body() changes: UpdateBrandDto,
-  ): ResponseModel<BrandDto> {
-    const updateBrand = this.brandsService.update(brandId, changes);
-
-    return {
-      statusCode: 200,
-      data: updateBrand,
-    };
+  ): Promise<ResponseModel<BrandDto>> {
+    const updateBrand = await this.brandsService.update(brandId, changes);
+    return { statusCode: HttpStatus.OK, data: updateBrand };
   }
 
   @Delete(':brandId')
+  @HttpCode(HttpStatus.NO_CONTENT)
   @ApiParam({
     name: 'brandId',
   })
-  delete(@Param('brandId', ParseUUIDPipe) brandId: BrandDto['brandId']): void {
-    this.brandsService.delete(brandId);
+  async delete(@Param('brandId', ParseUUIDPipe) brandId: BrandDto['brandId']) {
+    await this.brandsService.delete(brandId);
   }
 }
