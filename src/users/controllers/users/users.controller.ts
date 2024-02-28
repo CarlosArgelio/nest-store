@@ -28,12 +28,9 @@ export class UsersController {
 
   @Get()
   @HttpCode(HttpStatus.OK)
-  findAll(): ResponseModel<UserDto[]> {
-    const users = this.usersServices.findAll();
-    return {
-      statusCode: HttpStatus.OK,
-      data: users,
-    };
+  async findAll(): Promise<ResponseModel<UserDto[]>> {
+    const users = await this.usersServices.findAll();
+    return { statusCode: HttpStatus.OK, data: users };
   }
 
   @Get('/:userId')
@@ -41,27 +38,21 @@ export class UsersController {
   @ApiParam({
     name: 'userId',
   })
-  findOne(
+  async findOne(
     @Param('userId', ParseUUIDPipe) userId: UserDto['userId'],
-  ): ResponseModel<UserDto> {
-    const user = this.usersServices.findByAttribute<UserDto['userId']>(
+  ): Promise<ResponseModel<UserDto>> {
+    const user = await this.usersServices.findByAttribute<UserDto['userId']>(
       userId,
       'userId',
     );
-    return {
-      statusCode: HttpStatus.OK,
-      data: user,
-    };
+    return { statusCode: HttpStatus.OK, data: user };
   }
 
   @Post('/sign-up')
   @HttpCode(HttpStatus.CREATED)
-  create(@Body() body: SignUpUserDto): ResponseModel<UserDto> {
-    const newUser = this.usersServices.create(body);
-    return {
-      statusCode: HttpStatus.CREATED,
-      data: newUser,
-    };
+  async create(@Body() body: SignUpUserDto): Promise<ResponseModel<UserDto>> {
+    const newUser = await this.usersServices.create(body);
+    return { statusCode: HttpStatus.CREATED, data: newUser };
   }
 
   @Put('/:userId')
@@ -69,16 +60,12 @@ export class UsersController {
   @ApiParam({
     name: 'userId',
   })
-  update(
+  async update(
     @Param('userId', ParseUUIDPipe) userId: UserDto['userId'],
     @Body() changes: UpdateUserDto,
-  ): ResponseModel<UserDto> {
-    const editUser = this.usersServices.update(userId, changes);
-
-    return {
-      statusCode: HttpStatus.OK,
-      data: editUser,
-    };
+  ): Promise<ResponseModel<UserDto>> {
+    const editUser = await this.usersServices.update(userId, changes);
+    return { statusCode: HttpStatus.OK, data: editUser };
   }
 
   @Delete('/:userId')
@@ -86,8 +73,8 @@ export class UsersController {
   @ApiParam({
     name: 'userId',
   })
-  delete(@Param('userId', ParseUUIDPipe) userId: UserDto['userId']): void {
-    this.usersServices.delete(userId);
+  async delete(@Param('userId', ParseUUIDPipe) userId: UserDto['userId']) {
+    await this.usersServices.delete(userId);
   }
 
   @Get('/:userId/orders')
