@@ -1,4 +1,8 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import {
+  Injectable,
+  InternalServerErrorException,
+  NotFoundException,
+} from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { v4 as uuidv4 } from 'uuid';
@@ -18,15 +22,26 @@ export class ProductsService {
   ) {}
 
   async findAll(): Promise<ProductDto[]> {
-    const products = await this.productRepo.find();
-    if (!products) {
+    let products = null;
+
+    try {
+      products = await this.productRepo.find();
+    } catch (error) {
+      throw new InternalServerErrorException(error.message);
+    }
+    if (products.length === 0) {
       throw new NotFoundException('Products not found');
     }
     return products;
   }
 
   async findOne(id: ProductDto['productId']): Promise<ProductDto> {
-    const product = await this.productRepo.findOne({ productId: id });
+    let product = null;
+    try {
+      product = await this.productRepo.findOne({ productId: id });
+    } catch (error) {
+      throw new InternalServerErrorException(error.message);
+    }
     if (!product) {
       throw new NotFoundException(`Product with id ${id} not found`);
     }
@@ -39,8 +54,12 @@ export class ProductsService {
       productId: uuidv4(),
     };
 
-    const createProduct = this.productRepo.create(newProduct);
-    return await this.productRepo.save(createProduct);
+    try {
+      const createProduct = this.productRepo.create(newProduct);
+      return await this.productRepo.save(createProduct);
+    } catch (error) {
+      throw new InternalServerErrorException(error.message);
+    }
   }
 
   async update(
@@ -48,13 +67,21 @@ export class ProductsService {
     changes: UpdateProductDto,
   ): Promise<ProductDto> {
     const product = await this.findOne(id);
-    this.productRepo.merge(product, changes);
 
-    return await this.productRepo.save(product);
+    try {
+      this.productRepo.merge(product, changes);
+      return await this.productRepo.save(product);
+    } catch (error) {
+      throw new InternalServerErrorException(error.message);
+    }
   }
 
   async delete(id: ProductDto['productId']): Promise<void> {
     await this.findOne(id);
-    this.productRepo.delete(id);
+    try {
+      this.productRepo.delete(id);
+    } catch (error) {
+      throw new InternalServerErrorException(error.message);
+    }
   }
 }

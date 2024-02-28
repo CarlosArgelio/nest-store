@@ -1,5 +1,9 @@
 import { faker } from '@faker-js/faker';
-import { Injectable, NotFoundException } from '@nestjs/common';
+import {
+  Injectable,
+  InternalServerErrorException,
+  NotFoundException,
+} from '@nestjs/common';
 import { v4 as uuidv4 } from 'uuid';
 
 import {
@@ -18,7 +22,12 @@ export class BrandsService {
   ) {}
 
   async findAll(): Promise<BrandDto[]> {
-    const brands = await this.brandRepo.find();
+    let brands = null;
+    try {
+      brands = await this.brandRepo.find();
+    } catch (error) {
+      throw new InternalServerErrorException(error.message);
+    }
     if (brands.length === 0) {
       throw new NotFoundException('No brands found');
     }
@@ -26,10 +35,15 @@ export class BrandsService {
   }
 
   async findByAttr<T>(value: T, attr: T): Promise<BrandDto> {
+    let brand = null;
     let options = {};
     options[`${attr}`] = value;
 
-    const brand = await this.brandRepo.findOne({ where: options });
+    try {
+      brand = await this.brandRepo.findOne({ where: options });
+    } catch (error) {
+      throw new InternalServerErrorException(error.message);
+    }
     if (!brand) {
       throw new NotFoundException(`Brand with ${attr} ${value} not found`);
     }
@@ -43,10 +57,13 @@ export class BrandsService {
       brandId,
     };
 
-    this.brandRepo.create(newBrand);
-    const saveBrand = this.brandRepo.save(newBrand);
-
-    return saveBrand;
+    try {
+      this.brandRepo.create(newBrand);
+      const saveBrand = this.brandRepo.save(newBrand);
+      return saveBrand;
+    } catch (error) {
+      throw new InternalServerErrorException(error.message);
+    }
   }
 
   async update(
@@ -58,14 +75,22 @@ export class BrandsService {
       'brandId',
     );
 
-    this.brandRepo.merge(brand, changes);
-    const updateBrand = this.brandRepo.save(brand);
-
-    return updateBrand;
+    try {
+      this.brandRepo.merge(brand, changes);
+      const updateBrand = this.brandRepo.save(brand);
+      return updateBrand;
+    } catch (error) {
+      throw new InternalServerErrorException(error.message);
+    }
   }
 
   async delete(brandId: BrandDto['brandId']): Promise<void> {
     this.findByAttr<BrandDto['brandId']>(brandId, 'brandId');
-    this.brandRepo.delete(brandId);
+
+    try {
+      this.brandRepo.delete(brandId);
+    } catch (error) {
+      throw new InternalServerErrorException(error.message);
+    }
   }
 }

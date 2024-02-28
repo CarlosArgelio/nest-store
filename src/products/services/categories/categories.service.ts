@@ -1,4 +1,8 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import {
+  Injectable,
+  InternalServerErrorException,
+  NotFoundException,
+} from '@nestjs/common';
 import { v4 as uuidv4 } from 'uuid';
 import {} from '@nestjs/common';
 
@@ -19,7 +23,12 @@ export class CategoriesService {
   ) {}
 
   async findAll(): Promise<CategoryDto[]> {
-    const categories = await this.categoryRepo.find();
+    let categories = null;
+    try {
+      categories = await this.categoryRepo.find();
+    } catch (error) {
+      throw new InternalServerErrorException(error.message);
+    }
     if (categories.length === 0) {
       throw new NotFoundException('No categories found');
     }
@@ -27,10 +36,15 @@ export class CategoriesService {
   }
 
   async finByAttribute<T>(value: T, attribute: T): Promise<CategoryDto> {
+    let category = null;
     let options = {};
     options[`${attribute}`] = value;
 
-    const category = await this.categoryRepo.findOne({ where: options });
+    try {
+      category = await this.categoryRepo.findOne({ where: options });
+    } catch (error) {
+      throw new InternalServerErrorException(error.message);
+    }
     if (!category) {
       throw new NotFoundException(
         `No category found with ${attribute} ${value}`,
@@ -46,10 +60,14 @@ export class CategoriesService {
       ...category,
     };
 
-    this.categoryRepo.create(newCategory);
-    const saveCategory = await this.categoryRepo.save(newCategory);
+    try {
+      this.categoryRepo.create(newCategory);
+      const saveCategory = await this.categoryRepo.save(newCategory);
 
-    return saveCategory;
+      return saveCategory;
+    } catch (error) {
+      throw new InternalServerErrorException(error.message);
+    }
   }
 
   async update(
@@ -61,14 +79,21 @@ export class CategoriesService {
       'categoryId',
     );
 
-    this.categoryRepo.merge(product, changes);
-    const updateCategory = await this.categoryRepo.save(product);
-
-    return updateCategory;
+    try {
+      this.categoryRepo.merge(product, changes);
+      const updateCategory = await this.categoryRepo.save(product);
+      return updateCategory;
+    } catch (error) {
+      throw new InternalServerErrorException(error.message);
+    }
   }
 
   async delete(id: CategoryDto['categoryId']): Promise<void> {
     await this.finByAttribute<CategoryDto['categoryId']>(id, 'categoryId');
-    await this.categoryRepo.delete(id);
+    try {
+      await this.categoryRepo.delete(id);
+    } catch (error) {
+      throw new InternalServerErrorException(error.message);
+    }
   }
 }

@@ -1,4 +1,8 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import {
+  Injectable,
+  InternalServerErrorException,
+  NotFoundException,
+} from '@nestjs/common';
 import { v4 as uuidv4 } from 'uuid';
 
 import { ProductsService } from 'src/products/services/products/products.service';
@@ -20,7 +24,12 @@ export class UsersService {
   ) {}
 
   async findAll(): Promise<UserDto[]> {
-    const users = await this.userRepo.find();
+    let users = null;
+    try {
+      users = await this.userRepo.find();
+    } catch (error) {
+      throw new InternalServerErrorException(error.message);
+    }
     if (users.length === 0) {
       throw new NotFoundException('Users not found');
     }
@@ -28,15 +37,20 @@ export class UsersService {
   }
 
   async findByAttribute<T>(value: T, attr: T) {
+    let user = null;
     let options = {};
     options[`${attr}`] = value;
 
-    const findUser = await this.userRepo.findOne({ where: options });
+    try {
+      user = await this.userRepo.findOne({ where: options });
+    } catch (error) {
+      throw new InternalServerErrorException(error.message);
+    }
 
-    if (!findUser) {
+    if (!user) {
       throw new NotFoundException('user not found');
     }
-    return findUser;
+    return user;
   }
 
   async create(user: SignUpUserDto): Promise<UserDto> {
@@ -46,11 +60,15 @@ export class UsersService {
       userId,
     };
 
-    this.userRepo.create(newUser);
-    const saveUser = await this.userRepo.save(newUser);
+    try {
+      this.userRepo.create(newUser);
+      const saveUser = await this.userRepo.save(newUser);
 
-    delete saveUser.password;
-    return saveUser;
+      delete saveUser.password;
+      return saveUser;
+    } catch (error) {
+      throw new InternalServerErrorException(error.message);
+    }
   }
 
   async update(
@@ -59,16 +77,25 @@ export class UsersService {
   ): Promise<UserDto> {
     const user = await this.findByAttribute<UserDto['userId']>(id, 'userId');
 
-    this.userRepo.merge(user, changes);
-    const updateUser = await this.userRepo.save(user);
+    try {
+      this.userRepo.merge(user, changes);
+      const updateUser = await this.userRepo.save(user);
 
-    delete updateUser.password;
-    return updateUser;
+      delete updateUser.password;
+      return updateUser;
+    } catch (error) {
+      throw new InternalServerErrorException(error.message);
+    }
   }
 
   async delete(id: UserDto['userId']): Promise<void> {
     await this.findByAttribute<UserDto['userId']>(id, 'userId');
-    await this.userRepo.delete(id);
+
+    try {
+      await this.userRepo.delete(id);
+    } catch (error) {
+      throw new InternalServerErrorException(error.message);
+    }
   }
 
   async getOrders(userId: UserDto['userId']): Promise<OrderDto> {
