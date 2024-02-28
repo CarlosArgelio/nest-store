@@ -1,5 +1,8 @@
-import { faker } from '@faker-js/faker';
-import { Injectable, NotFoundException } from '@nestjs/common';
+import {
+  Injectable,
+  InternalServerErrorException,
+  NotFoundException,
+} from '@nestjs/common';
 import { v4 as uuidv4 } from 'uuid';
 
 import {
@@ -7,81 +10,88 @@ import {
   CreateCostumerDto,
   UpdateCostumerDto,
 } from 'src/users/schemas/costumers.dto';
+import { InjectRepository } from '@nestjs/typeorm';
+import { CostumerModel } from 'src/users/models/costumers.entity';
+import { Repository } from 'typeorm';
 
 @Injectable()
 export class CostumersService {
-  private costumers: CostumerDto[] = null;
+  constructor(
+    @InjectRepository(CostumerModel)
+    private costumerRepo: Repository<CostumerModel>,
+  ) {}
 
-  constructor() {
-    this.costumers = [];
-    for (let i = 0; i < 5; i++) {
-      this.costumers.push({
-        customerId: faker.datatype.uuid(),
-        name: faker.name.fullName(),
-        lastName: faker.name.lastName(),
-        phone: faker.phone.number(),
-        createdAt: faker.date.past(),
-      });
+  async findAll(): Promise<CostumerDto[]> {
+    let costumers = null;
+    try {
+      costumers = await this.costumerRepo.find();
+    } catch (error) {
+      throw new InternalServerErrorException(error.message);
     }
-  }
 
-  findAll(): CostumerDto[] {
-    const costumers = this.costumers;
     if (costumers.length === 0) {
       throw new NotFoundException('No costumers found');
     }
     return costumers;
   }
 
-  findByAttr<T>(value: T, attr: T) {
-    const costumer = this.costumers.find((costumer) => {
-      return costumer[`${attr}`] === value;
-    });
+  async findByAttr<T>(value: T, attr: T) {
+    let costumer = null;
+    let options = {};
+    options[`${attr}`] = value;
+
+    try {
+      costumer = await this.costumerRepo.findOne({ where: options });
+    } catch (error) {
+      throw new InternalServerErrorException(error.message);
+    }
+
     if (!costumer) {
       throw new NotFoundException('No costumer found');
     }
     return costumer;
   }
 
-  create(costumer: CreateCostumerDto): CostumerDto {
+  async create(costumer: CreateCostumerDto): Promise<CostumerDto> {
     const customerId = uuidv4();
-    const newCostumer: CostumerDto = {
+    const newCostumer = {
       customerId,
       ...costumer,
-      createdAt: new Date(),
     };
-    this.addCostumer(newCostumer);
-    return newCostumer;
+
+    try {
+      this.costumerRepo.create(newCostumer);
+      const saveCostumer = await this.costumerRepo.save(newCostumer);
+      return saveCostumer;
+    } catch (error) {
+      throw new InternalServerErrorException(error.message);
+    }
   }
 
-  addCostumer(costumer: CostumerDto): void {
-    this.costumers.push(costumer);
-  }
-
-  update(
+  async update(
     id: CostumerDto['customerId'],
     changes: UpdateCostumerDto,
-  ): CostumerDto {
-    this.findByAttr<CostumerDto['customerId']>(id, 'customerId');
-
-    const index = this.costumers.findIndex(
-      (customer) => customer.customerId === id,
+  ): Promise<CostumerDto> {
+    const costumer = await this.findByAttr<CostumerDto['customerId']>(
+      id,
+      'customerId',
     );
 
-    this.costumers[index] = {
-      ...this.costumers[index],
-      ...changes,
-    };
-    return this.costumers[index];
+    try {
+      this.costumerRepo.merge(costumer, changes);
+      const saveCostumer = await this.costumerRepo.save(costumer);
+      return saveCostumer;
+    } catch (error) {
+      throw new InternalServerErrorException(error.message);
+    }
   }
 
-  delete(id: CostumerDto['customerId']): void {
-    this.findByAttr<CostumerDto['customerId']>(id, 'customerId');
-
-    const index = this.costumers.findIndex(
-      (customer) => customer.customerId === id,
-    );
-
-    this.costumers.splice(index, 1);
+  async delete(id: CostumerDto['customerId']): Promise<void> {
+    await this.findByAttr<CostumerDto['customerId']>(id, 'customerId');
+    try {
+      await this.costumerRepo.delete(id);
+    } catch (error) {
+      throw new InternalServerErrorException(error.message);
+    }
   }
 }

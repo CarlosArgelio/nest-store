@@ -23,7 +23,11 @@ export class CostumerDto extends CostumerModel {
   })
   readonly phone: string;
 }
-export class CreateCostumerDto extends OmitType(CostumerDto, ['customerId']) {
+export class CreateCostumerDto extends OmitType(CostumerDto, [
+  'customerId',
+  'createdAt',
+  'updatedAt',
+]) {
   @IsEmail()
   @IsNotEmpty()
   readonly email: string;
@@ -31,5 +35,17 @@ export class CreateCostumerDto extends OmitType(CostumerDto, ['customerId']) {
   @IsString()
   @IsNotEmpty()
   readonly password: string;
+
+  @IsString()
+  @IsNotEmpty()
+  readonly name: string;
+
+  @IsString()
+  @IsNotEmpty()
+  readonly lastName: string;
+
+  @IsString()
+  @IsNotEmpty()
+  readonly phone: string;
 }
 export class UpdateCostumerDto extends PartialType(CreateCostumerDto) {}
