@@ -8,7 +8,7 @@ export enum ROLE {
 }
 
 @Entity()
-export class UserModel extends BaseClassModel {
+export class UserModel implements BaseClassModel {
   @PrimaryGeneratedColumn('uuid')
   userId: string;
 
@@ -29,4 +29,17 @@ export class UserModel extends BaseClassModel {
     enum: ROLE,
   })
   role: ROLE;
+
+  @Column({
+    type: 'timestamp',
+    default: () => 'CURRENT_TIMESTAMP',
+    nullable: false,
+  })
+  createdAt: Date;
+
+  @Column({
+    type: 'timestamp',
+    nullable: true,
+  })
+  updatedAt?: Date;
 }
