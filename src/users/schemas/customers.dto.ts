@@ -2,9 +2,9 @@
 import { ApiProperty, OmitType, PartialType } from '@nestjs/swagger';
 import { IsEmail, IsNotEmpty, IsString } from 'class-validator';
 
-import { CostumerModel } from 'src/users/models/costumers.entity';
+import { CustomerModel } from 'src/users/models/customers.entity';
 
-export class CostumerDto extends CostumerModel {
+export class CustomerDto extends CustomerModel {
   @ApiProperty({
     description: 'Costumer name',
     example: 'Carlos Argelio',
@@ -23,7 +23,7 @@ export class CostumerDto extends CostumerModel {
   })
   readonly phone: string;
 }
-export class CreateCostumerDto extends OmitType(CostumerDto, [
+export class CreateCustomerDto extends OmitType(CustomerDto, [
   'customerId',
   'createdAt',
   'updatedAt',
@@ -48,4 +48,4 @@ export class CreateCostumerDto extends OmitType(CostumerDto, [
   @IsNotEmpty()
   readonly phone: string;
 }
-export class UpdateCostumerDto extends PartialType(CreateCostumerDto) {}
+export class UpdateCustomerDto extends PartialType(CreateCustomerDto) {}

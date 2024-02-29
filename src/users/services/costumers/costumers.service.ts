@@ -6,21 +6,21 @@ import {
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 
-import { CostumerModel } from 'src/users/models/costumers.entity';
+import { CustomerModel } from 'src/users/models/customers.entity';
 import {
-  CostumerDto,
-  CreateCostumerDto,
-  UpdateCostumerDto,
-} from 'src/users/schemas/costumers.dto';
+  CreateCustomerDto,
+  CustomerDto,
+  UpdateCustomerDto,
+} from 'src/users/schemas/customers.dto';
 
 @Injectable()
-export class CostumersService {
+export class CustomersService {
   constructor(
-    @InjectRepository(CostumerModel)
-    private costumerRepo: Repository<CostumerModel>,
+    @InjectRepository(CustomerModel)
+    private costumerRepo: Repository<CustomerModel>,
   ) {}
 
-  async findAll(): Promise<CostumerDto[]> {
+  async findAll(): Promise<CustomerDto[]> {
     let costumers = null;
     try {
       costumers = await this.costumerRepo.find();
@@ -51,7 +51,7 @@ export class CostumersService {
     return costumer;
   }
 
-  async create(costumer: CreateCostumerDto): Promise<CostumerDto> {
+  async create(costumer: CreateCustomerDto): Promise<CustomerDto> {
     try {
       const newCostumer = this.costumerRepo.create(costumer);
       return await this.costumerRepo.save(newCostumer);
@@ -61,10 +61,10 @@ export class CostumersService {
   }
 
   async update(
-    id: CostumerDto['customerId'],
-    changes: UpdateCostumerDto,
-  ): Promise<CostumerDto> {
-    const costumer = await this.findByAttr<CostumerDto['customerId']>(
+    id: CustomerDto['customerId'],
+    changes: UpdateCustomerDto,
+  ): Promise<CustomerDto> {
+    const costumer = await this.findByAttr<CustomerDto['customerId']>(
       id,
       'customerId',
     );
@@ -78,8 +78,8 @@ export class CostumersService {
     }
   }
 
-  async delete(id: CostumerDto['customerId']): Promise<void> {
-    await this.findByAttr<CostumerDto['customerId']>(id, 'customerId');
+  async delete(id: CustomerDto['customerId']): Promise<void> {
+    await this.findByAttr<CustomerDto['customerId']>(id, 'customerId');
     try {
       await this.costumerRepo.delete(id);
     } catch (error) {

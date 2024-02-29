@@ -14,19 +14,19 @@ import { ApiParam, ApiTags } from '@nestjs/swagger';
 
 import { ResponseModel } from 'src/base.model';
 import {
-  CostumerDto,
-  CreateCostumerDto,
-  UpdateCostumerDto,
-} from 'src/users/schemas/costumers.dto';
-import { CostumersService } from 'src/users/services/costumers/costumers.service';
+  CreateCustomerDto,
+  CustomerDto,
+  UpdateCustomerDto,
+} from 'src/users/schemas/customers.dto';
+import { CustomersService } from 'src/users/services/costumers/costumers.service';
 
 @ApiTags('costumers')
 @Controller('costumers')
 export class CostumersController {
-  constructor(private costumerServices: CostumersService) {}
+  constructor(private costumerServices: CustomersService) {}
   @Get()
   @HttpCode(HttpStatus.OK)
-  async findAll(): Promise<ResponseModel<CostumerDto[]>> {
+  async findAll(): Promise<ResponseModel<CustomerDto[]>> {
     const constumers = await this.costumerServices.findAll();
     return { statusCode: HttpStatus.OK, data: constumers };
   }
@@ -34,8 +34,8 @@ export class CostumersController {
   @Post()
   @HttpCode(HttpStatus.CREATED)
   async create(
-    @Body() payload: CreateCostumerDto,
-  ): Promise<ResponseModel<CostumerDto>> {
+    @Body() payload: CreateCustomerDto,
+  ): Promise<ResponseModel<CustomerDto>> {
     const newCostumer = await this.costumerServices.create(payload);
     return { statusCode: HttpStatus.OK, data: newCostumer };
   }
@@ -46,9 +46,9 @@ export class CostumersController {
     name: 'customerId',
   })
   async update(
-    @Param('customerId', ParseUUIDPipe) customerId: CostumerDto['customerId'],
-    @Body() changes: UpdateCostumerDto,
-  ): Promise<ResponseModel<CostumerDto>> {
+    @Param('customerId', ParseUUIDPipe) customerId: CustomerDto['customerId'],
+    @Body() changes: UpdateCustomerDto,
+  ): Promise<ResponseModel<CustomerDto>> {
     const updateCostumer = await this.costumerServices.update(
       customerId,
       changes,
@@ -62,7 +62,7 @@ export class CostumersController {
     name: 'customerId',
   })
   async delete(
-    @Param('customerId', ParseUUIDPipe) customerId: CostumerDto['customerId'],
+    @Param('customerId', ParseUUIDPipe) customerId: CustomerDto['customerId'],
   ) {
     await this.costumerServices.delete(customerId);
   }
