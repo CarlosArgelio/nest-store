@@ -1,4 +1,10 @@
-import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+import {
+  Column,
+  CreateDateColumn,
+  Entity,
+  PrimaryGeneratedColumn,
+  UpdateDateColumn,
+} from 'typeorm';
 
 import { BaseClassModel } from 'src/base.model';
 
@@ -37,16 +43,17 @@ export class ProductModel implements BaseClassModel {
   })
   stock: number;
 
-  @Column({
-    type: 'timestamp',
-    nullable: false,
+  @CreateDateColumn({
+    type: 'timestamptz',
     default: () => 'CURRENT_TIMESTAMP',
+    name: 'created_at',
   })
   createdAt: Date;
 
-  @Column({
-    type: 'timestamp',
-    nullable: true,
+  @UpdateDateColumn({
+    type: 'timestamptz',
+    default: () => 'CURRENT_TIMESTAMP',
+    name: 'updated_at',
   })
   updatedAt?: Date;
 
