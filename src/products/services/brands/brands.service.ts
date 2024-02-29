@@ -1,19 +1,17 @@
-import { faker } from '@faker-js/faker';
 import {
   Injectable,
   InternalServerErrorException,
   NotFoundException,
 } from '@nestjs/common';
-import { v4 as uuidv4 } from 'uuid';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Repository } from 'typeorm';
 
+import { BrandModel } from 'src/products/models/brands.entity';
 import {
   BrandDto,
   CreateBrandDto,
   UpdateBrandDto,
 } from 'src/products/schemas/brands.dto';
-import { InjectRepository } from '@nestjs/typeorm';
-import { BrandModel } from 'src/products/models/brands.entity';
-import { Repository } from 'typeorm';
 
 @Injectable()
 export class BrandsService {
@@ -36,7 +34,7 @@ export class BrandsService {
 
   async findByAttr<T>(value: T, attr: T): Promise<BrandDto> {
     let brand = null;
-    let options = {};
+    const options = {};
     options[`${attr}`] = value;
 
     try {
@@ -50,17 +48,10 @@ export class BrandsService {
     return brand;
   }
 
-  async create(payload: CreateBrandDto): Promise<BrandDto> {
-    const brandId = uuidv4();
-    const newBrand = {
-      ...payload,
-      brandId,
-    };
-
+  async create(brand: CreateBrandDto): Promise<BrandDto> {
     try {
-      this.brandRepo.create(newBrand);
-      const saveBrand = this.brandRepo.save(newBrand);
-      return saveBrand;
+      const newBrand = this.brandRepo.create(brand);
+      return this.brandRepo.save(newBrand);
     } catch (error) {
       throw new InternalServerErrorException(error.message);
     }

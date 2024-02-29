@@ -3,17 +3,15 @@ import {
   InternalServerErrorException,
   NotFoundException,
 } from '@nestjs/common';
-import { v4 as uuidv4 } from 'uuid';
-import {} from '@nestjs/common';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Repository } from 'typeorm';
 
+import { CategoryModel } from 'src/products/models/categories.entity';
 import {
   CategoryDto,
   CreateCategoryDto,
   UpdateCategoryDto,
 } from 'src/products/schemas/categories.dto';
-import { InjectRepository } from '@nestjs/typeorm';
-import { CategoryModel } from 'src/products/models/categories.entity';
-import { Repository } from 'typeorm';
 
 @Injectable()
 export class CategoriesService {
@@ -37,7 +35,7 @@ export class CategoriesService {
 
   async finByAttribute<T>(value: T, attribute: T): Promise<CategoryDto> {
     let category = null;
-    let options = {};
+    const options = {};
     options[`${attribute}`] = value;
 
     try {
@@ -54,17 +52,9 @@ export class CategoriesService {
   }
 
   async create(category: CreateCategoryDto): Promise<CategoryDto> {
-    const categoryId = uuidv4();
-    const newCategory = {
-      categoryId,
-      ...category,
-    };
-
     try {
-      this.categoryRepo.create(newCategory);
-      const saveCategory = await this.categoryRepo.save(newCategory);
-
-      return saveCategory;
+      const newCategory = this.categoryRepo.create(category);
+      return await this.categoryRepo.save(newCategory);
     } catch (error) {
       throw new InternalServerErrorException(error.message);
     }

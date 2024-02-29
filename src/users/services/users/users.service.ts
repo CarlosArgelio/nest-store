@@ -3,18 +3,17 @@ import {
   InternalServerErrorException,
   NotFoundException,
 } from '@nestjs/common';
-import { v4 as uuidv4 } from 'uuid';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Repository } from 'typeorm';
 
 import { ProductsService } from 'src/products/services/products/products.service';
+import { UserModel } from 'src/users/models/users.entity';
 import { OrderDto } from 'src/users/schemas/orders.dto';
 import {
   SignUpUserDto,
   UpdateUserDto,
   UserDto,
 } from 'src/users/schemas/users.dto';
-import { InjectRepository } from '@nestjs/typeorm';
-import { UserModel } from 'src/users/models/users.entity';
-import { Repository } from 'typeorm';
 
 @Injectable()
 export class UsersService {
@@ -38,7 +37,7 @@ export class UsersService {
 
   async findByAttribute<T>(value: T, attr: T) {
     let user = null;
-    let options = {};
+    const options = {};
     options[`${attr}`] = value;
 
     try {
@@ -54,14 +53,8 @@ export class UsersService {
   }
 
   async create(user: SignUpUserDto): Promise<UserDto> {
-    const userId = uuidv4();
-    const newUser = {
-      ...user,
-      userId,
-    };
-
     try {
-      this.userRepo.create(newUser);
+      const newUser = this.userRepo.create(user);
       const saveUser = await this.userRepo.save(newUser);
 
       delete saveUser.password;

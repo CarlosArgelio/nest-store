@@ -5,7 +5,6 @@ import {
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { v4 as uuidv4 } from 'uuid';
 
 import { ProductModel } from 'src/products/models/products.entity';
 import {
@@ -49,13 +48,8 @@ export class ProductsService {
   }
 
   async create(product: CreateProductDto): Promise<ProductDto> {
-    const newProduct = {
-      ...product,
-      productId: uuidv4(),
-    };
-
     try {
-      const createProduct = this.productRepo.create(newProduct);
+      const createProduct = this.productRepo.create(product);
       return await this.productRepo.save(createProduct);
     } catch (error) {
       throw new InternalServerErrorException(error.message);
