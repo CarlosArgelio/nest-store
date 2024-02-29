@@ -2,7 +2,7 @@ version: '3.3'
 
 services:
   postgres:
-    image: postgres:13
+    image: postgres:${POSTGRES_VERSION}
     environment:
      - POSTGRES_DB=${DATABASE_NAME}
      - POSTGRES_USER=${DATABASE_USER}
@@ -18,5 +18,29 @@ services:
      - PGADMIN_DEFAULT_PASSWORD=${PGADMIN_PASSWORD}
     ports:
       - "${PGADMIN_PORT_INSTANCE}:${PGADMIN_PORT_IMAGE}"
+    depends_on:
+      - postgres
+
+  mysql:
+    image: mysql:${MYSQL_VERSION}
+    environment:
+      - MYSQL_DATABASE=${MYSQL_DB}
+      - MYSQL_USER=${MYSQL_USER}
+      - MYSQL_ROOT_PASSWORD=${MYSQL_PASSWORD}
+    ports:
+      - '${MYSQL_PORT}:${MYSQL_PORT}'
+    volumes:
+      - ./mysql_data:/var/lib/mysql
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin
+    environment:
+     - MYSQL_ROOT_PASSWORD=123456
+     - PMA_HOST=mysql
+    ports:
+      - '${PHPMYADMIN_PORT_INSTANCE}:${PHPMYADMIN_PORT_IMAGE}'
+    depends_on:
+      - mysql
+
 volumes:
   postgres_data: {}
+  mysql_data: {}
