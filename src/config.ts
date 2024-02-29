@@ -1,5 +1,9 @@
 import { registerAs } from '@nestjs/config';
 
+import { Environment } from './enviroments';
+
+const enviroment = process.env.NODE_ENV;
+
 export default registerAs('config', () => ({
   database: {
     name: process.env.DATABASE_NAME,
@@ -25,4 +29,8 @@ export default registerAs('config', () => ({
     type: 'mysql',
   },
   apiKey: process.env.API_KEY,
+  enviroment: enviroment,
+  isDev: enviroment ? Environment.Development : false,
+  isStg: enviroment ? Environment.Staging : false,
+  isProd: enviroment ? Environment.Production : false,
 }));
