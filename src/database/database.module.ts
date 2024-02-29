@@ -28,8 +28,8 @@ const API_KEY_PROD = 'PROD_XYZ';
           username: user,
           password,
           database,
-          // synchronize: true,
-          // autoLoadEntities: true,
+          synchronize: false,
+          autoLoadEntities: true,
         };
       },
     }),
