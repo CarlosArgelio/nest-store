@@ -3,7 +3,7 @@ import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
 import { BaseClassModel } from 'src/base.model';
 
 @Entity()
-export class BrandModel implements BaseClassModel {
+export class BrandModel extends BaseClassModel {
   @PrimaryGeneratedColumn('uuid')
   brandId: string;
 
@@ -14,17 +14,4 @@ export class BrandModel implements BaseClassModel {
     unique: true,
   })
   name: string;
-
-  @Column({
-    type: 'timestamp',
-    default: () => 'CURRENT_TIMESTAMP',
-    nullable: false,
-  })
-  createdAt: Date;
-
-  @Column({
-    type: 'timestamp',
-    nullable: true,
-  })
-  updatedAt?: Date;
 }

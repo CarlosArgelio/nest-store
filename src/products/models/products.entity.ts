@@ -1,15 +1,9 @@
-import {
-  Column,
-  CreateDateColumn,
-  Entity,
-  PrimaryGeneratedColumn,
-  UpdateDateColumn,
-} from 'typeorm';
+import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
 
 import { BaseClassModel } from 'src/base.model';
 
 @Entity()
-export class ProductModel implements BaseClassModel {
+export class ProductModel extends BaseClassModel {
   @PrimaryGeneratedColumn('uuid')
   productId: string;
 
@@ -42,20 +36,6 @@ export class ProductModel implements BaseClassModel {
     type: 'int',
   })
   stock: number;
-
-  @CreateDateColumn({
-    type: 'timestamptz',
-    default: () => 'CURRENT_TIMESTAMP',
-    name: 'created_at',
-  })
-  createdAt: Date;
-
-  @UpdateDateColumn({
-    type: 'timestamptz',
-    default: () => 'CURRENT_TIMESTAMP',
-    name: 'updated_at',
-  })
-  updatedAt?: Date;
 
   // @Column({
   //   type: 'varchar',

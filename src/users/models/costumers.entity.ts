@@ -3,7 +3,7 @@ import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
 import { BaseClassModel } from 'src/base.model';
 
 @Entity()
-export class CostumerModel implements BaseClassModel {
+export class CostumerModel extends BaseClassModel {
   @PrimaryGeneratedColumn('uuid')
   customerId: string;
 
@@ -27,17 +27,4 @@ export class CostumerModel implements BaseClassModel {
     nullable: false,
   })
   phone: string;
-
-  @Column({
-    type: 'timestamp',
-    default: () => 'CURRENT_TIMESTAMP',
-    nullable: false,
-  })
-  createdAt: Date;
-
-  @Column({
-    type: 'timestamp',
-    nullable: true,
-  })
-  updatedAt?: Date;
 }
