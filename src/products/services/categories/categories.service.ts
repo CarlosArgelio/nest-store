@@ -61,13 +61,10 @@ export class CategoriesService {
   }
 
   async update(
-    id: CategoryDto['categoryId'],
+    id: CategoryDto['id'],
     changes: UpdateCategoryDto,
   ): Promise<CategoryDto> {
-    const product = await this.finByAttribute<CategoryDto['categoryId']>(
-      id,
-      'categoryId',
-    );
+    const product = await this.finByAttribute<CategoryDto['id']>(id, 'id');
 
     try {
       this.categoryRepo.merge(product, changes);
@@ -78,8 +75,8 @@ export class CategoriesService {
     }
   }
 
-  async delete(id: CategoryDto['categoryId']): Promise<void> {
-    await this.finByAttribute<CategoryDto['categoryId']>(id, 'categoryId');
+  async delete(id: CategoryDto['id']): Promise<void> {
+    await this.finByAttribute<CategoryDto['id']>(id, 'id');
     try {
       await this.categoryRepo.delete(id);
     } catch (error) {

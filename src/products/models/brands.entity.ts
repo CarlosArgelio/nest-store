@@ -1,17 +1,9 @@
-import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+import { Column, Entity } from 'typeorm';
 
 import { BaseClassModel } from 'src/base.model';
 
-@Entity()
+@Entity({ name: 'brands' })
 export class BrandModel extends BaseClassModel {
-  @PrimaryGeneratedColumn('uuid')
-  brandId: string;
-
-  @Column({
-    type: 'varchar',
-    length: 255,
-    nullable: false,
-    unique: true,
-  })
+  @Column({ type: 'varchar', length: 255, nullable: false, unique: true })
   name: string;
 }

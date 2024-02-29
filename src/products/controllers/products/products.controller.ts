@@ -63,15 +63,15 @@ export class ProductsController {
     };
   }
 
-  @Get('/:productId')
+  @Get('/:id')
   @HttpCode(HttpStatus.OK)
   @ApiParam({
-    name: 'productId',
+    name: 'id',
   })
   async findOne(
-    @Param('productId', ParseUUIDPipe) productId: ProductDto['productId'],
+    @Param('id', ParseUUIDPipe) id: ProductDto['id'],
   ): Promise<ResponseModel<ProductDto>> {
-    const product = await this.productsService.findOne(productId);
+    const product = await this.productsService.findOne(id);
     return {
       statusCode: HttpStatus.OK,
       data: product,
@@ -91,30 +91,30 @@ export class ProductsController {
     };
   }
 
-  @Put('/:productId')
+  @Put('/:id')
   @HttpCode(HttpStatus.OK)
   @ApiParam({
-    name: 'productId',
+    name: 'id',
   })
   async update(
-    @Param('productId', ParseUUIDPipe) productId: ProductDto['productId'],
+    @Param('id', ParseUUIDPipe) id: ProductDto['id'],
     @Body() changes: UpdateProductDto,
   ): Promise<ResponseModel<ProductDto>> {
-    const product = await this.productsService.update(productId, changes);
+    const product = await this.productsService.update(id, changes);
     return {
       statusCode: HttpStatus.OK,
       data: product,
     };
   }
 
-  @Delete('/:productId')
+  @Delete('/:id')
   @HttpCode(HttpStatus.NO_CONTENT)
   @ApiParam({
-    name: 'productId',
+    name: 'id',
   })
   async delete(
-    @Param('productId', ParseUUIDPipe) productId: ProductDto['productId'],
+    @Param('id', ParseUUIDPipe) id: ProductDto['id'],
   ): Promise<void> {
-    await this.productsService.delete(productId);
+    await this.productsService.delete(id);
   }
 }

@@ -61,13 +61,10 @@ export class CustomersService {
   }
 
   async update(
-    id: CustomerDto['customerId'],
+    id: CustomerDto['id'],
     changes: UpdateCustomerDto,
   ): Promise<CustomerDto> {
-    const costumer = await this.findByAttr<CustomerDto['customerId']>(
-      id,
-      'customerId',
-    );
+    const costumer = await this.findByAttr<CustomerDto['id']>(id, 'id');
 
     try {
       this.costumerRepo.merge(costumer, changes);
@@ -78,8 +75,8 @@ export class CustomersService {
     }
   }
 
-  async delete(id: CustomerDto['customerId']): Promise<void> {
-    await this.findByAttr<CustomerDto['customerId']>(id, 'customerId');
+  async delete(id: CustomerDto['id']): Promise<void> {
+    await this.findByAttr<CustomerDto['id']>(id, 'id');
     try {
       await this.costumerRepo.delete(id);
     } catch (error) {

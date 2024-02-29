@@ -24,7 +24,7 @@ export class CustomerDto extends CustomerModel {
   readonly phone: string;
 }
 export class CreateCustomerDto extends OmitType(CustomerDto, [
-  'customerId',
+  'id',
   'createdAt',
   'updatedAt',
 ]) {

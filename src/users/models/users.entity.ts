@@ -1,10 +1,4 @@
-import {
-  Column,
-  Entity,
-  JoinColumn,
-  OneToOne,
-  PrimaryGeneratedColumn,
-} from 'typeorm';
+import { Column, Entity, JoinColumn, OneToOne } from 'typeorm';
 
 import { BaseClassModel } from 'src/base.model';
 
@@ -15,11 +9,8 @@ export enum ROLE {
   CUSTOMER = 'customer',
 }
 
-@Entity()
+@Entity({ name: 'users' })
 export class UserModel extends BaseClassModel {
-  @PrimaryGeneratedColumn('uuid')
-  userId: string;
-
   @Column({ type: 'varchar', length: 255, unique: true })
   email: string;
 

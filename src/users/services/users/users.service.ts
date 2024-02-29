@@ -64,11 +64,8 @@ export class UsersService {
     }
   }
 
-  async update(
-    id: UserDto['userId'],
-    changes: UpdateUserDto,
-  ): Promise<UserDto> {
-    const user = await this.findByAttribute<UserDto['userId']>(id, 'userId');
+  async update(id: UserDto['id'], changes: UpdateUserDto): Promise<UserDto> {
+    const user = await this.findByAttribute<UserDto['id']>(id, 'id');
 
     try {
       this.userRepo.merge(user, changes);
@@ -81,8 +78,8 @@ export class UsersService {
     }
   }
 
-  async delete(id: UserDto['userId']): Promise<void> {
-    await this.findByAttribute<UserDto['userId']>(id, 'userId');
+  async delete(id: UserDto['id']): Promise<void> {
+    await this.findByAttribute<UserDto['id']>(id, 'id');
 
     try {
       await this.userRepo.delete(id);
@@ -91,11 +88,8 @@ export class UsersService {
     }
   }
 
-  async getOrders(userId: UserDto['userId']): Promise<OrderDto> {
-    const user = await this.findByAttribute<UserDto['userId']>(
-      userId,
-      'userId',
-    );
+  async getOrders(id: UserDto['id']): Promise<OrderDto> {
+    const user = await this.findByAttribute<UserDto['id']>(id, 'id');
     const products = await this.productsServices.findAll();
     const response = {
       date: new Date(),

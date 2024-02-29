@@ -31,15 +31,15 @@ export class BrandsController {
     return { statusCode: HttpStatus.OK, data: brands };
   }
 
-  @Get(':brandId')
+  @Get(':id')
   @HttpCode(HttpStatus.OK)
   @ApiParam({
-    name: 'brandId',
+    name: 'id',
   })
   async findOne(
-    @Param('brandId', ParseUUIDPipe) brandId: BrandDto['brandId'],
+    @Param('id', ParseUUIDPipe) id: BrandDto['id'],
   ): Promise<ResponseModel<BrandDto>> {
-    const brand = await this.brandsService.findByAttr(brandId, 'brandId');
+    const brand = await this.brandsService.findByAttr(id, 'id');
     return { statusCode: HttpStatus.OK, data: brand };
   }
 
@@ -52,25 +52,25 @@ export class BrandsController {
     return { statusCode: HttpStatus.CREATED, data: newBrand };
   }
 
-  @Put(':brandId')
+  @Put(':id')
   @HttpCode(HttpStatus.OK)
   @ApiParam({
-    name: 'brandId',
+    name: 'id',
   })
   async update(
-    @Param('brandId', ParseUUIDPipe) brandId: BrandDto['brandId'],
+    @Param('id', ParseUUIDPipe) id: BrandDto['id'],
     @Body() changes: UpdateBrandDto,
   ): Promise<ResponseModel<BrandDto>> {
-    const updateBrand = await this.brandsService.update(brandId, changes);
+    const updateBrand = await this.brandsService.update(id, changes);
     return { statusCode: HttpStatus.OK, data: updateBrand };
   }
 
-  @Delete(':brandId')
+  @Delete(':id')
   @HttpCode(HttpStatus.NO_CONTENT)
   @ApiParam({
-    name: 'brandId',
+    name: 'id',
   })
-  async delete(@Param('brandId', ParseUUIDPipe) brandId: BrandDto['brandId']) {
-    await this.brandsService.delete(brandId);
+  async delete(@Param('id', ParseUUIDPipe) id: BrandDto['id']) {
+    await this.brandsService.delete(id);
   }
 }

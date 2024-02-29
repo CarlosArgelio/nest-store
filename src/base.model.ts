@@ -1,4 +1,8 @@
-import { CreateDateColumn, UpdateDateColumn } from 'typeorm';
+import {
+  CreateDateColumn,
+  PrimaryGeneratedColumn,
+  UpdateDateColumn,
+} from 'typeorm';
 
 export interface ResponseModel<T> {
   statusCode: number;
@@ -6,6 +10,9 @@ export interface ResponseModel<T> {
 }
 
 export class BaseClassModel {
+  @PrimaryGeneratedColumn('uuid')
+  id: string;
+
   @CreateDateColumn({
     type: 'timestamptz',
     default: () => 'CURRENT_TIMESTAMP',

@@ -11,7 +11,7 @@ import { UsersController } from './controllers/users/users.controller';
 //entities
 import { CustomerModel } from './models/customers.entity';
 import { UserModel } from './models/users.entity';
-import { CustomersService } from './services/costumers/costumers.service';
+import { CustomersService } from './services/customers/customers.service';
 import { UsersService } from './services/users/users.service';
 
 @Module({

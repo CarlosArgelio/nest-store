@@ -34,10 +34,10 @@ export class ProductsService {
     return products;
   }
 
-  async findOne(id: ProductDto['productId']): Promise<ProductDto> {
+  async findOne(id: ProductDto['id']): Promise<ProductDto> {
     let product = null;
     try {
-      product = await this.productRepo.findOne({ productId: id });
+      product = await this.productRepo.findOne({ id: id });
     } catch (error) {
       throw new InternalServerErrorException(error.message);
     }
@@ -57,7 +57,7 @@ export class ProductsService {
   }
 
   async update(
-    id: ProductDto['productId'],
+    id: ProductDto['id'],
     changes: UpdateProductDto,
   ): Promise<ProductDto> {
     const product = await this.findOne(id);
@@ -70,7 +70,7 @@ export class ProductsService {
     }
   }
 
-  async delete(id: ProductDto['productId']): Promise<void> {
+  async delete(id: ProductDto['id']): Promise<void> {
     await this.findOne(id);
     try {
       this.productRepo.delete(id);

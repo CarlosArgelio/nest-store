@@ -18,10 +18,10 @@ import {
   CustomerDto,
   UpdateCustomerDto,
 } from 'src/users/schemas/customers.dto';
-import { CustomersService } from 'src/users/services/costumers/costumers.service';
+import { CustomersService } from 'src/users/services/customers/customers.service';
 
-@ApiTags('costumers')
-@Controller('costumers')
+@ApiTags('customers')
+@Controller('customers')
 export class CostumersController {
   constructor(private costumerServices: CustomersService) {}
   @Get()
@@ -40,30 +40,25 @@ export class CostumersController {
     return { statusCode: HttpStatus.OK, data: newCostumer };
   }
 
-  @Put(':customerId')
+  @Put(':id')
   @HttpCode(HttpStatus.OK)
   @ApiParam({
-    name: 'customerId',
+    name: 'id',
   })
   async update(
-    @Param('customerId', ParseUUIDPipe) customerId: CustomerDto['customerId'],
+    @Param('id', ParseUUIDPipe) id: CustomerDto['id'],
     @Body() changes: UpdateCustomerDto,
   ): Promise<ResponseModel<CustomerDto>> {
-    const updateCostumer = await this.costumerServices.update(
-      customerId,
-      changes,
-    );
+    const updateCostumer = await this.costumerServices.update(id, changes);
     return { statusCode: HttpStatus.OK, data: updateCostumer };
   }
 
-  @Delete(':customerId')
+  @Delete(':id')
   @HttpCode(HttpStatus.NO_CONTENT)
   @ApiParam({
-    name: 'customerId',
+    name: 'id',
   })
-  async delete(
-    @Param('customerId', ParseUUIDPipe) customerId: CustomerDto['customerId'],
-  ) {
-    await this.costumerServices.delete(customerId);
+  async delete(@Param('id', ParseUUIDPipe) id: CustomerDto['id']) {
+    await this.costumerServices.delete(id);
   }
 }

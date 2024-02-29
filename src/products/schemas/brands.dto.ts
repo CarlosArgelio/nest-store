@@ -3,9 +3,7 @@ import { IsString } from 'class-validator';
 
 import { BrandModel } from 'src/products/models/brands.entity';
 
-export class BrandDto implements BrandModel {
-  brandId: string;
-
+export class BrandDto extends BrandModel {
   @IsString()
   name: string;
 
@@ -13,7 +11,7 @@ export class BrandDto implements BrandModel {
   updatedAt?: Date;
 }
 export class CreateBrandDto extends OmitType(BrandDto, [
-  'brandId',
+  'id',
   'createdAt',
   'updatedAt',
 ]) {}

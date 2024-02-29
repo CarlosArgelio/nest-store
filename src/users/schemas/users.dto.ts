@@ -6,7 +6,7 @@ import { ROLE, UserModel } from '../models/users.entity';
 export class UserDto extends UserModel {}
 
 export class SignUpUserDto extends OmitType(UserModel, [
-  'userId',
+  'id',
   'createdAt',
   'updatedAt',
 ]) {

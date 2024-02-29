@@ -57,14 +57,8 @@ export class BrandsService {
     }
   }
 
-  async update(
-    brandId: BrandDto['brandId'],
-    changes: UpdateBrandDto,
-  ): Promise<BrandDto> {
-    const brand = await this.findByAttr<BrandDto['brandId']>(
-      brandId,
-      'brandId',
-    );
+  async update(id: BrandDto['id'], changes: UpdateBrandDto): Promise<BrandDto> {
+    const brand = await this.findByAttr<BrandDto['id']>(id, 'id');
 
     try {
       this.brandRepo.merge(brand, changes);
@@ -75,11 +69,11 @@ export class BrandsService {
     }
   }
 
-  async delete(brandId: BrandDto['brandId']): Promise<void> {
-    this.findByAttr<BrandDto['brandId']>(brandId, 'brandId');
+  async delete(id: BrandDto['id']): Promise<void> {
+    this.findByAttr<BrandDto['id']>(id, 'id');
 
     try {
-      this.brandRepo.delete(brandId);
+      this.brandRepo.delete(id);
     } catch (error) {
       throw new InternalServerErrorException(error.message);
     }

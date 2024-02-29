@@ -33,17 +33,17 @@ export class UsersController {
     return { statusCode: HttpStatus.OK, data: users };
   }
 
-  @Get('/:userId')
+  @Get('/:id')
   @HttpCode(HttpStatus.OK)
   @ApiParam({
-    name: 'userId',
+    name: 'id',
   })
   async findOne(
-    @Param('userId', ParseUUIDPipe) userId: UserDto['userId'],
+    @Param('id', ParseUUIDPipe) id: UserDto['id'],
   ): Promise<ResponseModel<UserDto>> {
-    const user = await this.usersServices.findByAttribute<UserDto['userId']>(
-      userId,
-      'userId',
+    const user = await this.usersServices.findByAttribute<UserDto['id']>(
+      id,
+      'id',
     );
     return { statusCode: HttpStatus.OK, data: user };
   }
@@ -55,37 +55,37 @@ export class UsersController {
     return { statusCode: HttpStatus.CREATED, data: newUser };
   }
 
-  @Put('/:userId')
+  @Put('/:id')
   @HttpCode(HttpStatus.OK)
   @ApiParam({
-    name: 'userId',
+    name: 'id',
   })
   async update(
-    @Param('userId', ParseUUIDPipe) userId: UserDto['userId'],
+    @Param('id', ParseUUIDPipe) id: UserDto['id'],
     @Body() changes: UpdateUserDto,
   ): Promise<ResponseModel<UserDto>> {
-    const editUser = await this.usersServices.update(userId, changes);
+    const editUser = await this.usersServices.update(id, changes);
     return { statusCode: HttpStatus.OK, data: editUser };
   }
 
-  @Delete('/:userId')
+  @Delete('/:id')
   @HttpCode(HttpStatus.NO_CONTENT)
   @ApiParam({
-    name: 'userId',
+    name: 'id',
   })
-  async delete(@Param('userId', ParseUUIDPipe) userId: UserDto['userId']) {
-    await this.usersServices.delete(userId);
+  async delete(@Param('id', ParseUUIDPipe) id: UserDto['id']) {
+    await this.usersServices.delete(id);
   }
 
-  @Get('/:userId/orders')
+  @Get('/:id/orders')
   @HttpCode(HttpStatus.OK)
   @ApiParam({
-    name: 'userId',
+    name: 'id',
   })
   async getOrders(
-    @Param('userId', ParseUUIDPipe) userId: UserDto['userId'],
+    @Param('id', ParseUUIDPipe) id: UserDto['id'],
   ): Promise<ResponseModel<OrderDto>> {
-    const orders = await this.usersServices.getOrders(userId);
+    const orders = await this.usersServices.getOrders(id);
     return {
       statusCode: HttpStatus.OK,
       data: orders,

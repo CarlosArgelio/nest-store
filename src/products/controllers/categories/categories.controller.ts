@@ -50,10 +50,10 @@ export class CategoriesController {
     };
   }
 
-  @Get('/:categoryId')
+  @Get('/:id')
   @HttpCode(HttpStatus.OK)
   @ApiParam({
-    name: 'categoryId',
+    name: 'id',
   })
   @ApiOkResponse({
     description: 'List of categories',
@@ -65,11 +65,11 @@ export class CategoriesController {
     type: ErrorResponse,
   })
   async findOne(
-    @Param('categoryId', ParseUUIDPipe) categoryId: CategoryDto['categoryId'],
+    @Param('id', ParseUUIDPipe) id: CategoryDto['id'],
   ): Promise<ResponseModel<CategoryDto>> {
     const category = await this.CategoriesServices.finByAttribute<
-      CategoryDto['categoryId']
-    >(categoryId, 'categoryId');
+      CategoryDto['id']
+    >(id, 'id');
 
     return {
       statusCode: HttpStatus.OK,
@@ -94,10 +94,10 @@ export class CategoriesController {
     };
   }
 
-  @Put('/:categoryId')
+  @Put('/:id')
   @HttpCode(HttpStatus.OK)
   @ApiParam({
-    name: 'categoryId',
+    name: 'id',
   })
   @ApiOkResponse({
     description: 'List of categories',
@@ -109,23 +109,20 @@ export class CategoriesController {
     type: ErrorResponse,
   })
   async update(
-    @Param('categoryId', ParseUUIDPipe) categoryId: CategoryDto['categoryId'],
+    @Param('id', ParseUUIDPipe) id: CategoryDto['id'],
     @Body() changes: UpdateCategoryDto,
   ): Promise<ResponseModel<CategoryDto>> {
-    const updatedCategory = await this.CategoriesServices.update(
-      categoryId,
-      changes,
-    );
+    const updatedCategory = await this.CategoriesServices.update(id, changes);
     return {
       statusCode: HttpStatus.OK,
       data: updatedCategory,
     };
   }
 
-  @Delete('/:categoryId')
+  @Delete('/:id')
   @HttpCode(HttpStatus.NO_CONTENT)
   @ApiParam({
-    name: 'categoryId',
+    name: 'id',
   })
   @ApiNoContentResponse({
     status: HttpStatus.NO_CONTENT,
@@ -134,9 +131,7 @@ export class CategoriesController {
     description: 'No categories found',
     type: ErrorResponse,
   })
-  async delete(
-    @Param('categoryId', ParseUUIDPipe) categoryId: CategoryDto['categoryId'],
-  ) {
-    await this.CategoriesServices.delete(categoryId);
+  async delete(@Param('id', ParseUUIDPipe) id: CategoryDto['id']) {
+    await this.CategoriesServices.delete(id);
   }
 }

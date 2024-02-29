@@ -15,7 +15,7 @@ import { ProductModel } from 'src/products/models/products.entity';
 export class ProductDto extends ProductModel {}
 
 export class CreateProductDto extends OmitType(ProductModel, [
-  'productId',
+  'id',
   'createdAt',
   'updatedAt',
 ]) {
