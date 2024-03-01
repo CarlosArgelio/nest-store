@@ -3,12 +3,7 @@ import { IsNotEmpty, IsString, IsUrl } from 'class-validator';
 
 import { CategoryModel } from 'src/products/models/categories.entity';
 
-export class CategoryDto extends CategoryModel {}
-export class CreateCategoryDto extends OmitType(CategoryModel, [
-  'id',
-  'createdAt',
-  'updatedAt',
-]) {
+export class CategoryDto extends CategoryModel {
   @IsString()
   @IsNotEmpty()
   readonly name: string;
@@ -17,6 +12,11 @@ export class CreateCategoryDto extends OmitType(CategoryModel, [
   @IsNotEmpty()
   readonly image: string;
 }
+export class CreateCategoryDto extends OmitType(CategoryDto, [
+  'id',
+  'createdAt',
+  'updatedAt',
+]) {}
 export class UpdateCategoryDto extends PartialType(
   OmitType(CategoryModel, ['id', 'createdAt', 'updatedAt']),
 ) {}

@@ -1,4 +1,5 @@
 import {
+  BadRequestException,
   Injectable,
   InternalServerErrorException,
   NotFoundException,
@@ -33,7 +34,7 @@ export class CategoriesService {
     return categories;
   }
 
-  async finByAttribute<T>(value: T, attribute: T): Promise<CategoryDto> {
+  async finByAttribute<T>(value: T, attribute: T, bool?: boolean) {
     let category = null;
     const options = {};
     options[`${attribute}`] = value;
@@ -43,15 +44,30 @@ export class CategoriesService {
     } catch (error) {
       throw new InternalServerErrorException(error.message);
     }
-    if (!category) {
+
+    if (!category && (bool === false || bool === undefined)) {
       throw new NotFoundException(
         `No category found with ${attribute} ${value}`,
       );
+    } else if (!category && bool === true) {
+      return false;
+    } else if (category && bool === true) {
+      return true;
     }
     return category;
   }
 
   async create(category: CreateCategoryDto): Promise<CategoryDto> {
+    const { image } = category;
+    const existImage = await this.finByAttribute<CreateCategoryDto['image']>(
+      image,
+      'image',
+      true,
+    );
+    if (existImage) {
+      throw new BadRequestException('image must be unique');
+    }
+
     try {
       const newCategory = this.categoryRepo.create(category);
       return await this.categoryRepo.save(newCategory);

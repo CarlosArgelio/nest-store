@@ -4,8 +4,8 @@ import {
   IsNumber,
   IsPositive,
   IsString,
-  IsUUID,
   IsUrl,
+  Max,
   Min,
 } from 'class-validator';
 
@@ -21,7 +21,13 @@ export class CreateProductDto extends OmitType(ProductModel, [
 ]) {
   @IsString()
   @IsNotEmpty()
+  @Max(255)
   readonly title: string;
+
+  @IsString()
+  @IsNotEmpty()
+  @Max(1000)
+  readonly description: string;
 
   @IsNumber()
   @IsNotEmpty()
@@ -29,22 +35,17 @@ export class CreateProductDto extends OmitType(ProductModel, [
   @Min(1)
   readonly price: number;
 
-  @IsString()
-  @IsNotEmpty()
-  readonly description: string;
-
   @IsNotEmpty()
   @IsUrl()
   readonly image: string;
 
   @IsNumber()
   @IsNotEmpty()
-  @Min(5)
   readonly stock: number;
 
-  @IsUUID('4')
-  @IsNotEmpty()
-  readonly categoryId: string;
+  // @IsUUID('4')
+  // @IsNotEmpty()
+  // readonly categoryId: string;
 }
 
 export class UpdateProductDto extends PartialType(CreateProductDto) {}

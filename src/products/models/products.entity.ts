@@ -13,10 +13,10 @@ export class ProductModel extends BaseClassModel {
   @Column({ type: 'int', nullable: false })
   price: number;
 
-  @Column({ type: 'varchar' })
+  @Column({ type: 'text', unique: true, nullable: false })
   image: string;
 
-  @Column({ type: 'int' })
+  @Column({ type: 'int', nullable: false })
   stock: number;
 
   // @Column({

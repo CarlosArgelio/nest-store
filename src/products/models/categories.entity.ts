@@ -7,6 +7,6 @@ export class CategoryModel extends BaseClassModel {
   @Column({ type: 'varchar', length: 255, unique: true, nullable: false })
   name: string;
 
-  @Column({ type: 'varchar', length: 255, unique: true, nullable: false })
+  @Column({ type: 'text', unique: true, nullable: false })
   image: string;
 }
