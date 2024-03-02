@@ -1,6 +1,13 @@
 import { ApiProperty, OmitType, PartialType } from '@nestjs/swagger';
-import { IsEmail, IsEnum, IsNotEmpty, IsString } from 'class-validator';
+import {
+  IsEmail,
+  IsEnum,
+  IsNotEmpty,
+  IsOptional,
+  IsString,
+} from 'class-validator';
 
+import { CustomerModel } from '../models/customers.entity';
 import { ROLE, UserModel } from '../models/users.entity';
 
 export class UserDto extends UserModel {}
@@ -34,6 +41,13 @@ export class SignUpUserDto extends OmitType(UserModel, [
     enum: ROLE,
   })
   readonly role: ROLE;
+
+  @IsOptional()
+  @IsNotEmpty()
+  @ApiProperty({
+    description: 'customer id',
+  })
+  readonly customerId: CustomerModel['id'];
 }
 
 export class UpdateUserDto extends PartialType(

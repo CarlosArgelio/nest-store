@@ -8,6 +8,7 @@ import { Repository } from 'typeorm';
 
 import { ProductsService } from 'src/products/services/products/products.service';
 import { UserModel } from 'src/users/models/users.entity';
+import { CustomerDto } from 'src/users/schemas/customers.dto';
 import { OrderDto } from 'src/users/schemas/orders.dto';
 import {
   SignUpUserDto,
@@ -15,11 +16,14 @@ import {
   UserDto,
 } from 'src/users/schemas/users.dto';
 
+import { CustomersService } from '../customers/customers.service';
+
 @Injectable()
 export class UsersService {
   constructor(
     private productsServices: ProductsService,
     @InjectRepository(UserModel) private userRepo: Repository<UserModel>,
+    private customersServices: CustomersService,
   ) {}
 
   async findAll(): Promise<UserDto[]> {
@@ -55,6 +59,12 @@ export class UsersService {
   async create(user: SignUpUserDto): Promise<UserDto> {
     try {
       const newUser = this.userRepo.create(user);
+      if (user.customerId) {
+        const customer = await this.customersServices.findByAttr<
+          CustomerDto['id']
+        >(user.customerId, 'id');
+        newUser.customer = customer;
+      }
       const saveUser = await this.userRepo.save(newUser);
 
       delete saveUser.password;
