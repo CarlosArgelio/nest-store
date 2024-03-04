@@ -17,7 +17,7 @@ import {
 export class ProductsService {
   constructor(
     @InjectRepository(ProductModel)
-    private productRepo: Repository<ProductModel>,
+    private readonly productRepo: Repository<ProductModel>,
   ) {}
 
   async findAll(): Promise<ProductDto[]> {
@@ -35,7 +35,7 @@ export class ProductsService {
   }
 
   async findOne(id: ProductDto['id']): Promise<ProductDto> {
-    let product = null;
+    let product: ProductDto | undefined = undefined;
     try {
       product = await this.productRepo.findOne({ id: id });
     } catch (error) {
