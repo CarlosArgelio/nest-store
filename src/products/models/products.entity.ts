@@ -1,8 +1,9 @@
-import { Column, Entity, ManyToOne } from 'typeorm';
+import { Column, Entity, JoinTable, ManyToMany, ManyToOne } from 'typeorm';
 
 import { BaseClassModel } from 'src/base.model';
 
 import { BrandModel } from './brands.entity';
+import { CategoryModel } from './categories.entity';
 
 @Entity({ name: 'products' })
 export class ProductModel extends BaseClassModel {
@@ -23,4 +24,8 @@ export class ProductModel extends BaseClassModel {
 
   @ManyToOne(() => BrandModel, (brand) => brand.products)
   brand: BrandModel;
+
+  @ManyToMany(() => CategoryModel, (category) => category.products)
+  @JoinTable()
+  categories: CategoryModel[];
 }
