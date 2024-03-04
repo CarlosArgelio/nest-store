@@ -1,3 +1,4 @@
+import { ApiProperty } from '@nestjs/swagger';
 import {
   CreateDateColumn,
   PrimaryGeneratedColumn,
@@ -24,6 +25,24 @@ export class BaseClassModel {
     type: 'timestamptz',
     default: () => 'CURRENT_TIMESTAMP',
     name: 'updated_at',
+  })
+  updatedAt?: Date;
+}
+
+export class BaseClassDto {
+  @ApiProperty({
+    type: 'string',
+    required: true,
+  })
+  id: string;
+
+  @ApiProperty({
+    type: Date,
+  })
+  createdAt: Date;
+
+  @ApiProperty({
+    type: Date,
   })
   updatedAt?: Date;
 }

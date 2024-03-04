@@ -7,12 +7,14 @@ import {
   IsString,
 } from 'class-validator';
 
-import { CustomerModel } from '../models/customers.entity';
-import { ROLE, UserModel } from '../models/users.entity';
+import { BaseClassDto } from 'src/base.model';
 
-export class UserDto extends UserModel {}
+import { CustomerDto } from './customers.dto';
+import { ROLE } from '../models/users.entity';
 
-export class SignUpUserDto extends OmitType(UserModel, [
+export class UserDto extends BaseClassDto {}
+
+export class SignUpUserDto extends OmitType(BaseClassDto, [
   'id',
   'createdAt',
   'updatedAt',
@@ -47,7 +49,7 @@ export class SignUpUserDto extends OmitType(UserModel, [
   @ApiProperty({
     description: 'customer id',
   })
-  readonly customerId: CustomerModel['id'];
+  readonly customerId: CustomerDto['id'];
 }
 
 export class UpdateUserDto extends PartialType(

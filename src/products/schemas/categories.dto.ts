@@ -1,9 +1,9 @@
 import { OmitType, PartialType } from '@nestjs/swagger';
 import { IsNotEmpty, IsString, IsUrl } from 'class-validator';
 
-import { CategoryModel } from 'src/products/models/categories.entity';
+import { BaseClassDto } from 'src/base.model';
 
-export class CategoryDto extends CategoryModel {
+export class CategoryDto extends BaseClassDto {
   @IsString()
   @IsNotEmpty()
   readonly name: string;
@@ -18,5 +18,5 @@ export class CreateCategoryDto extends OmitType(CategoryDto, [
   'updatedAt',
 ]) {}
 export class UpdateCategoryDto extends PartialType(
-  OmitType(CategoryModel, ['id', 'createdAt', 'updatedAt']),
+  OmitType(CategoryDto, ['id', 'createdAt', 'updatedAt']),
 ) {}

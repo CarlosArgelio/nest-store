@@ -9,7 +9,7 @@ import { Repository } from 'typeorm';
 import { ProductsService } from 'src/products/services/products/products.service';
 import { UserModel } from 'src/users/models/users.entity';
 import { CustomerDto } from 'src/users/schemas/customers.dto';
-import { OrderDto } from 'src/users/schemas/orders.dto';
+import { GetOrders } from 'src/users/schemas/orders.dto';
 import {
   SignUpUserDto,
   UpdateUserDto,
@@ -98,12 +98,12 @@ export class UsersService {
     }
   }
 
-  async getOrders(id: UserDto['id']): Promise<OrderDto> {
-    const user = await this.findByAttribute<UserDto['id']>(id, 'id');
+  async getOrders(id: UserDto['id']): Promise<GetOrders> {
+    const users = await this.findByAttribute<UserDto['id']>(id, 'id');
     const products = await this.productsServices.findAll();
     const response = {
       date: new Date(),
-      user,
+      users,
       products,
     };
     return response;

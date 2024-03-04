@@ -35,13 +35,13 @@ export class ProductsService {
   }
 
   async findOne(id: ProductDto['id']): Promise<ProductDto> {
-    let product: ProductDto | undefined = undefined;
+    let product: ProductDto | undefined;
     try {
       product = await this.productRepo.findOne({ id: id });
     } catch (error) {
       throw new InternalServerErrorException(error.message);
     }
-    if (!product) {
+    if (product === undefined) {
       throw new NotFoundException(`Product with id ${id} not found`);
     }
     return product;

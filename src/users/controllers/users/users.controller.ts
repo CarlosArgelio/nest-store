@@ -13,7 +13,7 @@ import {
 import { ApiParam, ApiTags } from '@nestjs/swagger';
 
 import { ResponseModel } from 'src/base.model';
-import { OrderDto } from 'src/users/schemas/orders.dto';
+import { GetOrders } from 'src/users/schemas/orders.dto';
 import {
   SignUpUserDto,
   UpdateUserDto,
@@ -84,7 +84,7 @@ export class UsersController {
   })
   async getOrders(
     @Param('id', ParseUUIDPipe) id: UserDto['id'],
-  ): Promise<ResponseModel<OrderDto>> {
+  ): Promise<ResponseModel<GetOrders>> {
     const orders = await this.usersServices.getOrders(id);
     return {
       statusCode: HttpStatus.OK,

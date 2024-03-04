@@ -2,9 +2,9 @@
 import { ApiProperty, OmitType, PartialType } from '@nestjs/swagger';
 import { IsEmail, IsNotEmpty, IsString } from 'class-validator';
 
-import { CustomerModel } from 'src/users/models/customers.entity';
+import { BaseClassDto } from 'src/base.model';
 
-export class CustomerDto extends CustomerModel {
+export class CustomerDto extends BaseClassDto {
   @ApiProperty({
     description: 'Costumer name',
     example: 'Carlos Argelio',

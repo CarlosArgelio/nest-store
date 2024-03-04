@@ -9,16 +9,10 @@ import {
   Min,
 } from 'class-validator';
 
-import { ProductModel } from 'src/products/models/products.entity';
+import { BaseClassDto } from 'src/base.model';
 // import { CreateProduct } from 'src/entities/products/products.dtos';
 
-export class ProductDto extends ProductModel {}
-
-export class CreateProductDto extends OmitType(ProductModel, [
-  'id',
-  'createdAt',
-  'updatedAt',
-]) {
+export class ProductDto extends BaseClassDto {
   @IsString()
   @IsNotEmpty()
   @Max(255)
@@ -47,5 +41,11 @@ export class CreateProductDto extends OmitType(ProductModel, [
   // @IsNotEmpty()
   // readonly categoryId: string;
 }
+
+export class CreateProductDto extends OmitType(ProductDto, [
+  'id',
+  'createdAt',
+  'updatedAt',
+]) {}
 
 export class UpdateProductDto extends PartialType(CreateProductDto) {}
