@@ -29,7 +29,9 @@ export class UsersService {
   async findAll(): Promise<UserDto[]> {
     let users = null;
     try {
-      users = await this.userRepo.find();
+      users = await this.userRepo.find({
+        relations: ['customer'],
+      });
     } catch (error) {
       throw new InternalServerErrorException(error.message);
     }
