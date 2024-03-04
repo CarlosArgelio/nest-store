@@ -1,26 +1,27 @@
-import { OmitType, PartialType } from '@nestjs/swagger';
+import { ApiProperty, OmitType, PartialType } from '@nestjs/swagger';
 import {
   IsNotEmpty,
   IsNumber,
   IsPositive,
   IsString,
+  IsUUID,
   IsUrl,
   Max,
   Min,
 } from 'class-validator';
 
 import { BaseClassDto } from 'src/base.model';
+
+import { BrandDto } from './brands.dto';
 // import { CreateProduct } from 'src/entities/products/products.dtos';
 
 export class ProductDto extends BaseClassDto {
   @IsString()
   @IsNotEmpty()
-  @Max(255)
   readonly title: string;
 
   @IsString()
   @IsNotEmpty()
-  @Max(1000)
   readonly description: string;
 
   @IsNumber()
@@ -36,6 +37,11 @@ export class ProductDto extends BaseClassDto {
   @IsNumber()
   @IsNotEmpty()
   readonly stock: number;
+
+  @IsNotEmpty()
+  @IsUUID('4')
+  @ApiProperty()
+  readonly brandId: BrandDto['id'];
 
   // @IsUUID('4')
   // @IsNotEmpty()

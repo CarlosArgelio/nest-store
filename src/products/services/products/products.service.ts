@@ -7,24 +7,30 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 
 import { ProductModel } from 'src/products/models/products.entity';
+import { BrandDto } from 'src/products/schemas/brands.dto';
 import {
   CreateProductDto,
   ProductDto,
   UpdateProductDto,
 } from 'src/products/schemas/products.dto';
 
+import { BrandsService } from '../brands/brands.service';
+
 @Injectable()
 export class ProductsService {
   constructor(
     @InjectRepository(ProductModel)
     private readonly productRepo: Repository<ProductModel>,
+    private readonly brandServices: BrandsService,
   ) {}
 
-  async findAll(): Promise<ProductDto[]> {
-    let products: ProductDto[] | undefined;
+  async findAll(): Promise<ProductModel[]> {
+    let products: ProductModel[] | undefined;
 
     try {
-      products = await this.productRepo.find();
+      products = await this.productRepo.find({
+        relations: ['brand'],
+      });
     } catch (error) {
       throw new InternalServerErrorException(error.message);
     }
@@ -34,8 +40,8 @@ export class ProductsService {
     return products;
   }
 
-  async findOne(id: ProductDto['id']): Promise<ProductDto> {
-    let product: ProductDto | undefined;
+  async findOne(id: ProductDto['id']): Promise<ProductModel> {
+    let product: ProductModel | undefined;
     try {
       product = await this.productRepo.findOne({ id: id });
     } catch (error) {
@@ -47,9 +53,16 @@ export class ProductsService {
     return product;
   }
 
-  async create(product: CreateProductDto): Promise<ProductDto> {
+  async create(product: CreateProductDto): Promise<ProductDto | ProductModel> {
     try {
       const createProduct = this.productRepo.create(product);
+      if (product.brandId) {
+        const brand = await this.brandServices.findByAttr<BrandDto['id']>(
+          product.brandId,
+          'id',
+        );
+        createProduct.brand = brand;
+      }
       return await this.productRepo.save(createProduct);
     } catch (error) {
       throw new InternalServerErrorException(error.message);
@@ -57,10 +70,18 @@ export class ProductsService {
   }
 
   async update(
-    id: ProductDto['id'],
+    id: ProductModel['id'],
     changes: UpdateProductDto,
-  ): Promise<ProductDto> {
+  ): Promise<ProductModel> {
     const product = await this.findOne(id);
+
+    if (changes.brandId) {
+      const brand = await this.brandServices.findByAttr<BrandDto['id']>(
+        changes.brandId,
+        'id',
+      );
+      product.brand = brand;
+    }
 
     try {
       this.productRepo.merge(product, changes);

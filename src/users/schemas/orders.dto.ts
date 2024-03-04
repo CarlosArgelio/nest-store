@@ -1,7 +1,7 @@
 import { OmitType } from '@nestjs/swagger';
 
 import { BaseClassDto } from 'src/base.model';
-import { ProductDto } from 'src/products/schemas/products.dto';
+import { ProductModel } from 'src/products/models/products.entity';
 
 export class OrderDto extends BaseClassDto {}
 export class GetOrders extends OmitType(OrderDto, [
@@ -11,6 +11,6 @@ export class GetOrders extends OmitType(OrderDto, [
 ]) {
   readonly date: Date;
   readonly users: any;
-  readonly products: ProductDto[];
+  readonly products: ProductModel[];
 }
 // export class CreateOrderDto extends OmitType(OrderDto, ['customerId']) {}

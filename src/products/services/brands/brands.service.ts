@@ -48,6 +48,14 @@ export class BrandsService {
     return brand;
   }
 
+  async findOne(id: string) {
+    const brand = await this.brandRepo.findOne({
+      relations: ['products'],
+      where: { id },
+    });
+    return brand;
+  }
+
   async create(brand: CreateBrandDto): Promise<BrandDto> {
     try {
       const newBrand = this.brandRepo.create(brand);

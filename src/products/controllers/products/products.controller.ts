@@ -14,6 +14,7 @@ import {
 import { ApiOperation, ApiParam, ApiQuery, ApiTags } from '@nestjs/swagger';
 
 import { ResponseModel } from 'src/base.model';
+import { ProductModel } from 'src/products/models/products.entity';
 import {
   CreateProductDto,
   ProductDto,
@@ -52,7 +53,7 @@ export class ProductsController {
     @Query('limit') limit = 100,
     @Query('offset') offset = 0,
     @Query('brand') brand: string,
-  ): Promise<ResponseModel<ProductDto[]>> {
+  ): Promise<ResponseModel<ProductModel[]>> {
     console.log(limit);
     console.log(offset);
     console.log(brand);
@@ -70,7 +71,7 @@ export class ProductsController {
   })
   async findOne(
     @Param('id', ParseUUIDPipe) id: ProductDto['id'],
-  ): Promise<ResponseModel<ProductDto>> {
+  ): Promise<ResponseModel<ProductModel>> {
     const product = await this.productsService.findOne(id);
     return {
       statusCode: HttpStatus.OK,
@@ -82,7 +83,7 @@ export class ProductsController {
   @HttpCode(HttpStatus.CREATED)
   async create(
     @Body() payload: CreateProductDto,
-  ): Promise<ResponseModel<ProductDto>> {
+  ): Promise<ResponseModel<ProductDto | ProductModel>> {
     const newProduct = await this.productsService.create(payload);
 
     return {
@@ -99,7 +100,7 @@ export class ProductsController {
   async update(
     @Param('id', ParseUUIDPipe) id: ProductDto['id'],
     @Body() changes: UpdateProductDto,
-  ): Promise<ResponseModel<ProductDto>> {
+  ): Promise<ResponseModel<ProductModel>> {
     const product = await this.productsService.update(id, changes);
     return {
       statusCode: HttpStatus.OK,

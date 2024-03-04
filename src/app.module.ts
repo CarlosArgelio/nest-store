@@ -11,7 +11,6 @@ import { enviroments } from './enviroments';
 import { ProductsModule } from './products/products.module';
 import { validationEnvSchema } from './schemas';
 import { UsersModule } from './users/users.module';
-import { BrandsService } from './services/brands/brands.service';
 
 @Module({
   imports: [
@@ -43,7 +42,6 @@ import { BrandsService } from './services/brands/brands.service';
       },
       inject: [HttpService],
     },
-    BrandsService,
   ],
 })
 export class AppModule {}

@@ -39,7 +39,7 @@ export class BrandsController {
   async findOne(
     @Param('id', ParseUUIDPipe) id: BrandDto['id'],
   ): Promise<ResponseModel<BrandDto>> {
-    const brand = await this.brandsService.findByAttr(id, 'id');
+    const brand = await this.brandsService.findOne(id);
     return { statusCode: HttpStatus.OK, data: brand };
   }
 
