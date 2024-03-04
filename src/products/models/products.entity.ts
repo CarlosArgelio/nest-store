@@ -1,6 +1,8 @@
-import { Column, Entity } from 'typeorm';
+import { Column, Entity, ManyToOne } from 'typeorm';
 
 import { BaseClassModel } from 'src/base.model';
+
+import { BrandModel } from './brands.entity';
 
 @Entity({ name: 'products' })
 export class ProductModel extends BaseClassModel {
@@ -19,8 +21,6 @@ export class ProductModel extends BaseClassModel {
   @Column({ type: 'int', nullable: false })
   stock: number;
 
-  // @Column({
-  //   type: 'varchar',
-  // })
-  // categoryId: string;
+  @ManyToOne(() => BrandModel, (brand) => brand.products)
+  brand: BrandModel;
 }

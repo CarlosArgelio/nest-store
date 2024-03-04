@@ -21,7 +21,7 @@ export class ProductsService {
   ) {}
 
   async findAll(): Promise<ProductDto[]> {
-    let products = null;
+    let products: ProductDto[] | undefined;
 
     try {
       products = await this.productRepo.find();
