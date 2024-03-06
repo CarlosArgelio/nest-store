@@ -2,7 +2,6 @@
 import * as Joi from 'joi';
 
 import { Environment } from './enviroments';
-
 export const validationEnvSchema = Joi.object({
   NODE_ENV: Joi.string()
     .equal(Environment.Development, Environment.Production, Environment.Staging)
