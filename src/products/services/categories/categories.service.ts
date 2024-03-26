@@ -40,7 +40,10 @@ export class CategoriesService {
     options[`${attribute}`] = value;
 
     try {
-      category = await this.categoryRepo.findOne({ where: options });
+      category = await this.categoryRepo.findOne({
+        relations: ['products'],
+        where: options,
+      });
     } catch (error) {
       throw new InternalServerErrorException(error.message);
     }

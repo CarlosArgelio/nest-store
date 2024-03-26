@@ -15,12 +15,17 @@ import {
 } from 'src/products/schemas/products.dto';
 
 import { BrandsService } from '../brands/brands.service';
+import { CategoryModel } from 'src/products/models/categories.entity';
 
 @Injectable()
 export class ProductsService {
   constructor(
     @InjectRepository(ProductModel)
     private readonly productRepo: Repository<ProductModel>,
+
+    @InjectRepository(CategoryModel)
+    private categoryRepo: Repository<CategoryModel>,
+
     private readonly brandServices: BrandsService,
   ) {}
 
@@ -43,7 +48,9 @@ export class ProductsService {
   async findOne(id: ProductDto['id']): Promise<ProductModel> {
     let product: ProductModel | undefined;
     try {
-      product = await this.productRepo.findOne({ id: id });
+      product = await this.productRepo.findOne(id, {
+        relations: ['brand', 'categories'],
+      });
     } catch (error) {
       throw new InternalServerErrorException(error.message);
     }
@@ -63,6 +70,14 @@ export class ProductsService {
         );
         createProduct.brand = brand;
       }
+      if (product.categoriesIds) {
+        const categories = await this.categoryRepo.findByIds(
+          product.categoriesIds,
+        );
+
+        createProduct.categories = categories;
+      }
+
       return await this.productRepo.save(createProduct);
     } catch (error) {
       throw new InternalServerErrorException(error.message);
