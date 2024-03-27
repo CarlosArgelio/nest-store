@@ -106,6 +106,31 @@ export class ProductsService {
     }
   }
 
+  async removeCategoryByProduct(
+    productId: ProductModel['id'],
+    categoryId: CategoryModel['id'],
+  ) {
+    const product = await this.productRepo.findOne(productId, {
+      relations: ['categories'],
+    });
+    product.categories = product.categories.filter(
+      (item) => item.id !== categoryId,
+    );
+    return this.productRepo.save(product);
+  }
+
+  async addCategoryByProduct(
+    productId: ProductModel['id'],
+    categoryId: CategoryModel['id'],
+  ) {
+    const category = await this.categoryRepo.findOne(categoryId);
+    const product = await this.productRepo.findOne(productId, {
+      relations: ['categories'],
+    });
+    product.categories.push(category);
+    return this.productRepo.save(product);
+  }
+
   async delete(id: ProductDto['id']): Promise<void> {
     await this.findOne(id);
     try {
