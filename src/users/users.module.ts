@@ -7,7 +7,7 @@ import { ProductsModule } from 'src/products/products.module';
 //controllers
 import { CostumersController } from './controllers/customers/customers.controller';
 import { UsersController } from './controllers/users/users.controller';
-//services
+
 //entities
 import { CustomerModel } from './models/customers.entity';
 import { UserModel } from './models/users.entity';
@@ -15,6 +15,7 @@ import { CustomersService } from './services/customers/customers.service';
 import { UsersService } from './services/users/users.service';
 import { OrderModel } from './models/orders.entity';
 import { OrderItemModel } from './models/order-item.entity';
+import { OrdersController } from './controllers/orders/orders.controller';
 
 @Module({
   imports: [
@@ -26,7 +27,7 @@ import { OrderItemModel } from './models/order-item.entity';
       OrderItemModel,
     ]),
   ],
-  controllers: [UsersController, CostumersController],
+  controllers: [UsersController, CostumersController, OrdersController],
   providers: [UsersService, CustomersService],
 })
 export class UsersModule {}
