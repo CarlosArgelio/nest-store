@@ -1,13 +1,14 @@
 import {
+  Body,
   Controller,
+  Delete,
   Get,
   Param,
-  Post,
-  Body,
-  Put,
-  Delete,
   ParseUUIDPipe,
+  Post,
+  Put,
 } from '@nestjs/common';
+
 import { CreateOrderDto, UpdateOrderDto } from 'src/users/schemas/orders.dto';
 import { OrdersService } from 'src/users/services/orders/orders.service';
 

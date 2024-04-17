@@ -6,6 +6,7 @@ import {
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 
+import { CategoryModel } from 'src/products/models/categories.entity';
 import { ProductModel } from 'src/products/models/products.entity';
 import { BrandDto } from 'src/products/schemas/brands.dto';
 import {
@@ -15,7 +16,6 @@ import {
 } from 'src/products/schemas/products.dto';
 
 import { BrandsService } from '../brands/brands.service';
-import { CategoryModel } from 'src/products/models/categories.entity';
 
 @Injectable()
 export class ProductsService {

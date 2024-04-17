@@ -7,7 +7,6 @@ import {
   IsString,
   IsUUID,
   IsUrl,
-  Max,
   Min,
 } from 'class-validator';
 

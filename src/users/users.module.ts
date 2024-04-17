@@ -6,16 +6,17 @@ import { ProductsModule } from 'src/products/products.module';
 
 //controllers
 import { CostumersController } from './controllers/customers/customers.controller';
+import { OrdersController } from './controllers/orders/orders.controller';
 import { UsersController } from './controllers/users/users.controller';
 
 //entities
 import { CustomerModel } from './models/customers.entity';
+import { OrderItemModel } from './models/order-item.entity';
+import { OrderModel } from './models/orders.entity';
 import { UserModel } from './models/users.entity';
 import { CustomersService } from './services/customers/customers.service';
+import { OrdersService } from './services/orders/orders.service';
 import { UsersService } from './services/users/users.service';
-import { OrderModel } from './models/orders.entity';
-import { OrderItemModel } from './models/order-item.entity';
-import { OrdersController } from './controllers/orders/orders.controller';
 
 @Module({
   imports: [
@@ -28,6 +29,6 @@ import { OrdersController } from './controllers/orders/orders.controller';
     ]),
   ],
   controllers: [UsersController, CostumersController, OrdersController],
-  providers: [UsersService, CustomersService],
+  providers: [UsersService, CustomersService, OrdersService],
 })
 export class UsersModule {}

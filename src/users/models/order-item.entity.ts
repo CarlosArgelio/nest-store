@@ -1,7 +1,8 @@
-import { Entity, Column, ManyToOne } from 'typeorm';
+import { Column, Entity, ManyToOne } from 'typeorm';
 
 import { BaseClassModel } from 'src/base.model';
 import { ProductModel } from 'src/products/models/products.entity';
+
 import { OrderModel } from './orders.entity';
 
 @Entity({ name: 'order_item' })

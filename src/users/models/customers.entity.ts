@@ -2,8 +2,8 @@ import { Column, Entity, OneToMany, OneToOne } from 'typeorm';
 
 import { BaseClassModel } from 'src/base.model';
 
-import { UserModel } from './users.entity';
 import { OrderModel } from './orders.entity';
+import { UserModel } from './users.entity';
 
 @Entity({ name: 'customers' })
 export class CustomerModel extends BaseClassModel {

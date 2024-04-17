@@ -15,6 +15,7 @@ import { ApiOperation, ApiParam, ApiQuery, ApiTags } from '@nestjs/swagger';
 
 import { ResponseModel } from 'src/base.model';
 import { ProductModel } from 'src/products/models/products.entity';
+import { CategoryDto } from 'src/products/schemas/categories.dto';
 import {
   CreateProductDto,
   ProductDto,
@@ -22,7 +23,6 @@ import {
 } from 'src/products/schemas/products.dto';
 
 import { ProductsService } from '../../services/products/products.service';
-import { CategoryDto } from 'src/products/schemas/categories.dto';
 
 @ApiTags('products')
 @Controller('products')
