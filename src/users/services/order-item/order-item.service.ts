@@ -8,6 +8,7 @@ import { OrderModel } from 'src/users/models/orders.entity';
 import { ProductModel } from './../../../products/models/products.entity';
 import {
   CreateOrderItemDto,
+  OrderItemDto,
   UpdateOrderItemDto,
 } from './../../schemas/order-item.dto';
 
@@ -24,6 +25,9 @@ export class OrderItemService {
     private productRepo: Repository<ProductModel>,
   ) {}
 
+  async findAll() {
+    return await this.orderItemRepo.find();
+  }
   async create(data: CreateOrderItemDto) {
     const order = await this.orderRepo.findOne(data.orderId);
     const product = await this.productRepo.findOne(data.productId);
@@ -34,5 +38,13 @@ export class OrderItemService {
     item.quantity = data.quantity;
 
     return this.orderItemRepo.save(item);
+  }
+
+  async update(id: OrderItemDto['id'], data: UpdateOrderItemDto) {
+    return await this.orderItemRepo.update(id, data);
+  }
+
+  async delete(id: OrderItemDto['id']) {
+    return await this.orderItemRepo.delete(id);
   }
 }
