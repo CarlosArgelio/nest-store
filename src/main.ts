@@ -11,6 +11,9 @@ async function bootstrap() {
     new ValidationPipe({
       whitelist: true,
       forbidNonWhitelisted: true, // Return error if passed params no valid on dtos
+      transformOptions: {
+        enableImplicitConversion: true,
+      },
     }),
   );
 

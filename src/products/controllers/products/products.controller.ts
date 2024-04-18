@@ -18,6 +18,7 @@ import { ProductModel } from 'src/products/models/products.entity';
 import { CategoryDto } from 'src/products/schemas/categories.dto';
 import {
   CreateProductDto,
+  FilterProductsDto,
   ProductDto,
   UpdateProductDto,
 } from 'src/products/schemas/products.dto';
@@ -51,14 +52,9 @@ export class ProductsController {
   })
   @HttpCode(HttpStatus.OK)
   async findAll(
-    @Query('limit') limit = 100,
-    @Query('offset') offset = 0,
-    @Query('brand') brand: string,
+    @Query() params: FilterProductsDto,
   ): Promise<ResponseModel<ProductModel[]>> {
-    console.log(limit);
-    console.log(offset);
-    console.log(brand);
-    const products = await this.productsService.findAll();
+    const products = await this.productsService.findAll(params);
     return {
       statusCode: HttpStatus.OK,
       data: products,

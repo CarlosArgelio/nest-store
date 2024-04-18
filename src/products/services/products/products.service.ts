@@ -11,6 +11,7 @@ import { ProductModel } from 'src/products/models/products.entity';
 import { BrandDto } from 'src/products/schemas/brands.dto';
 import {
   CreateProductDto,
+  FilterProductsDto,
   ProductDto,
   UpdateProductDto,
 } from 'src/products/schemas/products.dto';
@@ -29,10 +30,20 @@ export class ProductsService {
     private readonly brandServices: BrandsService,
   ) {}
 
-  async findAll(): Promise<ProductModel[]> {
+  async findAll(params?: FilterProductsDto): Promise<ProductModel[]> {
     let products: ProductModel[] | undefined;
 
     try {
+      if (params) {
+        const { limit, offset } = params;
+
+        products = await this.productRepo.find({
+          relations: ['brand'],
+          take: limit,
+          skip: offset,
+        });
+      }
+
       products = await this.productRepo.find({
         relations: ['brand'],
       });
