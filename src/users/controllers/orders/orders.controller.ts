@@ -22,7 +22,7 @@ export class OrdersController {
   }
 
   @Get(':id')
-  get(@Param('id', ParseUUIDPipe) id: number) {
+  get(@Param('id', ParseUUIDPipe) id: string) {
     return this.orderService.findOne(id);
   }
 
@@ -33,14 +33,14 @@ export class OrdersController {
 
   @Put(':id')
   update(
-    @Param('id', ParseUUIDPipe) id: number,
+    @Param('id', ParseUUIDPipe) id: string,
     @Body() payload: UpdateOrderDto,
   ) {
     return this.orderService.update(id, payload);
   }
 
   @Delete(':id')
-  remove(@Param('id', ParseUUIDPipe) id: number) {
-    return this.orderService.remove(+id);
+  remove(@Param('id', ParseUUIDPipe) id: string) {
+    return this.orderService.remove(id);
   }
 }

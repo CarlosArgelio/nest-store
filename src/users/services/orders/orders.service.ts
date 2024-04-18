@@ -18,7 +18,7 @@ export class OrdersService {
     return this.orderRepo.find();
   }
 
-  async findOne(id: number) {
+  async findOne(id: string) {
     const order = await this.orderRepo.findOne(id, {
       relations: ['items', 'items.product'],
     });
@@ -37,7 +37,7 @@ export class OrdersService {
     return this.orderRepo.save(order);
   }
 
-  async update(id: number, changes: UpdateOrderDto) {
+  async update(id: string, changes: UpdateOrderDto) {
     const order = await this.orderRepo.findOne(id);
     if (changes.customerId) {
       const customer = await this.customerRepo.findOne(changes.customerId);
@@ -46,7 +46,7 @@ export class OrdersService {
     return this.orderRepo.save(order);
   }
 
-  remove(id: number) {
+  remove(id: string) {
     return this.orderRepo.delete(id);
   }
 }
