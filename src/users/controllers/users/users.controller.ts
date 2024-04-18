@@ -10,8 +10,9 @@ import {
   Post,
   Put,
 } from '@nestjs/common';
-import { ApiParam, ApiTags } from '@nestjs/swagger';
+import { ApiParam, ApiQuery, ApiTags } from '@nestjs/swagger';
 
+import { FilterDto } from 'src/base.dto';
 import { ResponseModel } from 'src/base.model';
 import { GetOrders } from 'src/users/schemas/orders.dto';
 import {
@@ -27,9 +28,19 @@ export class UsersController {
   constructor(private usersServices: UsersService) {}
 
   @Get()
+  @ApiQuery({
+    name: 'limit',
+    type: Number,
+    required: false,
+  })
+  @ApiQuery({
+    name: 'offset',
+    type: Number,
+    required: false,
+  })
   @HttpCode(HttpStatus.OK)
-  async findAll(): Promise<ResponseModel<UserDto[]>> {
-    const users = await this.usersServices.findAll();
+  async findAll(@Param() params: FilterDto): Promise<ResponseModel<UserDto[]>> {
+    const users = await this.usersServices.findAll(params);
     return { statusCode: HttpStatus.OK, data: users };
   }
 

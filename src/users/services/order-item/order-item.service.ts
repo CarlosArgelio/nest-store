@@ -1,7 +1,12 @@
-import { Injectable, InternalServerErrorException } from '@nestjs/common';
+import {
+  Injectable,
+  InternalServerErrorException,
+  NotFoundException,
+} from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 
+import { FilterDto } from 'src/base.dto';
 import { OrderItemModel } from 'src/users/models/order-item.entity';
 import { OrderModel } from 'src/users/models/orders.entity';
 
@@ -25,8 +30,23 @@ export class OrderItemService {
     private productRepo: Repository<ProductModel>,
   ) {}
 
-  async findAll() {
-    return await this.orderItemRepo.find();
+  async findAll(params?: FilterDto) {
+    let orderItem = null;
+
+    if (params !== undefined) {
+      const { limit, offset } = params;
+
+      orderItem = await this.orderItemRepo.find({
+        skip: offset,
+        take: limit,
+      });
+    } else {
+      orderItem = await this.orderItemRepo.find();
+    }
+
+    if (orderItem.length === 0) {
+      throw new NotFoundException('Products not found');
+    }
   }
   async create(data: CreateOrderItemDto) {
     const order = await this.orderRepo.findOne(data.orderId);

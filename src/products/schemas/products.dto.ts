@@ -1,11 +1,8 @@
-import { off } from 'process';
-
 import { ApiProperty, OmitType, PartialType } from '@nestjs/swagger';
 import {
   IsArray,
   IsNotEmpty,
   IsNumber,
-  IsOptional,
   IsPositive,
   IsString,
   IsUUID,
@@ -66,14 +63,3 @@ export class CreateProductDto extends OmitType(ProductDto, [
 ]) {}
 
 export class UpdateProductDto extends PartialType(CreateProductDto) {}
-
-export class FilterProductsDto {
-  @IsOptional()
-  @IsPositive()
-  limit: number;
-
-  @IsOptional()
-  @IsPositive()
-  @Min(0)
-  offset: number;
-}

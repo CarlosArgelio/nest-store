@@ -1,7 +1,12 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import {
+  ConflictException,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 
+import { FilterDto } from 'src/base.dto';
 import { CustomerModel } from 'src/users/models/customers.entity';
 import { OrderModel } from 'src/users/models/orders.entity';
 import { CreateOrderDto, UpdateOrderDto } from 'src/users/schemas/orders.dto';
@@ -14,8 +19,27 @@ export class OrdersService {
     private customerRepo: Repository<CustomerModel>,
   ) {}
 
-  findAll() {
-    return this.orderRepo.find();
+  findAll(params?: FilterDto) {
+    let orders = null;
+
+    try {
+      if (params !== undefined) {
+        const { limit, offset } = params;
+        orders = this.orderRepo.find({
+          take: limit,
+          skip: offset,
+        });
+      } else {
+        orders = this.orderRepo.find();
+      }
+    } catch (error) {
+      throw new ConflictException(error.message);
+    }
+    if (orders.length === 0) {
+      throw new NotFoundException('not found');
+    }
+
+    return orders;
   }
 
   async findOne(id: string) {

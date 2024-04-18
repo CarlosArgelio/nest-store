@@ -6,6 +6,7 @@ import {
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 
+import { FilterDto } from 'src/base.dto';
 import { ProductsService } from 'src/products/services/products/products.service';
 import { UserModel } from 'src/users/models/users.entity';
 import { CustomerDto } from 'src/users/schemas/customers.dto';
@@ -26,12 +27,21 @@ export class UsersService {
     private customersServices: CustomersService,
   ) {}
 
-  async findAll(): Promise<UserDto[]> {
+  async findAll(params?: FilterDto): Promise<UserDto[]> {
     let users = null;
     try {
-      users = await this.userRepo.find({
-        relations: ['customer'],
-      });
+      if (params !== undefined) {
+        const { limit, offset } = params;
+        users = await this.userRepo.find({
+          take: limit,
+          skip: offset,
+          relations: ['customer'],
+        });
+      } else {
+        users = await this.userRepo.find({
+          relations: ['customer'],
+        });
+      }
     } catch (error) {
       throw new InternalServerErrorException(error.message);
     }

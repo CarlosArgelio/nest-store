@@ -7,6 +7,7 @@ import {
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 
+import { FilterDto } from 'src/base.dto';
 import { CategoryModel } from 'src/products/models/categories.entity';
 import {
   CategoryDto,
@@ -21,10 +22,19 @@ export class CategoriesService {
     private categoryRepo: Repository<CategoryModel>,
   ) {}
 
-  async findAll(): Promise<CategoryDto[]> {
+  async findAll(params?: FilterDto): Promise<CategoryDto[]> {
     let categories = null;
     try {
-      categories = await this.categoryRepo.find();
+      if (params !== undefined) {
+        const { limit, offset } = params;
+
+        categories = await this.categoryRepo.find({
+          take: limit,
+          skip: offset,
+        });
+      } else {
+        categories = await this.categoryRepo.find();
+      }
     } catch (error) {
       throw new InternalServerErrorException(error.message);
     }

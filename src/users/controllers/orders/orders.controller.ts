@@ -8,8 +8,9 @@ import {
   Post,
   Put,
 } from '@nestjs/common';
-import { ApiTags } from '@nestjs/swagger';
+import { ApiQuery, ApiTags } from '@nestjs/swagger';
 
+import { FilterDto } from 'src/base.dto';
 import { CreateOrderDto, UpdateOrderDto } from 'src/users/schemas/orders.dto';
 import { OrdersService } from 'src/users/services/orders/orders.service';
 
@@ -19,8 +20,18 @@ export class OrdersController {
   constructor(private orderService: OrdersService) {}
 
   @Get()
-  findAll() {
-    return this.orderService.findAll();
+  @ApiQuery({
+    name: 'limit',
+    type: Number,
+    required: false,
+  })
+  @ApiQuery({
+    name: 'offset',
+    type: Number,
+    required: false,
+  })
+  findAll(@Param() params: FilterDto) {
+    return this.orderService.findAll(params);
   }
 
   @Get(':id')

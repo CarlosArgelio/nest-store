@@ -10,8 +10,9 @@ import {
   Post,
   Put,
 } from '@nestjs/common';
-import { ApiParam, ApiTags } from '@nestjs/swagger';
+import { ApiParam, ApiQuery, ApiTags } from '@nestjs/swagger';
 
+import { FilterDto } from 'src/base.dto';
 import { ResponseModel } from 'src/base.model';
 import {
   CreateOrderItemDto,
@@ -27,8 +28,18 @@ export class OrderItemController {
 
   @Get()
   @HttpCode(HttpStatus.OK)
-  async findAll(): Promise<ResponseModel<any>> {
-    const OrdersItem = await this.orderItemService.findAll();
+  @ApiQuery({
+    name: 'limit',
+    type: Number,
+    required: false,
+  })
+  @ApiQuery({
+    name: 'offset',
+    type: Number,
+    required: false,
+  })
+  async findAll(@Param() params: FilterDto): Promise<ResponseModel<any>> {
+    const OrdersItem = await this.orderItemService.findAll(params);
 
     return { statusCode: HttpStatus.OK, data: OrdersItem };
   }

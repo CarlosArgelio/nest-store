@@ -9,15 +9,18 @@ import {
   ParseUUIDPipe,
   Post,
   Put,
+  Query,
 } from '@nestjs/common';
 import {
   ApiNoContentResponse,
   ApiNotFoundResponse,
   ApiOkResponse,
   ApiParam,
+  ApiQuery,
   ApiTags,
 } from '@nestjs/swagger';
 
+import { FilterDto } from 'src/base.dto';
 import { ResponseModel } from 'src/base.model';
 import { ErrorResponse } from 'src/common/responses/responses.entity';
 import {
@@ -33,6 +36,16 @@ export class CategoriesController {
   constructor(private CategoriesServices: CategoriesService) {}
   @Get()
   @HttpCode(HttpStatus.OK)
+  @ApiQuery({
+    name: 'limit',
+    type: Number,
+    required: false,
+  })
+  @ApiQuery({
+    name: 'offset',
+    type: Number,
+    required: false,
+  })
   @ApiOkResponse({
     description: 'List of categories',
     isArray: true,
@@ -42,8 +55,10 @@ export class CategoriesController {
     description: 'No categories found',
     type: ErrorResponse,
   })
-  async findAll(): Promise<ResponseModel<CategoryDto[]>> {
-    const categories = await this.CategoriesServices.findAll();
+  async findAll(
+    @Query() params: FilterDto,
+  ): Promise<ResponseModel<CategoryDto[]>> {
+    const categories = await this.CategoriesServices.findAll(params);
     return {
       statusCode: HttpStatus.OK,
       data: categories,

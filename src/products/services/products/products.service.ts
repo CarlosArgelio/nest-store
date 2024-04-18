@@ -6,12 +6,12 @@ import {
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 
+import { FilterDto } from 'src/base.dto';
 import { CategoryModel } from 'src/products/models/categories.entity';
 import { ProductModel } from 'src/products/models/products.entity';
 import { BrandDto } from 'src/products/schemas/brands.dto';
 import {
   CreateProductDto,
-  FilterProductsDto,
   ProductDto,
   UpdateProductDto,
 } from 'src/products/schemas/products.dto';
@@ -30,11 +30,11 @@ export class ProductsService {
     private readonly brandServices: BrandsService,
   ) {}
 
-  async findAll(params?: FilterProductsDto): Promise<ProductModel[]> {
+  async findAll(params?: FilterDto): Promise<ProductModel[]> {
     let products: ProductModel[] | undefined;
 
     try {
-      if (params) {
+      if (params !== undefined) {
         const { limit, offset } = params;
 
         products = await this.productRepo.find({
@@ -42,11 +42,11 @@ export class ProductsService {
           take: limit,
           skip: offset,
         });
+      } else {
+        products = await this.productRepo.find({
+          relations: ['brand'],
+        });
       }
-
-      products = await this.productRepo.find({
-        relations: ['brand'],
-      });
     } catch (error) {
       throw new InternalServerErrorException(error.message);
     }
