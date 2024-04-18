@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, InternalServerErrorException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 
@@ -40,8 +40,16 @@ export class OrderItemService {
     return this.orderItemRepo.save(item);
   }
 
-  async update(id: OrderItemDto['id'], data: UpdateOrderItemDto) {
-    return await this.orderItemRepo.update(id, data);
+  async update(id: OrderItemDto['id'], changes: UpdateOrderItemDto) {
+    const orderItem = await this.orderItemRepo.findOne(id);
+
+    try {
+      this.orderItemRepo.merge(orderItem, changes);
+      const saveOrderItem = await this.orderItemRepo.save(orderItem);
+      return saveOrderItem;
+    } catch (error) {
+      throw new InternalServerErrorException(error.message);
+    }
   }
 
   async delete(id: OrderItemDto['id']) {

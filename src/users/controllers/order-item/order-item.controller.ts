@@ -10,7 +10,7 @@ import {
   Post,
   Put,
 } from '@nestjs/common';
-import { ApiTags } from '@nestjs/swagger';
+import { ApiParam, ApiTags } from '@nestjs/swagger';
 
 import { ResponseModel } from 'src/base.model';
 import {
@@ -44,6 +44,9 @@ export class OrderItemController {
 
   @Put(':id')
   @HttpCode(HttpStatus.OK)
+  @ApiParam({
+    name: 'id',
+  })
   async update(
     @Param('id', ParseUUIDPipe) id: OrderItemDto['id'],
     @Body() changes: UpdateOrderItemDto,
@@ -54,6 +57,9 @@ export class OrderItemController {
 
   @Delete(':id')
   @HttpCode(HttpStatus.NO_CONTENT)
+  @ApiParam({
+    name: 'id',
+  })
   delete(@Param('id', ParseUUIDPipe) id: OrderItemDto['id']) {
     return this.orderItemService.delete(id);
   }
