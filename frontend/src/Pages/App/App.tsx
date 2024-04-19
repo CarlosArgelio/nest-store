@@ -1,5 +1,10 @@
+// React
 import { useRoutes, BrowserRouter } from 'react-router-dom';
 
+// Components
+import { NavBar } from './../../Components/NavBar';
+
+// Pages
 import { Home } from './../Home';
 import { MyAccount } from './../MyAccount';
 import { MyOrder } from './../MyOrder';
@@ -24,6 +29,7 @@ const App = () => {
   return (
     <BrowserRouter>
       <AppRoutes />
+      <NavBar />
     </BrowserRouter>
   );
 };
