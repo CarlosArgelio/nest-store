@@ -1,38 +1,44 @@
-import { NavLink } from 'react-router-dom';
+import { NavItem } from './../NavItem';
 
 export const NavBar = () => {
+  const activeStyle = 'underline';
+
   return (
     <nav className="flex justify-between items-center fixed z-10 w-full py-5 px-8 text-sm font-light">
       <ul className="flex items-center gap-3">
         <li className="font-semibold text-lg">
-          <NavLink to={'/shopi'}>Ecommerce</NavLink>
+          <NavItem to="/shopi" style={activeStyle} children="Ecommerce" />
         </li>
         <li>
-          <NavLink to={'/clothes'}>Clothes</NavLink>
+          <NavItem to="/clothes" style={activeStyle} children="Clothes" />
         </li>
         <li>
-          <NavLink to={'/electronics'}>Electronics</NavLink>
+          <NavItem
+            to="/electronics"
+            style={activeStyle}
+            children="Electronics"
+          />
         </li>
         <li>
-          <NavLink to={'/furnitures'}>Furnitures</NavLink>
+          <NavItem to="/furnitures" style={activeStyle} children="Furnitures" />
         </li>
         <li>
-          <NavLink to={'/toys'}>Toys</NavLink>
+          <NavItem to="/toys" style={activeStyle} children="Toys" />
         </li>
         <li>
-          <NavLink to={'/others'}>Others</NavLink>
+          <NavItem to="/others" style={activeStyle} children="Others" />
         </li>
       </ul>
       <ul className="flex items-center gap-3">
         <li>carlosargelio0104@gmail.com</li>
         <li>
-          <NavLink to={'/my-orders'}>My Orders</NavLink>
+          <NavItem to="/my-orders" style={activeStyle} children="My Orders" />
         </li>
         <li>
-          <NavLink to={'/my-account'}>My Account</NavLink>
+          <NavItem to="/my-account" style={activeStyle} children="My Account" />
         </li>
         <li>
-          <NavLink to={'/sign-in'}>Sign In</NavLink>
+          <NavItem to="/sign-in" style={activeStyle} children="Sign In" />
         </li>
         <li>🛒 0</li>
       </ul>
