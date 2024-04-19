@@ -2,7 +2,7 @@ import { NavItem } from './../NavItem';
 
 export const NavBar = () => {
   return (
-    <nav className="flex justify-between items-center fixed z-10 w-full py-5 px-8 text-sm font-light">
+    <nav className="flex justify-between items-center fixed z-10 top-0 w-full py-5 px-8 text-sm font-light">
       <ul className="flex items-center gap-3">
         {NavItems[0].map((item) => (
           <li className={item.styleLi ? item.styleLi : ''}>

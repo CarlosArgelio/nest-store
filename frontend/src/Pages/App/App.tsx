@@ -2,7 +2,7 @@
 import { useRoutes, BrowserRouter } from 'react-router-dom';
 
 // Components
-import { NavBar } from './../../Components/NavBar';
+import { NavBar } from './../../Components';
 
 // Pages
 import { Home } from './../Home';
@@ -17,7 +17,7 @@ const AppRoutes = () => {
     { path: '/', element: <Home /> },
     { path: '/my-account', element: <MyAccount /> },
     { path: '/my-order', element: <MyOrder /> },
-    { path: '/my-order', element: <MyOrders /> },
+    { path: '/my-orders', element: <MyOrders /> },
     { path: '/sign-in', element: <SignIn /> },
     { path: '/*', element: <NotFound /> },
   ]);
@@ -28,8 +28,8 @@ const AppRoutes = () => {
 const App = () => {
   return (
     <BrowserRouter>
-      <AppRoutes />
       <NavBar />
+      <AppRoutes />
     </BrowserRouter>
   );
 };

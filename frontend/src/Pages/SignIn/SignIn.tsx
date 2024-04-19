@@ -1,8 +1,6 @@
+import { Layout } from '../../Components';
+
 function SignIn() {
-  return (
-    <div>
-      <h1>My SignIn</h1>
-    </div>
-  );
+  return <Layout>My SignIn</Layout>;
 }
 export { SignIn };
