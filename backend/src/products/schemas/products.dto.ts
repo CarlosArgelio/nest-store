@@ -3,18 +3,20 @@ import {
   IsArray,
   IsNotEmpty,
   IsNumber,
+  IsOptional,
   IsPositive,
   IsString,
   IsUUID,
   IsUrl,
   Min,
+  ValidateIf,
 } from 'class-validator';
 
+import { FilterDto } from 'src/base.dto';
 import { BaseClassDto } from 'src/base.model';
 
 import { BrandDto } from './brands.dto';
 import { CategoryDto } from './categories.dto';
-// import { CreateProduct } from 'src/entities/products/products.dtos';
 
 export class ProductDto extends BaseClassDto {
   @ApiProperty()
@@ -63,3 +65,14 @@ export class CreateProductDto extends OmitType(ProductDto, [
 ]) {}
 
 export class UpdateProductDto extends PartialType(CreateProductDto) {}
+
+export class FilterProductsDto extends FilterDto {
+  @IsOptional()
+  @IsOptional()
+  minPrice: number;
+
+  @ValidateIf((item) => item.minPrice)
+  @IsOptional()
+  @IsOptional()
+  maxPrice: number;
+}
