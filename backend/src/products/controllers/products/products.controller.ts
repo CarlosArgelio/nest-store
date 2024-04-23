@@ -13,12 +13,12 @@ import {
 } from '@nestjs/common';
 import { ApiOperation, ApiParam, ApiQuery, ApiTags } from '@nestjs/swagger';
 
-import { FilterDto } from 'src/base.dto';
 import { ResponseModel } from 'src/base.model';
 import { ProductModel } from 'src/products/models/products.entity';
 import { CategoryDto } from 'src/products/schemas/categories.dto';
 import {
   CreateProductDto,
+  FilterProductsDto,
   ProductDto,
   UpdateProductDto,
 } from 'src/products/schemas/products.dto';
@@ -47,7 +47,7 @@ export class ProductsController {
   })
   @HttpCode(HttpStatus.OK)
   async findAll(
-    @Query() params: FilterDto,
+    @Query() params: FilterProductsDto,
   ): Promise<ResponseModel<ProductModel[]>> {
     const products = await this.productsService.findAll(params);
     return {

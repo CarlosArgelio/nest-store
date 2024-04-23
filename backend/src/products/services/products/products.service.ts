@@ -4,7 +4,7 @@ import {
   NotFoundException,
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
+import { Between, FindCondition, Repository } from 'typeorm';
 
 import { FilterDto } from 'src/base.dto';
 import { CategoryModel } from 'src/products/models/categories.entity';
@@ -12,6 +12,7 @@ import { ProductModel } from 'src/products/models/products.entity';
 import { BrandDto } from 'src/products/schemas/brands.dto';
 import {
   CreateProductDto,
+  FilterProductsDto,
   ProductDto,
   UpdateProductDto,
 } from 'src/products/schemas/products.dto';
@@ -30,21 +31,33 @@ export class ProductsService {
     private readonly brandServices: BrandsService,
   ) {}
 
-  async findAll(params?: FilterDto): Promise<ProductModel[]> {
+  async findAll(params?: FilterProductsDto): Promise<ProductModel[]> {
     let products: ProductModel[] | undefined;
+    let take: FilterDto['limit'];
+    let skip: FilterDto['offset'];
+    const where: FindCondition<ProductModel> = {};
 
     try {
       if (params !== undefined) {
-        const { limit, offset } = params;
+        take = params.limit;
+        skip = params.offset;
+
+        const { maxPrice, minPrice } = params;
+
+        if (maxPrice && minPrice) {
+          where.price = Between(minPrice, maxPrice);
+        }
 
         products = await this.productRepo.find({
           relations: ['brand'],
-          take: limit,
-          skip: offset,
+          where,
+          take,
+          skip,
         });
       } else {
         products = await this.productRepo.find({
           relations: ['brand'],
+          where,
         });
       }
     } catch (error) {
