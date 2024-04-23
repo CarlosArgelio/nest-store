@@ -23,6 +23,6 @@ export class UserModel extends BaseClassModel {
   @OneToOne(() => CustomerModel, (customer) => customer.user, {
     nullable: true,
   })
-  @JoinColumn()
+  @JoinColumn({ name: 'customer_id' })
   customer: CustomerModel;
 }

@@ -1,4 +1,12 @@
-import { Column, Entity, JoinTable, ManyToMany, ManyToOne } from 'typeorm';
+import {
+  Column,
+  Entity,
+  Index,
+  JoinColumn,
+  JoinTable,
+  ManyToMany,
+  ManyToOne,
+} from 'typeorm';
 
 import { BaseClassModel } from 'src/base.model';
 
@@ -6,6 +14,7 @@ import { BrandModel } from './brands.entity';
 import { CategoryModel } from './categories.entity';
 
 @Entity({ name: 'products' })
+@Index(['price', 'stock'])
 export class ProductModel extends BaseClassModel {
   @Column({ type: 'varchar', length: 255, unique: true, nullable: false })
   title: string;
@@ -13,6 +22,7 @@ export class ProductModel extends BaseClassModel {
   @Column({ type: 'text', nullable: false })
   description: string;
 
+  @Index()
   @Column({ type: 'int', nullable: false })
   price: number;
 
@@ -23,9 +33,18 @@ export class ProductModel extends BaseClassModel {
   stock: number;
 
   @ManyToOne(() => BrandModel, (brand) => brand.products)
+  @JoinColumn({ name: 'brand_id' })
   brand: BrandModel;
 
   @ManyToMany(() => CategoryModel, (category) => category.products)
-  @JoinTable()
+  @JoinTable({
+    name: 'products_categories',
+    joinColumn: {
+      name: 'product_id',
+    },
+    inverseJoinColumn: {
+      name: 'category_id',
+    },
+  })
   categories: CategoryModel[];
 }
