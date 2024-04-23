@@ -2,6 +2,7 @@ import {
   Column,
   Entity,
   Index,
+  JoinColumn,
   JoinTable,
   ManyToMany,
   ManyToOne,
@@ -32,9 +33,18 @@ export class ProductModel extends BaseClassModel {
   stock: number;
 
   @ManyToOne(() => BrandModel, (brand) => brand.products)
+  @JoinColumn({ name: 'brand_id' })
   brand: BrandModel;
 
   @ManyToMany(() => CategoryModel, (category) => category.products)
-  @JoinTable()
+  @JoinTable({
+    name: 'products_categories',
+    joinColumn: {
+      name: 'product_id',
+    },
+    inverseJoinColumn: {
+      name: 'category_id',
+    },
+  })
   categories: CategoryModel[];
 }
