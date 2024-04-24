@@ -6,7 +6,7 @@ export const validationEnvSchema = Joi.object({
   NODE_ENV: Joi.string()
     .equal(Environment.Development, Environment.Production, Environment.Staging)
     .required(),
-  API_KEY: Joi.number(),
+  API_KEY: Joi.string(),
   PGADMIN_EMAIL: Joi.string().email(),
   PGADMIN_PASSWORD: Joi.string(),
   PGADMIN_PORT_INSTANCE: Joi.number(),

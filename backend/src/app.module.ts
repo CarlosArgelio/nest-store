@@ -5,13 +5,13 @@ import { firstValueFrom } from 'rxjs';
 
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
+import { AuthModule } from './auth/auth.module';
 import config from './config';
 import { DatabaseModule } from './database/database.module';
 import { enviroments } from './enviroments';
 import { ProductsModule } from './products/products.module';
 import { validationEnvSchema } from './schemas';
 import { UsersModule } from './users/users.module';
-import { AuthModule } from './auth/auth.module';
 
 @Module({
   imports: [
