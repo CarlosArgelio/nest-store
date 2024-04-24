@@ -1,6 +1,10 @@
 import { NavItem } from './../NavItem';
+import { ShoppingCartContext } from './../../Context';
+import { useContext } from 'react';
 
 export const NavBar = () => {
+  const context = useContext(ShoppingCartContext);
+
   return (
     <nav className="flex justify-between items-center fixed z-10 top-0 w-full py-5 px-8 text-sm font-light">
       <ul className="flex items-center gap-3">
@@ -17,7 +21,7 @@ export const NavBar = () => {
             <NavItem to={item.to} style={item.styleItem} children={item.text} />
           </li>
         ))}
-        <li>🛒 0</li>
+        <li>🛒 {context.count}</li>
       </ul>
     </nav>
   );
