@@ -39,10 +39,17 @@ function Home() {
     <>
       <Layout>
         Home
-        {products.map(() => (
-          <Card />
-        ))}
-        <Card />
+        <div className="grid gap-3 grid-cols-4 w-full max-w-screen-lg">
+          {products.map((product) => (
+            <Card
+              key={product.id}
+              category={product.category.name}
+              price={product.price}
+              title={product.title}
+              image={product.images[0]}
+            />
+          ))}
+        </div>
       </Layout>
     </>
   );
