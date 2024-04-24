@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { Layout, Card } from './../../Components';
+import { Layout, Card, ProductDetail } from './../../Components';
 
 import { config } from './../../../configuration';
 
@@ -50,6 +50,7 @@ function Home() {
             />
           ))}
         </div>
+        <ProductDetail />
       </Layout>
     </>
   );
