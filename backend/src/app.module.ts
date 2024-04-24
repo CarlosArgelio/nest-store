@@ -11,6 +11,7 @@ import { enviroments } from './enviroments';
 import { ProductsModule } from './products/products.module';
 import { validationEnvSchema } from './schemas';
 import { UsersModule } from './users/users.module';
+import { AuthModule } from './auth/auth.module';
 
 @Module({
   imports: [
@@ -29,6 +30,7 @@ import { UsersModule } from './users/users.module';
       }),
     }),
     DatabaseModule,
+    AuthModule,
   ],
   controllers: [AppController],
   providers: [
