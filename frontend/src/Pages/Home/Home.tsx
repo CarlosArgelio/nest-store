@@ -1,9 +1,12 @@
-import { Layout } from './../../Components';
+import { Layout, Card } from './../../Components';
 
 function Home() {
   return (
     <>
-      <Layout>Home</Layout>
+      <Layout>
+        Home
+        <Card />
+      </Layout>
     </>
   );
 }
