@@ -1,6 +1,7 @@
 import React from 'react';
 import { useContext } from 'react';
 import { ShoppingCartContext } from './../../Context';
+import { Plussvg } from './../../Common';
 
 export interface CardProps {
   category: string;
@@ -28,7 +29,7 @@ export const Card = ({ category, price, title, image }: CardProps) => {
             className="absolute top-0 right-0 flex justify-center items-center bg-white w-6 h-6 rounded-full m-2 p-1"
             onClick={() => context.setCount(context.count + 1)}
           >
-            +
+            <Plussvg />
           </div>
         </figure>
         <p className="flex justify-between">
