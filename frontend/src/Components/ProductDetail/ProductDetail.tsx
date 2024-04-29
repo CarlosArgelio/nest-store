@@ -1,12 +1,11 @@
 import { useContext } from 'react';
-import { Xsvg } from './../../Common';
 import { ShoppingCartContext } from './../../Context';
+import { XMarkIcon } from '@heroicons/react/24/solid';
 
 export const ProductDetail = () => {
   const context = useContext(ShoppingCartContext);
 
   const { closeProductDetail, isProductDetailOpen, productDetail } = context;
-  console.log('🚀 ~ ProductDetail ~ productDetail:', productDetail);
 
   return (
     <aside
@@ -15,7 +14,10 @@ export const ProductDetail = () => {
       <div className="flex justify-between items-center p-6">
         <h2 className="font-medium text-xl">Detail</h2>
         <div onClick={closeProductDetail}>
-          <Xsvg className="w-6 h-6 cursor-pointer" />
+          <XMarkIcon
+            className="h-7 w-7 text-black hover:text-red-600"
+            onClick={closeProductDetail}
+          />
         </div>
       </div>
       {productDetail && (

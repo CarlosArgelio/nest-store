@@ -12,12 +12,14 @@ export const ShoppingCartProvider = ({
   // Product Detail - Open & Close
   const [isProductDetailOpen, setIsProductDetailOpen] =
     useState<boolean>(false);
-
-  // Product Detail - Show Product
-  const [productDetail, setproductDetail] = useState<ProductsGet | null>(null);
-
   const openProductDetail = () => setIsProductDetailOpen(true);
   const closeProductDetail = () => setIsProductDetailOpen(false);
+
+  // Product Detail - Show Product
+  const [productDetail, setproductDetail] = useState<ProductsGet | object>({});
+
+  // Shopping Cart - Add products to cart
+  const [cartProduct, setCartProduct] = useState<ProductsGet[] | []>([]);
 
   return (
     <ShoppingCartContext.Provider
@@ -29,6 +31,8 @@ export const ShoppingCartProvider = ({
         closeProductDetail,
         productDetail,
         setproductDetail,
+        cartProduct,
+        setCartProduct,
       }}
     >
       {children}
