@@ -24,9 +24,11 @@ export const Card = ({
     count,
     setCount,
     openProductDetail,
+    closeProductDetail,
     setproductDetail,
     cartProduct,
     setCartProduct,
+    openCheckoutSideMenu,
   } = context;
 
   const data = { category, price, title, image, description };
@@ -36,9 +38,18 @@ export const Card = ({
     setproductDetail(productDetail);
   };
 
-  const addProductsToCart = (productData: CardProps) => {
+  const addProductsToCart = (
+    e: React.MouseEvent<HTMLDivElement>,
+    productData: CardProps,
+  ) => {
+    e.stopPropagation();
+
     setCount(count + 1);
     setCartProduct([...cartProduct, productData]);
+    closeProductDetail();
+    openCheckoutSideMenu();
+
+    console.log('CARTS => ', cartProduct);
   };
 
   return (
@@ -58,7 +69,7 @@ export const Card = ({
           />
           <div
             className="absolute top-0 right-0 flex justify-center items-center bg-white w-6 h-6 rounded-full m-2 p-1"
-            onClick={() => addProductsToCart(data)}
+            onClick={(e) => addProductsToCart(e, data)}
           >
             <PlusIcon className="h-7 w-7 text-black" />
           </div>
