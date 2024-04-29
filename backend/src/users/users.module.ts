@@ -9,6 +9,7 @@ import { ProductsModule } from 'src/products/products.module';
 import { CostumersController } from './controllers/customers/customers.controller';
 import { OrderItemController } from './controllers/order-item/order-item.controller';
 import { OrdersController } from './controllers/orders/orders.controller';
+// eslint-disable-next-line import/order
 import { UsersController } from './controllers/users/users.controller';
 
 //entities
@@ -39,5 +40,6 @@ import { UsersService } from './services/users/users.service';
     OrderItemController,
   ],
   providers: [UsersService, CustomersService, OrdersService, OrderItemService],
+  exports: [UsersService],
 })
 export class UsersModule {}

@@ -4,6 +4,7 @@ import {
   NotFoundException,
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
+import * as bcrypt from 'bcrypt';
 import { Repository } from 'typeorm';
 
 import { FilterDto } from 'src/base.dto';
@@ -71,6 +72,9 @@ export class UsersService {
   async create(user: SignUpUserDto): Promise<UserDto> {
     try {
       const newUser = this.userRepo.create(user);
+      const hasPassword = await bcrypt.hash(newUser.password, 10);
+      newUser.password = hasPassword;
+
       if (user.customerId) {
         const customer = await this.customersServices.findByAttr<
           CustomerDto['id']
@@ -79,9 +83,9 @@ export class UsersService {
       }
       const saveUser = await this.userRepo.save(newUser);
 
-      delete saveUser.password;
       return saveUser;
     } catch (error) {
+      console.log('🚀 ~ UsersService ~ create ~ error:', error);
       throw new InternalServerErrorException(error.message);
     }
   }
