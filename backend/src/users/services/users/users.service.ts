@@ -85,7 +85,6 @@ export class UsersService {
 
       return saveUser;
     } catch (error) {
-      console.log('🚀 ~ UsersService ~ create ~ error:', error);
       throw new InternalServerErrorException(error.message);
     }
   }
