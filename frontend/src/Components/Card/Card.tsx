@@ -14,6 +14,17 @@ export const Card = ({ category, price, title, image }: CardProps) => {
   const context = useContext(ShoppingCartContext);
   const { count, setCount, openProductDetail } = context;
 
+  const returnUri = (text: string) => {
+    let stringImage = text;
+    // Eliminar los caracteres "[" y "]" al inicio y final de la cadena
+    stringImage = stringImage.slice(1, -1);
+
+    // Eliminar las comillas dobles al inicio y final de la cadena
+    stringImage = stringImage.replace(/^"|"$|"/g, '');
+
+    return stringImage;
+  };
+
   return (
     <React.Fragment>
       <div
@@ -26,7 +37,7 @@ export const Card = ({ category, price, title, image }: CardProps) => {
           </span>
           <img
             className="w-full h-full object-cover rounded-lg"
-            src={image}
+            src={returnUri(image)}
             alt="headphones"
           />
           <div
