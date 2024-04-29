@@ -2,23 +2,9 @@ import { useEffect, useState } from 'react';
 import { Layout, Card, ProductDetail } from './../../Components';
 
 import { config } from './../../../configuration';
+import { ProductsGet } from '../../types/Products';
 
 const { apiUrl } = config;
-
-export interface Category {
-  id: number;
-  name: string;
-  image: string;
-}
-
-export interface ProductsGet {
-  id: number;
-  title: string;
-  description: string;
-  price: number;
-  category: Category;
-  images: string[];
-}
 
 function Home() {
   const [products, setProducts] = useState<ProductsGet[] | null>(null);
@@ -47,6 +33,7 @@ function Home() {
               price={product.price}
               title={product.title}
               image={product.images[0]}
+              description={product.description}
             />
           ))}
         </div>

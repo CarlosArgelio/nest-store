@@ -8,28 +8,31 @@ export interface CardProps {
   price: number;
   title: string;
   image: string;
+  description: string;
 }
 
-export const Card = ({ category, price, title, image }: CardProps) => {
+export const Card = ({
+  category,
+  price,
+  title,
+  image,
+  description,
+}: CardProps) => {
   const context = useContext(ShoppingCartContext);
-  const { count, setCount, openProductDetail } = context;
+  const { count, setCount, openProductDetail, setproductDetail } = context;
 
-  const returnUri = (text: string) => {
-    let stringImage = text;
-    // Eliminar los caracteres "[" y "]" al inicio y final de la cadena
-    stringImage = stringImage.slice(1, -1);
-
-    // Eliminar las comillas dobles al inicio y final de la cadena
-    stringImage = stringImage.replace(/^"|"$|"/g, '');
-
-    return stringImage;
+  const detailProduct = (productDetail: CardProps) => {
+    openProductDetail();
+    setproductDetail(productDetail);
   };
 
   return (
     <React.Fragment>
       <div
         className="bg-white cursor-pointer w-56 h-60 rounded-lg"
-        onClick={openProductDetail}
+        onClick={() =>
+          detailProduct({ category, price, title, image, description })
+        }
       >
         <figure className="relative mb-2 w-full h-4/5">
           <span className="absolute bottom-0.5 left-1 bg-white/60 rounded-lg text-black text-xs px-3 py-0.5">
@@ -37,7 +40,7 @@ export const Card = ({ category, price, title, image }: CardProps) => {
           </span>
           <img
             className="w-full h-full object-cover rounded-lg"
-            src={returnUri(image)}
+            src={image}
             alt="headphones"
           />
           <div

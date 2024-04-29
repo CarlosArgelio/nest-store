@@ -5,7 +5,8 @@ import { ShoppingCartContext } from './../../Context';
 export const ProductDetail = () => {
   const context = useContext(ShoppingCartContext);
 
-  const { closeProductDetail, isProductDetailOpen } = context;
+  const { closeProductDetail, isProductDetailOpen, productDetail } = context;
+  console.log('🚀 ~ ProductDetail ~ productDetail:', productDetail);
 
   return (
     <aside
@@ -17,6 +18,26 @@ export const ProductDetail = () => {
           <Xsvg className="w-6 h-6 cursor-pointer" />
         </div>
       </div>
+      {productDetail && (
+        <>
+          <figure className="px-6">
+            <img
+              className="w-full h-full rounded-lg"
+              src={productDetail.image}
+              alt={productDetail.title}
+            />
+          </figure>
+          <p className="flex flex-col p-6">
+            <span className="font-medium text-2xl mb-2">
+              $ {productDetail.price}
+            </span>
+            <span className="font-medium text-2md">{productDetail.title}</span>
+            <span className="font-light text-sm">
+              {productDetail.description}
+            </span>
+          </p>
+        </>
+      )}
     </aside>
   );
 };
