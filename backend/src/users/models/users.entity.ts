@@ -1,9 +1,9 @@
+import { Exclude } from 'class-transformer';
 import { Column, Entity, JoinColumn, OneToOne } from 'typeorm';
 
 import { BaseClassModel } from 'src/base.model';
 
 import { CustomerModel } from './customers.entity';
-
 export enum ROLE {
   ADMIN = 'admin',
   CUSTOMER = 'customer',
@@ -14,6 +14,7 @@ export class UserModel extends BaseClassModel {
   @Column({ type: 'varchar', length: 255, unique: true })
   email: string;
 
+  @Exclude()
   @Column({ type: 'text' })
   password: string; // encript
 
