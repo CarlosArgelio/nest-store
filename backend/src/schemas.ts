@@ -21,4 +21,5 @@ export const validationEnvSchema = Joi.object({
   MYSQL_HOST: Joi.string(),
   MYSQL_PASSWORD: Joi.string(),
   MYSQL_USER: Joi.string(),
+  JWT_SECRET: Joi.string().required(),
 });
