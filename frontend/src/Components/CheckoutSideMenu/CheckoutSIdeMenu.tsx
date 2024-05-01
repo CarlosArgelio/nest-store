@@ -23,7 +23,7 @@ export const CheckoutSideMenu = () => {
           />
         </div>
       </div>
-      <div className="px-6">
+      <div className="px-6 overflow-y-scroll">
         {cartProduct.map((product: any) => (
           <OrderCard
             key={product.id}

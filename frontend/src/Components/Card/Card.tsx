@@ -1,7 +1,6 @@
 import React from 'react';
 import { useContext } from 'react';
 import { ShoppingCartContext } from './../../Context';
-import { Plussvg } from './../../Common';
 import { PlusIcon } from '@heroicons/react/24/solid';
 
 export interface CardProps {
