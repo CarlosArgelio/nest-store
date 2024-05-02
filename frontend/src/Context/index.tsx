@@ -1,6 +1,21 @@
 import { createContext, useState } from 'react';
 import { ProductsGet } from '../types/Products';
 
+// export interface DefaultValuesShoppingCartContext {
+//   count: number;
+//   setCount: React.Dispatch<React.SetStateAction<number>>;
+//   isProductDetailOpen: boolean;
+//   openProductDetail(): void;
+//   closeProductDetail(): void;
+//   productDetail: {} | ProductsGet;
+//   setproductDetail: React.Dispatch<React.SetStateAction<{} | ProductsGet>>;
+//   cartProduct: [] | ProductsGet[];
+//   setCartProduct: React.Dispatch<React.SetStateAction<[] | ProductsGet[]>>;
+//   isCheckoutSideMenuOpen: boolean;
+//   openCheckoutSideMenu(): void;
+//   closeCheckoutSideMenu(): void;
+// }
+
 export const ShoppingCartContext = createContext({} as any);
 
 export const ShoppingCartProvider = ({
@@ -16,7 +31,7 @@ export const ShoppingCartProvider = ({
   const closeProductDetail = () => setIsProductDetailOpen(false);
 
   // Product Detail - Show Product
-  const [productDetail, setproductDetail] = useState<ProductsGet | object>({});
+  const [productDetail, setproductDetail] = useState<ProductsGet | {}>({});
 
   // Shopping Cart - Add products to cart
   const [cartProduct, setCartProduct] = useState<ProductsGet[] | []>([]);
