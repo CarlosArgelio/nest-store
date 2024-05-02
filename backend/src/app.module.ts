@@ -5,6 +5,7 @@ import { firstValueFrom } from 'rxjs';
 
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
+import { AuthModule } from './auth/auth.module';
 import config from './config';
 import { DatabaseModule } from './database/database.module';
 import { enviroments } from './enviroments';
@@ -29,6 +30,7 @@ import { UsersModule } from './users/users.module';
       }),
     }),
     DatabaseModule,
+    AuthModule,
   ],
   controllers: [AppController],
   providers: [

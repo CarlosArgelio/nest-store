@@ -28,6 +28,7 @@ export default registerAs('config', () => ({
     user: process.env.MYSQL_USER,
     type: 'mysql',
   },
+  jwtSecret: process.env.JWT_SECRET,
   apiKey: process.env.API_KEY,
   enviroment: enviroment,
   isDev: enviroment ? Environment.Development : false,

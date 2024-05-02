@@ -10,6 +10,7 @@ import {
   Post,
   Put,
   Query,
+  UseGuards,
 } from '@nestjs/common';
 import { ApiOperation, ApiParam, ApiQuery, ApiTags } from '@nestjs/swagger';
 
@@ -23,13 +24,20 @@ import {
   UpdateProductDto,
 } from 'src/products/schemas/products.dto';
 
+import { Public } from './../../../auth/decorators/public.decorator';
+import { Roles } from './../../../auth/decorators/roles.decorator';
+import { JwtAuthGuard } from './../../../auth/guards/jwt-auth/jwt-auth.guard';
+import { RolesGuard } from './../../../auth/guards/roles/roles.guard';
+import { Role } from './../../../auth/models/roles.model';
 import { ProductsService } from '../../services/products/products.service';
 
+@UseGuards(JwtAuthGuard, RolesGuard)
 @ApiTags('products')
 @Controller('products')
 export class ProductsController {
   constructor(private productsService: ProductsService) {}
 
+  @Public()
   @Get()
   @ApiOperation({
     summary: 'Get all products',
@@ -56,6 +64,7 @@ export class ProductsController {
     };
   }
 
+  @Public()
   @Get('/:id')
   @HttpCode(HttpStatus.OK)
   @ApiParam({
@@ -71,6 +80,7 @@ export class ProductsController {
     };
   }
 
+  @Roles(Role.ADMIN)
   @Post()
   @HttpCode(HttpStatus.CREATED)
   async create(
