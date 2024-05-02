@@ -69,7 +69,7 @@ export const Card = ({
           className="absolute top-0 right-0 flex justify-center items-center bg-white w-6 h-6 rounded-full m-2 p-1"
           onClick={(e) => addProductsToCart(e, data)}
         >
-          <PlusIcon className="h-7 w-7 text-white" />
+          <PlusIcon className="h-7 w-7 text-black" />
         </div>
       );
     }
