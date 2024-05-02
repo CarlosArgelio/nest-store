@@ -21,14 +21,18 @@ export class RolesGuard implements CanActivate {
   ): boolean | Promise<boolean> | Observable<boolean> {
     const roles = this.reflector.get<Role[]>(ROLE_KEY, context.getHandler());
 
-    const request = context.switchToHttp().getRequest();
-    const user = request.user as PayloadToken;
+    if (!roles) {
+      const request = context.switchToHttp().getRequest();
+      const user = request.user as PayloadToken;
 
-    const isAuth = roles.some((role) => role === user.role);
+      const isAuth = roles.some((role) => role === user.role);
 
-    if (!isAuth) {
-      throw new UnauthorizedException('Your wole is wrong');
+      if (!isAuth) {
+        throw new UnauthorizedException('Your wole is wrong');
+      }
+      return isAuth;
     }
-    return isAuth;
+
+    return true;
   }
 }
