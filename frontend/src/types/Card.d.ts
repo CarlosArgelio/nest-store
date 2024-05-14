@@ -6,5 +6,5 @@ export interface OrderCardProps
   readonly image: string;
   readonly price: number;
   readonly title: string;
-  handleDelete(id: number): void;
+  handleDelete?(id: number): void;
 }
