@@ -6,7 +6,13 @@ import { ShoppingCartContext } from './../../Context';
 
 function MyOrder() {
   const context = useContext(ShoppingCartContext);
+  const currentPath = window.location.pathname;
+  let index = currentPath.substring(currentPath.lastIndexOf('/') + 1);
+
   const { order } = context;
+
+  //@ts-ignore
+  if (index === 'last') index = order?.length - 1;
 
   return (
     <Layout>
@@ -17,17 +23,16 @@ function MyOrder() {
         <h1>My Orders</h1>
       </div>
       <div className="flex flex-col w-80">
-        {order
-          ?.slice(-1)[0]
-          .products.map((product: any) => (
-            <OrderCard
-              key={product.id}
-              id={product.id}
-              image={product.image}
-              price={product.price}
-              title={product.title}
-            />
-          ))}
+        {/* @ts-ignore */}
+        {order?.[index]?.products.map((product: any) => (
+          <OrderCard
+            key={product.id}
+            id={product.id}
+            image={product.image}
+            price={product.price}
+            title={product.title}
+          />
+        ))}
       </div>
     </Layout>
   );
