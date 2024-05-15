@@ -15,6 +15,7 @@ export interface ProductsGet {
 
 export interface Order {
   date: string;
+  id: number;
   products: ProductsGet[];
   totalProducts: number;
   totalPrice: number;
