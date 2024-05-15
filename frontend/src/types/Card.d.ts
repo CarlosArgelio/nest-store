@@ -1,4 +1,4 @@
-import { ProductsGet } from './Products';
+import { ProductsGet, Order } from './Products';
 
 export interface OrderCardProps
   extends Omit<Products, 'category' | 'description' | 'images'> {
@@ -6,5 +6,9 @@ export interface OrderCardProps
   readonly image: string;
   readonly price: number;
   readonly title: string;
-  handleDelete(id: number): void;
+  handleDelete?(id: number): void;
+}
+export interface OrdersCardProps {
+  totalPrice: Order['totalPrice'];
+  totalProducts: Order['totalProducts'];
 }

@@ -1,22 +1,26 @@
 import { createContext, useState } from 'react';
-import { ProductsGet } from '../types/Products';
+import { ProductsGet, Order } from '../types/Products';
 
-// export interface DefaultValuesShoppingCartContext {
-//   count: number;
-//   setCount: React.Dispatch<React.SetStateAction<number>>;
-//   isProductDetailOpen: boolean;
-//   openProductDetail(): void;
-//   closeProductDetail(): void;
-//   productDetail: {} | ProductsGet;
-//   setproductDetail: React.Dispatch<React.SetStateAction<{} | ProductsGet>>;
-//   cartProduct: [] | ProductsGet[];
-//   setCartProduct: React.Dispatch<React.SetStateAction<[] | ProductsGet[]>>;
-//   isCheckoutSideMenuOpen: boolean;
-//   openCheckoutSideMenu(): void;
-//   closeCheckoutSideMenu(): void;
-// }
+export interface DefaultValuesShoppingCartContext {
+  count: number;
+  setCount: React.Dispatch<React.SetStateAction<number>>;
+  isProductDetailOpen: boolean;
+  openProductDetail(): void;
+  closeProductDetail(): void;
+  productDetail: {} | ProductsGet;
+  setproductDetail: React.Dispatch<React.SetStateAction<{} | ProductsGet>>;
+  cartProduct: [] | ProductsGet[];
+  setCartProduct: React.Dispatch<React.SetStateAction<[] | ProductsGet[]>>;
+  isCheckoutSideMenuOpen: boolean;
+  openCheckoutSideMenu(): void;
+  closeCheckoutSideMenu(): void;
+  order: [] | Order[];
+  setOrder: React.Dispatch<React.SetStateAction<[] | Order[]>>;
+}
 
-export const ShoppingCartContext = createContext({} as any);
+export const ShoppingCartContext = createContext(
+  {} as DefaultValuesShoppingCartContext,
+);
 
 export const ShoppingCartProvider = ({
   children,
@@ -30,17 +34,20 @@ export const ShoppingCartProvider = ({
   const openProductDetail = () => setIsProductDetailOpen(true);
   const closeProductDetail = () => setIsProductDetailOpen(false);
 
-  // Product Detail - Show Product
+  // Product Detail · Show Product
   const [productDetail, setproductDetail] = useState<ProductsGet | {}>({});
 
-  // Shopping Cart - Add products to cart
+  // Shopping Cart · Add products to cart
   const [cartProduct, setCartProduct] = useState<ProductsGet[] | []>([]);
 
-  // Checkout Side Menu - Open & Close
+  // Checkout Side Menu · Open & Close
   const [isCheckoutSideMenuOpen, setIsCheckoutSideMenuOpen] =
     useState<boolean>(false);
   const openCheckoutSideMenu = () => setIsCheckoutSideMenuOpen(true);
   const closeCheckoutSideMenu = () => setIsCheckoutSideMenuOpen(false);
+
+  // Shopping Cart · Order
+  const [order, setOrder] = useState<Order[] | []>([]);
 
   return (
     <ShoppingCartContext.Provider
@@ -57,6 +64,8 @@ export const ShoppingCartProvider = ({
         isCheckoutSideMenuOpen,
         openCheckoutSideMenu,
         closeCheckoutSideMenu,
+        setOrder,
+        order,
       }}
     >
       {children}
