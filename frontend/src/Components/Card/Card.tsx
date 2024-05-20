@@ -46,6 +46,7 @@ export const Card = ({
     e.stopPropagation();
 
     setCount(count + 1);
+    //@ts-ignore
     setCartProduct([...cartProduct, productData]);
     closeProductDetail();
     openCheckoutSideMenu();
