@@ -13,40 +13,21 @@ function Home() {
 
   const renderView = () => {
     if (params.category) {
-      if (searchByTitle && searchByTitle.length > 0) {
-        if (filteredProducts && filteredProducts?.length > 0) {
-          const filterByCategory = filteredProducts?.filter(
-            (product) => product.category.name === params.category,
-          );
-          return filterByCategory?.map((product) => (
-            <Card
-              key={product.id}
-              id={product.id}
-              category={product.category.name}
-              price={product.price}
-              title={product.title}
-              image={product.images[0]}
-              description={product.description}
-            />
-          ));
-        } else {
-          return <div>We don't have anything</div>;
-        }
-      } else {
-        if (products) {
-          return products.map((product) => (
-            <Card
-              key={product.id}
-              id={product.id}
-              category={product.category.name}
-              price={product.price}
-              title={product.title}
-              image={product.images[0]}
-              description={product.description}
-            />
-          ));
-        }
-      }
+      const filterByCategory = filteredProducts?.filter(
+        (product) => product.category.name === params.category,
+      );
+
+      return filterByCategory?.map((product) => (
+        <Card
+          key={product.id}
+          id={product.id}
+          category={product.category.name}
+          price={product.price}
+          title={product.title}
+          image={product.images[0]}
+          description={product.description}
+        />
+      ));
     } else {
       if (searchByTitle && searchByTitle.length > 0) {
         if (filteredProducts && filteredProducts?.length > 0) {
