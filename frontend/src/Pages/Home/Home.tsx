@@ -1,43 +1,83 @@
 import { useContext } from 'react';
+import { useParams } from 'react-router-dom';
 import { ShoppingCartContext } from './../../Context';
 import { Layout, Card, ProductDetail } from './../../Components';
 
 function Home() {
+  const params = useParams();
+
   const context = useContext(ShoppingCartContext);
 
   const { products, searchByTitle, setSearchByTitle, filteredProducts } =
     context;
 
   const renderView = () => {
-    if (searchByTitle && searchByTitle.length > 0) {
-      if (filteredProducts && filteredProducts?.length > 0) {
-        return filteredProducts?.map((product) => (
-          <Card
-            key={product.id}
-            id={product.id}
-            category={product.category.name}
-            price={product.price}
-            title={product.title}
-            image={product.images[0]}
-            description={product.description}
-          />
-        ));
+    if (params.category) {
+      if (searchByTitle && searchByTitle.length > 0) {
+        if (filteredProducts && filteredProducts?.length > 0) {
+          const filterByCategory = filteredProducts?.filter(
+            (product) => product.category.name === params.category,
+          );
+          return filterByCategory?.map((product) => (
+            <Card
+              key={product.id}
+              id={product.id}
+              category={product.category.name}
+              price={product.price}
+              title={product.title}
+              image={product.images[0]}
+              description={product.description}
+            />
+          ));
+        } else {
+          return <div>We don't have anything</div>;
+        }
       } else {
-        return <div>We don't have anything</div>;
+        if (products) {
+          return products.map((product) => (
+            <Card
+              key={product.id}
+              id={product.id}
+              category={product.category.name}
+              price={product.price}
+              title={product.title}
+              image={product.images[0]}
+              description={product.description}
+            />
+          ));
+        }
       }
     } else {
-      if (products) {
-        return products.map((product) => (
-          <Card
-            key={product.id}
-            id={product.id}
-            category={product.category.name}
-            price={product.price}
-            title={product.title}
-            image={product.images[0]}
-            description={product.description}
-          />
-        ));
+      if (searchByTitle && searchByTitle.length > 0) {
+        if (filteredProducts && filteredProducts?.length > 0) {
+          return filteredProducts?.map((product) => (
+            <Card
+              key={product.id}
+              id={product.id}
+              category={product.category.name}
+              price={product.price}
+              title={product.title}
+              image={product.images[0]}
+              description={product.description}
+            />
+          ));
+        } else {
+          return <div>We don't have anything</div>;
+        }
+      } else {
+        if (products) {
+          return products.map((product) => (
+            <Card
+              key={product.id}
+              id={product.id}
+              category={product.category.name}
+              price={product.price}
+              title={product.title}
+              image={product.images[0]}
+              description={product.description}
+            />
+          ));
+        }
       }
     }
   };
