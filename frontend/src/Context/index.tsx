@@ -1,5 +1,9 @@
-import { createContext, useState } from 'react';
+import { createContext, useEffect, useState } from 'react';
 import { ProductsGet, Order } from '../types/Products';
+
+import { config } from './../../configuration';
+
+const { apiUrl } = config;
 
 export interface DefaultValuesShoppingCartContext {
   count: number;
@@ -16,6 +20,10 @@ export interface DefaultValuesShoppingCartContext {
   closeCheckoutSideMenu(): void;
   order: [] | Order[];
   setOrder: React.Dispatch<React.SetStateAction<[] | Order[]>>;
+  products: ProductsGet[] | null;
+  setProducts: React.Dispatch<React.SetStateAction<ProductsGet[] | null>>;
+  searchByTitle: string | null;
+  setSearchByTitle: React.Dispatch<React.SetStateAction<string | null>>;
 }
 
 export const ShoppingCartContext = createContext(
@@ -49,6 +57,19 @@ export const ShoppingCartProvider = ({
   // Shopping Cart · Order
   const [order, setOrder] = useState<Order[] | []>([]);
 
+  // Get product
+  const [products, setProducts] = useState<ProductsGet[] | null>(null);
+
+  // Get product by title
+  const [searchByTitle, setSearchByTitle] = useState<string | null>(null);
+
+  useEffect(() => {
+    fetch(`${apiUrl}/api/v1/products`)
+      .then((response) => response.json())
+      .then((products) => setProducts(products))
+      .catch((error) => console.log(error));
+  }, []);
+
   return (
     <ShoppingCartContext.Provider
       value={{
@@ -66,6 +87,10 @@ export const ShoppingCartProvider = ({
         closeCheckoutSideMenu,
         setOrder,
         order,
+        products,
+        setProducts,
+        searchByTitle,
+        setSearchByTitle,
       }}
     >
       {children}
