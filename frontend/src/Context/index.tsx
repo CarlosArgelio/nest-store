@@ -24,6 +24,7 @@ export interface DefaultValuesShoppingCartContext {
   setProducts: React.Dispatch<React.SetStateAction<ProductsGet[] | null>>;
   searchByTitle: string | null;
   setSearchByTitle: React.Dispatch<React.SetStateAction<string | null>>;
+  filteredProducts: ProductsGet[] | null;
 }
 
 export const ShoppingCartContext = createContext(
@@ -59,6 +60,9 @@ export const ShoppingCartProvider = ({
 
   // Get product
   const [products, setProducts] = useState<ProductsGet[] | null>(null);
+  const [filteredProducts, setFilteredProducts] = useState<
+    ProductsGet[] | null
+  >(null);
 
   // Get product by title
   const [searchByTitle, setSearchByTitle] = useState<string | null>(null);
@@ -69,6 +73,26 @@ export const ShoppingCartProvider = ({
       .then((products) => setProducts(products))
       .catch((error) => console.log(error));
   }, []);
+
+  const filteredItemsByTitle = (
+    products: ProductsGet[] | null,
+    searchByTitle: string | null,
+  ) => {
+    if (!searchByTitle) return products;
+
+    const filterd = products?.filter((product) =>
+      product.title.toLowerCase().includes(searchByTitle.toLowerCase()),
+    );
+
+    if (!filterd) return null;
+
+    return filterd;
+  };
+
+  useEffect(() => {
+    if (searchByTitle)
+      setFilteredProducts(filteredItemsByTitle(products, searchByTitle));
+  }, [products, searchByTitle]);
 
   return (
     <ShoppingCartContext.Provider
@@ -91,6 +115,7 @@ export const ShoppingCartProvider = ({
         setProducts,
         searchByTitle,
         setSearchByTitle,
+        filteredProducts,
       }}
     >
       {children}

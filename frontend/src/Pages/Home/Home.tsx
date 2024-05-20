@@ -5,7 +5,42 @@ import { Layout, Card, ProductDetail } from './../../Components';
 function Home() {
   const context = useContext(ShoppingCartContext);
 
-  const { products, searchByTitle, setSearchByTitle } = context;
+  const { products, searchByTitle, setSearchByTitle, filteredProducts } =
+    context;
+
+  const renderView = () => {
+    if (searchByTitle && searchByTitle.length > 0) {
+      if (filteredProducts && filteredProducts?.length > 0) {
+        return filteredProducts?.map((product) => (
+          <Card
+            key={product.id}
+            id={product.id}
+            category={product.category.name}
+            price={product.price}
+            title={product.title}
+            image={product.images[0]}
+            description={product.description}
+          />
+        ));
+      } else {
+        return <div>We don't have anything</div>;
+      }
+    } else {
+      if (products) {
+        return products.map((product) => (
+          <Card
+            key={product.id}
+            id={product.id}
+            category={product.category.name}
+            price={product.price}
+            title={product.title}
+            image={product.images[0]}
+            description={product.description}
+          />
+        ));
+      }
+    }
+  };
 
   if (!products) {
     return <div>Loading...</div>;
@@ -24,17 +59,7 @@ function Home() {
           onChange={(e) => setSearchByTitle(e.target.value)}
         />
         <div className="grid gap-3 grid-cols-4 w-full max-w-screen-lg">
-          {products.map((product) => (
-            <Card
-              key={product.id}
-              id={product.id}
-              category={product.category.name}
-              price={product.price}
-              title={product.title}
-              image={product.images[0]}
-              description={product.description}
-            />
-          ))}
+          {renderView()}
         </div>
         <ProductDetail />
       </Layout>
