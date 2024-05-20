@@ -1,9 +1,10 @@
 import React from 'react';
 import { useContext } from 'react';
 import { ShoppingCartContext } from './../../Context';
-import { PlusIcon } from '@heroicons/react/24/solid';
+import { PlusIcon, CheckIcon } from '@heroicons/react/24/solid';
 
 export interface CardProps {
+  id: number;
   category: string;
   price: number;
   title: string;
@@ -12,6 +13,7 @@ export interface CardProps {
 }
 
 export const Card = ({
+  id,
   category,
   price,
   title,
@@ -30,7 +32,7 @@ export const Card = ({
     openCheckoutSideMenu,
   } = context;
 
-  const data = { category, price, title, image, description };
+  const data = { id, category, price, title, image, description };
 
   const detailProduct = (productDetail: CardProps) => {
     openProductDetail();
@@ -51,6 +53,28 @@ export const Card = ({
     console.log('CARTS => ', cartProduct);
   };
 
+  const renderIcon = (id: number) => {
+    const isInCart =
+      cartProduct.filter((product: any) => product.id === id).length > 0;
+
+    if (isInCart) {
+      return (
+        <div className="absolute top-0 right-0 flex justify-center items-center bg-white w-6 h-6 rounded-full m-2 p-1">
+          <CheckIcon className="h-7 w-7 text-black" />
+        </div>
+      );
+    } else {
+      return (
+        <div
+          className="absolute top-0 right-0 flex justify-center items-center bg-white w-6 h-6 rounded-full m-2 p-1"
+          onClick={(e) => addProductsToCart(e, data)}
+        >
+          <PlusIcon className="h-7 w-7 text-black" />
+        </div>
+      );
+    }
+  };
+
   return (
     <React.Fragment>
       <div
@@ -66,12 +90,7 @@ export const Card = ({
             src={image}
             alt="headphones"
           />
-          <div
-            className="absolute top-0 right-0 flex justify-center items-center bg-white w-6 h-6 rounded-full m-2 p-1"
-            onClick={(e) => addProductsToCart(e, data)}
-          >
-            <PlusIcon className="h-7 w-7 text-black" />
-          </div>
+          {renderIcon(id)}
         </figure>
         <p className="flex justify-between">
           <span className="text-sm font-light">{title}</span>

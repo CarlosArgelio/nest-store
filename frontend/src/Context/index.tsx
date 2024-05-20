@@ -1,7 +1,35 @@
-import { createContext, useState } from 'react';
-import { ProductsGet } from '../types/Products';
+import { createContext, useEffect, useState } from 'react';
+import { ProductsGet, Order } from '../types/Products';
 
-export const ShoppingCartContext = createContext({} as any);
+import { config } from './../../configuration';
+
+const { apiUrl } = config;
+
+export interface DefaultValuesShoppingCartContext {
+  count: number;
+  setCount: React.Dispatch<React.SetStateAction<number>>;
+  isProductDetailOpen: boolean;
+  openProductDetail(): void;
+  closeProductDetail(): void;
+  productDetail: {} | ProductsGet;
+  setproductDetail: React.Dispatch<React.SetStateAction<{} | ProductsGet>>;
+  cartProduct: [] | ProductsGet[];
+  setCartProduct: React.Dispatch<React.SetStateAction<[] | ProductsGet[]>>;
+  isCheckoutSideMenuOpen: boolean;
+  openCheckoutSideMenu(): void;
+  closeCheckoutSideMenu(): void;
+  order: [] | Order[];
+  setOrder: React.Dispatch<React.SetStateAction<[] | Order[]>>;
+  products: ProductsGet[] | null;
+  setProducts: React.Dispatch<React.SetStateAction<ProductsGet[] | null>>;
+  searchByTitle: string | null;
+  setSearchByTitle: React.Dispatch<React.SetStateAction<string | null>>;
+  filteredProducts: ProductsGet[] | null;
+}
+
+export const ShoppingCartContext = createContext(
+  {} as DefaultValuesShoppingCartContext,
+);
 
 export const ShoppingCartProvider = ({
   children,
@@ -15,17 +43,56 @@ export const ShoppingCartProvider = ({
   const openProductDetail = () => setIsProductDetailOpen(true);
   const closeProductDetail = () => setIsProductDetailOpen(false);
 
-  // Product Detail - Show Product
-  const [productDetail, setproductDetail] = useState<ProductsGet | object>({});
+  // Product Detail · Show Product
+  const [productDetail, setproductDetail] = useState<ProductsGet | {}>({});
 
-  // Shopping Cart - Add products to cart
+  // Shopping Cart · Add products to cart
   const [cartProduct, setCartProduct] = useState<ProductsGet[] | []>([]);
 
-  // Checkout Side Menu - Open & Close
+  // Checkout Side Menu · Open & Close
   const [isCheckoutSideMenuOpen, setIsCheckoutSideMenuOpen] =
     useState<boolean>(false);
   const openCheckoutSideMenu = () => setIsCheckoutSideMenuOpen(true);
   const closeCheckoutSideMenu = () => setIsCheckoutSideMenuOpen(false);
+
+  // Shopping Cart · Order
+  const [order, setOrder] = useState<Order[] | []>([]);
+
+  // Get product
+  const [products, setProducts] = useState<ProductsGet[] | null>(null);
+  const [filteredProducts, setFilteredProducts] = useState<
+    ProductsGet[] | null
+  >(null);
+
+  // Get product by title
+  const [searchByTitle, setSearchByTitle] = useState<string | null>(null);
+
+  useEffect(() => {
+    fetch(`${apiUrl}/api/v1/products`)
+      .then((response) => response.json())
+      .then((products) => setProducts(products))
+      .catch((error) => console.log(error));
+  }, []);
+
+  const filteredItemsByTitle = (
+    products: ProductsGet[] | null,
+    searchByTitle: string | null,
+  ) => {
+    if (!searchByTitle) return products;
+
+    const filterd = products?.filter((product) =>
+      product.title.toLowerCase().includes(searchByTitle.toLowerCase()),
+    );
+
+    if (!filterd) return null;
+
+    return filterd;
+  };
+
+  useEffect(() => {
+    if (searchByTitle)
+      setFilteredProducts(filteredItemsByTitle(products, searchByTitle));
+  }, [products, searchByTitle]);
 
   return (
     <ShoppingCartContext.Provider
@@ -42,6 +109,13 @@ export const ShoppingCartProvider = ({
         isCheckoutSideMenuOpen,
         openCheckoutSideMenu,
         closeCheckoutSideMenu,
+        setOrder,
+        order,
+        products,
+        setProducts,
+        searchByTitle,
+        setSearchByTitle,
+        filteredProducts,
       }}
     >
       {children}

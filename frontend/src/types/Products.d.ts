@@ -12,3 +12,10 @@ export interface ProductsGet {
   category: Category;
   images: string[];
 }
+
+export interface Order {
+  date: string;
+  products: ProductsGet[];
+  totalProducts: number;
+  totalPrice: number;
+}
