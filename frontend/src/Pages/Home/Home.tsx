@@ -1,21 +1,11 @@
-import { useEffect, useState } from 'react';
+import { useContext } from 'react';
+import { ShoppingCartContext } from './../../Context';
 import { Layout, Card, ProductDetail } from './../../Components';
 
-import { config } from './../../../configuration';
-import { ProductsGet } from '../../types/Products';
-
-const { apiUrl } = config;
-
 function Home() {
-  const [products, setProducts] = useState<ProductsGet[] | null>(null);
+  const context = useContext(ShoppingCartContext);
 
-  useEffect(() => {
-    fetch(`${apiUrl}/api/v1/products`)
-      .then((response) => response.json())
-      .then((products) => setProducts(products))
-      .catch((error) => console.log(error))
-      .finally(() => console.log('finally'));
-  }, []);
+  const { products, searchByTitle, setSearchByTitle } = context;
 
   if (!products) {
     return <div>Loading...</div>;
@@ -24,7 +14,15 @@ function Home() {
   return (
     <>
       <Layout>
-        Home
+        <div className="flex items-center justify-center relative w-80 mb-6">
+          <h1 className="font-medium text-xl">Exclusive Products</h1>
+        </div>
+        <input
+          type="text"
+          placeholder="Search a product"
+          className="rounded-lg border border-black w-80 p-4 mb-4 focus:outline-none"
+          onChange={(e) => setSearchByTitle(e.target.value)}
+        />
         <div className="grid gap-3 grid-cols-4 w-full max-w-screen-lg">
           {products.map((product) => (
             <Card
